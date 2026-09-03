@@ -34,14 +34,6 @@ parallel token refinement, not an autoregressive interface wrapped around a dLLM
 
 </div>
 
-> **Repository status.** This public repository is populated by deterministic
-> export from the private source mainline, one surface at a time, and each
-> export ships with an `EXPORT_RECEIPT.json` naming the source commit and the
-> hash of every file. The SDK source and documentation land after the current
-> cache-owner cleanup; until then this README describes the product as it
-> exists at that source commit, and links into `docs/` resolve once that
-> surface is exported.
-
 ## Why DiffusorRT
 
 A diffusion language model refines a whole canvas of tokens in parallel. It can
@@ -207,13 +199,12 @@ model snapshot -> Reference Compiler -> execution package
 
 ## Roadmap
 
-Work proceeds in three lanes under one integration authority, so no lane can
-create a second runtime or a second control plane.
+Work proceeds in three tracks that share one runtime and one cache owner.
 
-| Lane | Next |
+| Track | Next |
 |---|---|
 | **Model coverage** | Qwen3-BD3LM; a bounded SDAR / Fast-dLLM-v2 selection spike; LLaDA-8B and Dream-Coder toward product support. |
-| **Runtime and K/V** | Retire the quiesced legacy cache owners; record the installed real-Dream manager trace with byte accounting. |
+| **Runtime and K/V** | Complete the single cache-manager rollout and publish installed real-model cache evidence with byte accounting. |
 | **CUDA** | Versioned BF16, INT8, and FP8 precision profiles behind the private provider, then public runtime negotiation and product admission. |
 | **Then** | Packed active-window feasibility, a continuous scheduler and service, and a signed developer preview. |
 
@@ -237,9 +228,7 @@ mode on the roadmap, not the runtime's identity.
 
 Read [Contributing](./CONTRIBUTING.md) for development setup and change
 requirements, and [Security](./SECURITY.md) for how to report a vulnerability.
-Public contributions land in the private source mainline first and return
-through the deterministic exporter, so the public tree never becomes a second
-implementation.
+Open an issue before a large change so the design can be agreed first.
 
 ## Citation
 

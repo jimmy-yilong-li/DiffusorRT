@@ -22,9 +22,9 @@
       "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
     },
     {
-      "bytes": 12083,
+      "bytes": 11456,
       "path": "README.md",
-      "sha256": "3a4523cda87b58021c122b8de172ccb2585ad67aa3a2dba966ab4bb37559a777"
+      "sha256": "e7e56cfcd50c31fa46737d0a8a8503fc254c1ad973acd9fc0d7e73f387adc7f8"
     },
     {
       "bytes": 1572,
@@ -43,8 +43,7 @@
     }
   ],
   "receipt_version": 1,
-  "source_commit": "3560a2461b728d6379e329824bbede4d2ea7d8f8",
-  "source_repo": "DiffusorRT-Source",
+  "source_commit": "8e0f64389d85a240a906f202a11ce6b4022c2d86",
   "surface": "public",
-  "tree_sha256": "7f16ba60260191dd5d328c952552fec552762732e82838f77b2e0e0f702643c8"
+  "tree_sha256": "61478b9195ced378dfcc2e8e00842cea1ea54745f1ec86de3fd58e55132c4c0e"
 }
