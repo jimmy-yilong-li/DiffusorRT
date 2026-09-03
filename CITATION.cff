@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use DiffusorRT in your work, please cite it."
-title: "DiffusorRT: Canvas-native inference for diffusion language models"
+title: "DiffusorRT: Diffusion language model inference for edge devices"
 type: software
 authors:
   - family-names: Li

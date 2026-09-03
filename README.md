@@ -4,11 +4,13 @@
 
 <h1>DiffusorRT</h1>
 
-<p><strong>Canvas-native inference for diffusion language models.</strong></p>
+<p><strong>Diffusion language model inference for edge devices.</strong></p>
 
 <p>
-Generate, chat, infill, and edit on local hardware through one runtime built for
-parallel token refinement, not an autoregressive interface wrapped around a dLLM.
+DiffusorRT is a cross-platform, edge-first, dLLM-native inference and deployment
+runtime for diffusion language models on Macs, single PCs and workstations, and
+mobile or embedded devices. Apple Silicon with MLX is the first validated
+product slice, not the platform boundary.
 </p>
 
 <p>
@@ -24,6 +26,7 @@ parallel token refinement, not an autoregressive interface wrapped around a dLLM
 <a href="#news">News</a> ·
 <a href="#features">Features</a> ·
 <a href="#supported-models">Models</a> ·
+<a href="#platforms">Platforms</a> ·
 <a href="#getting-started">Getting Started</a> ·
 <a href="#architecture">Architecture</a> ·
 <a href="#roadmap">Roadmap</a> ·
@@ -36,25 +39,33 @@ parallel token refinement, not an autoregressive interface wrapped around a dLLM
 
 ## Why DiffusorRT
 
-A diffusion language model refines a whole canvas of tokens in parallel. It can
-fill a hole in the middle of a document, revise a span, or commit several
-positions per step. Serving stacks built for autoregressive decoding hide all of
-that behind a left-to-right stream.
+Diffusion language models do not decode left to right. They refine a whole
+canvas of tokens in parallel, fill holes in the middle of a document, revise a
+span, and commit several positions per step. Engines built for autoregressive
+decoding hide all of that behind a token stream, and they assume a server.
+DiffusorRT is built for the model class and for the device on your desk:
 
-DiffusorRT makes the canvas the first-class object:
-
-- **Native canvas operations.** `generate`, multi-turn `chat`, bidirectional
-  `infill`, and span `edit` share one Engine and one runtime session.
-- **Exact work reduction.** Active-window execution forwards only the rows
-  that still need evidence and keeps the full forward as its oracle. Reduced
+- **Edge-first.** Optimized for one user or a few local sessions on a single
+  device, with memory bounded and every failure fail-closed.
+- **Cross-platform.** One runtime and one package contract; platform-specific
+  backends attach through a stable ABI.
+- **dLLM-native.** The control plane models a mutable canvas: `generate`,
+  multi-turn `chat`, bidirectional `infill`, span `edit`, parallel unmasking,
+  and remasking share one Engine and one runtime session.
+- **Exact by default.** Active-window execution forwards only the rows that
+  still need evidence and keeps the full forward as its oracle; reduced
   execution reaches the product only after it matches the oracle token for
   token.
-- **Explicit K/V semantics.** Prompt and frozen-block reuse bind identity,
-  validity, lifecycle, and publication to a single cache owner instead of
-  trusting a cache pointer.
-- **Honest measurement.** DiffusorRT does not claim that diffusion models beat
-  autoregressive models in tokens per second. Every performance statement names
-  its model, hardware, precision, and cache state.
+- **One-command deployable.** `doctor`, `pull`, `run`, and `serve` take a
+  supported model from selection to a healthy local runtime without a source
+  tree.
+- **Open SDK, optimized engine.** The Apache-2.0 SDK and reference runtime stay
+  runnable and useful for integration, correctness, and conformance;
+  production-optimized native runtimes ship as separately licensed binaries.
+
+DiffusorRT does not claim that diffusion models beat autoregressive models in
+tokens per second. Every performance statement names its model, hardware,
+precision, and cache state.
 
 ## News
 
@@ -91,7 +102,7 @@ removals, compatibility notes, and scope limits.
 
 | | |
 |---|---|
-| **Canvas-native generation** | One Engine exposes `generate`, multi-turn `chat`, bidirectional `infill`, and span `edit`. |
+| **Canvas operations** | One Engine exposes `generate`, multi-turn `chat`, bidirectional `infill`, and span `edit`. |
 | **Exact work reduction** | Active-window D2F executes only rows that still need evidence and keeps the full forward as its oracle. |
 | **One K/V owner** | A native cache manager owns identity, capacity, leases, transactions, and a versioned operation trace; the Python manager is its differential oracle. |
 | **Model-addressable workflow** | `doctor`, `pull`, `run`, `list`, and `serve` resolve the supported model without a package path. |
@@ -109,6 +120,22 @@ removals, compatibility notes, and scope limits.
 Support means the exact revision passed its model-specific product gate on named
 hardware. [Model Coverage v1](./docs/product/model-coverage-v1.md) defines the
 ladder from candidate to product-supported and records every admission.
+
+## Platforms
+
+Support is capability-tiered. The table separates what runs today from what the
+product targets, so a planned platform is never presented as a supported one.
+
+| Platform | Today | Product target |
+|---|---|---|
+| **Apple Silicon** (Mac mini, MacBook, Mac Studio) | MLX accelerated runtime; two product-supported models | Packaged MLX/Metal backend with a local daemon and API |
+| **Portable reference** (any Python 3.11 host) | NumPy reference path; correctness oracle and package validation | Backend conformance and package validation |
+| **NVIDIA single PC / workstation** | Private BF16 provider foundation; not exposed by the public runtime | Optimized NVIDIA backend with versioned precision profiles |
+| **Mobile / embedded** | No production backend shipped | Stable runtime and package ABI plus a platform-selected backend |
+
+Adding a platform means a declared capability set, package and model-family
+conformance, correct canvas, decode, and cache semantics, memory-budget and
+lifecycle tests, hardware-specific evidence, and deployment documentation.
 
 ## Getting Started
 
@@ -234,7 +261,7 @@ Open an issue before a large change so the design can be agreed first.
 
 ```bibtex
 @software{diffusorrt2026,
-  title  = {DiffusorRT: Canvas-native inference for diffusion language models},
+  title  = {DiffusorRT: Diffusion language model inference for edge devices},
   author = {Li, Jimmy Yilong},
   year   = {2026},
   url    = {https://github.com/jimmy-yilong-li/DiffusorRT}
