@@ -1,0 +1,50 @@
+{
+  "file_count": 8,
+  "files": [
+    {
+      "bytes": 358,
+      "path": "CITATION.cff",
+      "sha256": "200f1e5bdd77eda5e899f8aab307aa7b8cefb784fbe428e3037538255fa121b6"
+    },
+    {
+      "bytes": 2516,
+      "path": "CONTRIBUTING.md",
+      "sha256": "fefe82d7c6e527874007840b0d0daed15eedda0f55e3b5167cd804f16990a967"
+    },
+    {
+      "bytes": 14047,
+      "path": "COPYRIGHT_AND_LICENSING.md",
+      "sha256": "01504057ec8fc242f9d8171906735d3ea899a2e9762aca799828b34a35b25532"
+    },
+    {
+      "bytes": 11357,
+      "path": "LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "bytes": 12083,
+      "path": "README.md",
+      "sha256": "3a4523cda87b58021c122b8de172ccb2585ad67aa3a2dba966ab4bb37559a777"
+    },
+    {
+      "bytes": 1572,
+      "path": "SECURITY.md",
+      "sha256": "ab9a0031ea74aa949dd161270409cd0e18520e62a3b322ce77f76a9bef76e396"
+    },
+    {
+      "bytes": 3459,
+      "path": "docs/product/assets/architecture.svg",
+      "sha256": "57a3a27742284e45d01c350c23d2d24aba95b65f115bfba81546b008098da1d3"
+    },
+    {
+      "bytes": 63972,
+      "path": "docs/product/assets/diffusorrt-logo.png",
+      "sha256": "12a1fdc51c2e56f73e2eb329938d8484dbd725822854e7659e3d20fe73fa1c41"
+    }
+  ],
+  "receipt_version": 1,
+  "source_commit": "3560a2461b728d6379e329824bbede4d2ea7d8f8",
+  "source_repo": "DiffusorRT-Source",
+  "surface": "public",
+  "tree_sha256": "7f16ba60260191dd5d328c952552fec552762732e82838f77b2e0e0f702643c8"
+}
