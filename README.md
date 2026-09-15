@@ -1,284 +1,245 @@
 <div align="center">
 
-<img src="./docs/product/assets/diffusorrt-logo.png" alt="DiffusorRT diffusion-particle logo" width="190">
+<img src="./docs/product/assets/diffusorrt-logo.png" alt="DiffusorRT" width="190">
 
 <h1>DiffusorRT</h1>
 
-<p><strong>Diffusion language model inference for edge devices.</strong></p>
+<p><strong>A Python runtime for diffusion language models on local hardware.</strong></p>
 
 <p>
-DiffusorRT is a cross-platform, edge-first, dLLM-native inference and deployment
-runtime for diffusion language models on Macs, single PCs and workstations, and
-mobile or embedded devices. Apple Silicon with MLX is the first validated
-product slice, not the platform boundary.
-</p>
-
-<p>
-<a href="https://www.apache.org/licenses/LICENSE-2.0"><img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-blue.svg"></a>
-<img alt="Python 3.11" src="https://img.shields.io/badge/python-3.11-3776AB.svg">
-<img alt="Apple Silicon / MLX" src="https://img.shields.io/badge/Apple%20Silicon-MLX-000000.svg">
-<img alt="NumPy reference" src="https://img.shields.io/badge/reference-NumPy-013243.svg">
-<img alt="Status: pre-release" src="https://img.shields.io/badge/status-pre--release-orange.svg">
-</p>
-
-<p>
-<a href="#why-diffusorrt">Why</a> ·
-<a href="#news">News</a> ·
-<a href="#features">Features</a> ·
-<a href="#supported-models">Models</a> ·
-<a href="#platforms">Platforms</a> ·
-<a href="#getting-started">Getting Started</a> ·
-<a href="#architecture">Architecture</a> ·
-<a href="#roadmap">Roadmap</a> ·
-<a href="#documentation">Docs</a> ·
-<a href="#citation">Citation</a> ·
+<a href="#install">Install</a> ·
+<a href="#python-api">Python API</a> ·
+<a href="#command-line">Command line</a> ·
+<a href="#model-manager-and-local-service">Model manager</a> ·
+<a href="#supported-models-and-platforms">Supported models</a> ·
 <a href="#license">License</a>
 </p>
 
 </div>
 
-## Why DiffusorRT
+DiffusorRT provides model loading, generation, conversation history, context
+management, and a local HTTP service through one importable library. Models use
+the same loader and runtime; the command line and optional TUI call that library.
 
-Diffusion language models do not decode left to right. They refine a whole
-canvas of tokens in parallel, fill holes in the middle of a document, revise a
-span, and commit several positions per step. Engines built for autoregressive
-decoding hide all of that behind a token stream, and they assume a server.
-DiffusorRT is built for the model class and for the device on your desk:
+**0.2.0 is a Developer Preview, released in stages.** This first batch provides
+an installable Apache-2.0 Python wheel and a small selection of API source files,
+not the full development repository. Optimized native Apple/CUDA backends and
+model weights are separate and are not included in this wheel.
 
-- **Edge-first.** Optimized for one user or a few local sessions on a single
-  device, with memory bounded and every failure fail-closed.
-- **Cross-platform.** One runtime and one package contract; platform-specific
-  backends attach through a stable ABI.
-- **dLLM-native.** The control plane models a mutable canvas: `generate`,
-  multi-turn `chat`, bidirectional `infill`, span `edit`, parallel unmasking,
-  and remasking share one Engine and one runtime session.
-- **Exact by default.** Active-window execution forwards only the rows that
-  still need evidence and keeps the full forward as its oracle; reduced
-  execution reaches the product only after it matches the oracle token for
-  token.
-- **One-command deployable.** `doctor`, `pull`, `run`, and `serve` take a
-  supported model from selection to a healthy local runtime without a source
-  tree.
-- **Open SDK, optimized engine.** The Apache-2.0 SDK and reference runtime stay
-  runnable and useful for integration, correctness, and conformance;
-  production-optimized native runtimes ship as separately licensed binaries.
+## Install
 
-DiffusorRT does not claim that diffusion models beat autoregressive models in
-tokens per second. Every performance statement names its model, hardware,
-precision, and cache state.
+Use **Python 3.11**. The accelerated example below needs **Apple Silicon and
+macOS**. It uses Qwen3-BD3LM 0.6B and does not require a private backend wheel.
 
-## News
-
-- **2026-09-01 — Exact-D2F now runs on the native K/V manager.** The Apple/MLX
-  product path drives the compiled cache manager as its only persistent K/V
-  owner, with admission before allocation, transactional publication, and
-  checked shutdown through `Engine.close()`. The installed product evidence
-  binds the Apache-2.0 SDK and the separately licensed runtime wheel to the
-  same source identity.
-  [Details →](./docs/product/kv-cache-manager-v1.md)
-- **2026-08-24 — The private CUDA provider executes real Dream BF16 windows.**
-  The provider built and installed on Linux, preserved the 11-symbol callable
-  surface, and passed the seven-window numerical gate on A100 and L40. The
-  public runtime still refuses CUDA; this is a foundation, not a product claim.
-  [Details →](./docs/product/cuda-runtime-v1.md)
-- **2026-08-20 — Qwen3-MDLM v0.1 completed product admission.** The exact 0.6B
-  revision passed reproducible parity and capability gates and the installed
-  `doctor`, `pull`, `list`, `run`, and `serve` workflow on Apple M4 Max with
-  MLX fp32.
-  [Details →](./docs/product/model-coverage-v1.md)
-- **2026-08-15 — The native C++ boundary runs a real Dream window.** The
-  callable runtime builds as a binary wheel and agrees with the Python/MLX
-  oracle on row order, argmax, and top-5.
-  [Details →](./docs/product/callable-runtime-v1.md)
-- **2026-08-13 — One command reaches a model from an empty cache.** `run`,
-  `pull`, `list`, `doctor`, and `serve` accept the pinned model ID and complete
-  acquisition, compilation, loading, and generation.
-  [Details →](./docs/product/client-runtime-v1.md)
-
-See [Product Updates](./docs/product/CHANGELOG.md) for completed milestones,
-removals, compatibility notes, and scope limits.
-
-## Features
-
-| | |
-|---|---|
-| **Canvas operations** | One Engine exposes `generate`, multi-turn `chat`, bidirectional `infill`, and span `edit`. |
-| **Exact work reduction** | Active-window D2F executes only rows that still need evidence and keeps the full forward as its oracle. |
-| **One K/V owner** | A native cache manager owns identity, capacity, leases, transactions, and a versioned operation trace; the Python manager is its differential oracle. |
-| **Model-addressable workflow** | `doctor`, `pull`, `run`, `list`, and `serve` resolve the supported model without a package path. |
-| **Execution packages** | The Reference Compiler pins source identity, checks disk cost, converts into a runtime package, and publishes a receipt. |
-| **Portable contracts** | NumPy is the executable reference; MLX is the accelerated Apple path; native runtimes attach through a stable ABI. |
-
-## Supported models
-
-| Model | Status | Admitted profile |
-|---|---|---|
-| `Dream-org/Dream-v0-Instruct-7B` | Product-supported at its pinned revision | Apple Silicon / MLX; the performance anchor |
-| `dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1` | Product-supported at its pinned revision | Apple M4 Max / MLX fp32 |
-| LLaDA-8B, Dream-Coder | Candidates with parity evidence | Not product-supported |
-
-Support means the exact revision passed its model-specific product gate on named
-hardware. [Model Coverage v1](./docs/product/model-coverage-v1.md) defines the
-ladder from candidate to product-supported and records every admission.
-
-## Platforms
-
-Support is capability-tiered. The table separates what runs today from what the
-product targets, so a planned platform is never presented as a supported one.
-
-| Platform | Today | Product target |
-|---|---|---|
-| **Apple Silicon** (Mac mini, MacBook, Mac Studio) | MLX accelerated runtime; two product-supported models | Packaged MLX/Metal backend with a local daemon and API |
-| **Portable reference** (any Python 3.11 host) | NumPy reference path; correctness oracle and package validation | Backend conformance and package validation |
-| **NVIDIA single PC / workstation** | Private BF16 provider foundation; not exposed by the public runtime | Optimized NVIDIA backend with versioned precision profiles |
-| **Mobile / embedded** | No production backend shipped | Stable runtime and package ABI plus a platform-selected backend |
-
-Adding a platform means a declared capability set, package and model-family
-conformance, correct canvas, decode, and cache semantics, memory-budget and
-lifecycle tests, hardware-specific evidence, and deployment documentation.
-
-## Getting Started
-
-### Requirements
-
-- Python 3.11;
-- Apple Silicon for the accelerated MLX path;
-- free storage for the selected package (Qwen is about 3.0 GB; pinned Dream
-  is a roughly 47 GiB first-run path);
-- explicit consent when using pinned Dream's custom tokenizer code.
-
-### Two layers, one runtime
-
-This repository is the Apache-2.0 SDK: the Python API and CLI, the Reference
-Compiler, the NumPy reference runtime, schemas, public C headers, conformance
-tools, and documentation. The exact active-window profile on Apple Silicon runs
-through a **separately licensed native runtime wheel**. Without that wheel,
-DiffusorRT refuses the exact profile with an actionable error; it never
-substitutes a different cache silently. The reference and conformance paths
-need only this repository.
-
-### Install from source
-
-No stable wheel has been published yet.
+Install directly from the GitHub release; no Git clone or compiler build is
+needed to install the Python library:
 
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e "./python[compiler,mlx-local,serve]"
+python -m pip install "diffusor-rt[compiler,mlx-local] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.0/diffusor_rt-0.2.0-py3-none-any.whl"
 ```
 
-### Check, prepare, and run
+An existing Python 3.11 conda environment works too; skip the first two commands
+when it is already active. The `compiler` extra installs the dependencies for
+downloading and preparing models, and `mlx-local` installs the Apple backend.
+
+Alternatively, download the wheel from [Release assets](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.0)
+and install it locally:
 
 ```bash
-MODEL="dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1"
-
-# Inspect support, cache state, trust requirements, and disk cost.
-diffusorrt doctor "$MODEL"
-
-# One command acquires, compiles, loads, and generates.
-diffusorrt run "$MODEL" --prompt "Explain diffusion language models in one paragraph."
-
-# Prepare without generating. Add --offline to forbid network access.
-diffusorrt pull "$MODEL"
-
-# Start the local foreground service with /health and /v1/generate.
-diffusorrt serve "$MODEL"
+python -m pip install "./diffusor_rt-0.2.0-py3-none-any.whl[compiler,mlx-local]"
 ```
 
-### Python API
+For only the base API, package tools, and NumPy reference runtime, omit the
+extras. This does not install an accelerated backend or model-download tools:
+
+```bash
+python -m pip install "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.0/diffusor_rt-0.2.0-py3-none-any.whl"
+```
+
+The package name is `diffusor-rt`; the Python import is `diffusor_rt`.
+This preview is distributed through GitHub Releases, not PyPI. The
+`py3-none-any` tag describes the Python wheel, not GPU or model support on every
+platform.
+
+Verify the installation without loading a model:
+
+```bash
+python -c "import diffusor_rt; print(diffusor_rt.__version__)"
+python -m diffusor_rt --help
+```
+
+## Python API
 
 ```python
 from diffusor_rt import Engine
 
 with Engine.from_pretrained(
-    "dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1",
-    backend="auto",
+    "dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1",
+    backend="mlx_local",
 ) as engine:
     result = engine.generate(
-        "Explain diffusion language models in one paragraph.",
-        max_tokens=64,
+        "Explain diffusion language models briefly.",
+        max_tokens=16,
     )
     print(result.text)
 ```
 
-Prepared execution packages stay available for offline development and
-conformance through `Engine.from_package()`.
+The first run downloads about **1.5 GB** of weights and builds a roughly
+**3 GB** execution package. Allow additional room for dependencies and temporary
+build files. Later runs reuse the package. Model preparation and generation are
+real compute workloads; importing the library and displaying help are not.
 
-## Architecture
+Supported model IDs resolve to their pinned revisions automatically. No TOML or
+manual package construction is needed for the models listed below. The context
+manager closes the engine and releases its resources.
 
-<p align="center">
-<img src="./docs/product/assets/architecture.svg" alt="DiffusorRT architecture: compiler, package, engine, canvas runtime, and three backends" width="880">
-</p>
+To use an already prepared execution package without network access:
 
-The compiler owns acquisition and package publication. The runtime owns decode
-semantics, cache lifecycle, and the operation trace. Backends own tensor math,
-device memory, and synchronization. A native runtime attaches through the
-stable C ABI and must either serve the requested profile or refuse it; it may
-not change semantics.
+```python
+from diffusor_rt import Engine
 
-```text
-model snapshot -> Reference Compiler -> execution package
-  -> Engine / runtime session
-    -> canvas + active-window planner + exact K/V manager
-      -> NumPy reference | MLX | native runtime
+with Engine.from_pretrained(
+    "/path/to/prepared-package",
+    backend="mlx_local",
+    offline=True,
+) as engine:
+    print(engine.generate("Hello!", max_tokens=16).text)
 ```
 
-## Roadmap
+A prepared package is a DiffusorRT execution package, not an arbitrary directory
+of Hugging Face weights. `offline=True` can also use previously cached source.
 
-Work proceeds in three tracks that share one runtime and one cache owner.
+The same API is available as a ready-to-run script:
 
-| Track | Next |
+```bash
+# From this repository, after installing the wheel:
+python examples/quickstart.py --prompt "Explain dLLMs briefly." --max-tokens 16
+```
+
+Download [quickstart.py](./examples/quickstart.py) separately if you do not want
+to clone the repository. It is a thin API example, not a second runtime.
+
+## Command line
+
+```bash
+MODEL="dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1"
+
+# Inspect the platform and cache without running generation.
+diffusorrt doctor "$MODEL"
+
+# Download and prepare once; subsequent runs reuse the package.
+diffusorrt pull "$MODEL"
+
+diffusorrt run "$MODEL" --prompt "Explain dLLMs briefly." --max-tokens 16
+
+# Start or resume a conversation with local history.
+diffusorrt chat "$MODEL" --session local-demo --max-tokens 16
+```
+
+`run` can prepare an uncached model itself; `pull` is optional. Use `--offline`
+to forbid network access after caching. Inspect each command with `--help` for
+supported runtime parameters.
+
+Conversation history is stored locally in **plain, unencrypted SQLite**.
+Context management keeps requests within the model's token budget. Summaries
+are opt-in and require additional model work. DiffusorRT is a framework, not a
+fixed chatbot: applications can provide their own `MemoryProvider`; there is no
+automatic long-term memory collection or retrieval by default.
+
+## Model manager and local service
+
+Install the optional TUI and HTTP service dependencies:
+
+```bash
+python -m pip install "diffusor-rt[compiler,mlx-local,serve,tui] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.0/diffusor_rt-0.2.0-py3-none-any.whl"
+```
+
+The TUI manages model packages and saved run profiles:
+
+```bash
+diffusorrt models
+
+# After saving a profile named daily in the TUI:
+diffusorrt run --run-profile daily --prompt "Explain dLLMs briefly."
+diffusorrt chat --run-profile daily --session research-notes
+```
+
+Start a foreground HTTP service on localhost:
+
+```bash
+diffusorrt serve "dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1" \
+  --host 127.0.0.1 --port 8000
+```
+
+From another terminal:
+
+```bash
+curl http://127.0.0.1:8000/health
+curl http://127.0.0.1:8000/v1/generate \
+  -H 'Content-Type: application/json' \
+  -d '{"prompt":"Explain dLLMs briefly.","max_tokens":16}'
+```
+
+Press Ctrl-C to close the service. Keep it on localhost: this preview is not an
+authenticated Internet-facing service and does not provide OpenAI-compatible
+streaming or continuous batching.
+
+## Supported models and platforms
+
+| Model | This public wheel |
 |---|---|
-| **Model coverage** | Qwen3-BD3LM; a bounded SDAR / Fast-dLLM-v2 selection spike; LLaDA-8B and Dream-Coder toward product support. |
-| **Runtime and K/V** | Complete the single cache-manager rollout and publish installed real-model cache evidence with byte accounting. |
-| **CUDA** | Versioned BF16, INT8, and FP8 precision profiles behind the private provider, then public runtime negotiation and product admission. |
-| **Then** | Packed active-window feasibility, a continuous scheduler and service, and a signed developer preview. |
+| `dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1` | Recommended first run. Apple/MLX fp32, ordinary prompt lengths, fixed-quota decoding, no K/V cache; deterministic sampling (`temperature=0`, `top_p=1`). |
+| `GSAI-ML/LLaDA-8B-Instruct` | Apple/MLX fp32 baseline. Much larger: the execution package is about 32 GB. |
+| Dream-7B and Qwen3-MDLM | Their admitted exact-D2F profiles also need a compatible private native runtime, which is not included in this release. |
 
-Speculative drafting with an autoregressive verifier is an optional execution
-mode on the roadmap, not the runtime's identity.
+Real-model acceptance for the two Apache-only profiles names **Apple M4 Max /
+64 GB / MLX fp32**. Other Apple hardware is not independently certified by this
+release. NumPy remains a portable reference, not a claim of practical 8B CPU
+performance. CUDA, reduced-precision BD3, BD3 caching, and mobile acceleration
+are not provided by this public wheel.
 
-## Documentation
+The library exposes generation, conversation, infill, and edit interfaces;
+availability depends on the selected model's decoding contract. In particular,
+BD3 does not support infill. Unsupported combinations fail explicitly.
 
-- [Documentation index](./docs/README.md) — user, integration, and conformance guides
-- [Product charter](./docs/product/README.md) — identity, platform boundaries, and positioning
-- [Product Updates](./docs/product/CHANGELOG.md) — recent changes and completed milestones
-- [Client Runtime v1](./docs/product/client-runtime-v1.md) — model resolution, trust, preparation, and reporting
-- [Callable Runtime v1](./docs/product/callable-runtime-v1.md) — C lifecycle, ownership, errors, and execution boundary
-- [Model Coverage v1](./docs/product/model-coverage-v1.md) — pinned model identity, parity, capability, and product admission
-- [KV Cache Manager v1](./docs/product/kv-cache-manager-v1.md) — exact cache ownership, identity, capacity, and transactions
-- [CUDA Runtime v1](./docs/product/cuda-runtime-v1.md) — planned NVIDIA backend contract and hardware gates
-- [Benchmarks](./docs/benchmarks.md) — benchmark shapes, prompts, and reporting fields
-- [Conformance](./docs/conformance.md) — adapter, package, and generation conformance
+## Release and verification
 
-## Contributing
+This first source batch contains only the public import/module entry points,
+the Engine API, and the quickstart example:
 
-Read [Contributing](./CONTRIBUTING.md) for development setup and change
-requirements, and [Security](./SECURITY.md) for how to report a vulnerability.
-Open an issue before a large change so the design can be agreed first.
+- [Python API entry point](./python/src/diffusor_rt/__init__.py)
+- [Module command entry point](./python/src/diffusor_rt/__main__.py)
+- [Engine API](./python/src/edllm/engine.py)
+- [Quickstart example](./examples/quickstart.py)
 
-## Citation
+These selected files are for reading and integration examples, not a complete
+editable source installation. Install the wheel to run the library. The wheel
+necessarily contains the public Python modules and resources it needs at
+runtime; a Python wheel is not an encrypted or closed-source binary. The
+remaining source tree, native implementations, tests, research, and internal
+documents are not part of this repository update.
 
-```bibtex
-@software{diffusorrt2026,
-  title  = {DiffusorRT: Diffusion language model inference for edge devices},
-  author = {Li, Jimmy Yilong},
-  year   = {2026},
-  url    = {https://github.com/jimmy-yilong-li/DiffusorRT}
-}
-```
+The [0.2.0 release](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.0)
+contains the wheel, standalone example, and `SHA256SUMS`. Downloaded files can be
+checked on macOS with `shasum -a 256 -c SHA256SUMS`, or on Linux with
+`sha256sum -c SHA256SUMS`, after downloading all listed assets into one directory.
+
+The wheel was checked in an isolated Python 3.11 environment on 2026-09-15:
+dependencies, imports, CPU fixture generation through API/CLI/example, durable
+chat, HTTP health/generation/shutdown, and the TUI profile dialog. These are
+installation checks, not a new large-model benchmark or certification of other
+devices. No general throughput or latency improvement is claimed.
 
 ## License
 
-DiffusorRT provides an **open-source SDK and executable reference runtime**
-under the [Apache License 2.0](./LICENSE). The public surface includes the
-Python API and CLI, Reference Compiler, NumPy runtime, schemas, public C
-headers, documentation, and conformance assets.
+The public Python SDK, Reference Compiler, NumPy reference runtime, and public
+MLX execution components are licensed under [Apache-2.0](./LICENSE). Installing
+this wheel does not require the full development repository.
 
-Optimized native runtimes and device-specific backends ship as separately
-licensed proprietary binaries; their source is not part of the Apache-2.0
-release. Model weights, tokenizers, and compiled model artifacts keep their
-upstream terms.
-
-See [Copyright, Licensing, and Distribution Policy](./COPYRIGHT_AND_LICENSING.md)
-for the complete source and binary boundary.
+Optimized native backends remain separately licensed; they are not made Apache
+source by this distribution. Model weights, tokenizers, and prepared model
+artifacts retain their upstream licenses. See
+[Copyright and Licensing](./COPYRIGHT_AND_LICENSING.md) and
+[Security](./SECURITY.md).

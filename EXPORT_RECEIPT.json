@@ -1,49 +1,39 @@
 {
-  "file_count": 8,
+  "file_count": 5,
   "files": [
     {
-      "bytes": 356,
-      "path": "CITATION.cff",
-      "sha256": "16a1229db2a268b44af692451cda7f5e6bd3e70224a1676d0a357c08f5087dad"
-    },
-    {
-      "bytes": 2516,
-      "path": "CONTRIBUTING.md",
-      "sha256": "fefe82d7c6e527874007840b0d0daed15eedda0f55e3b5167cd804f16990a967"
-    },
-    {
-      "bytes": 14047,
-      "path": "COPYRIGHT_AND_LICENSING.md",
-      "sha256": "01504057ec8fc242f9d8171906735d3ea899a2e9762aca799828b34a35b25532"
-    },
-    {
-      "bytes": 11357,
-      "path": "LICENSE",
-      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
-    },
-    {
-      "bytes": 13223,
+      "bytes": 9642,
+      "mode": "0664",
       "path": "README.md",
-      "sha256": "4b738f9f263f58bd68abc35611ac93aa89aa5c1585d00779876a3c18ee7a4f42"
+      "sha256": "4db967454fc6ce3470dd7ef3805cbcf55517d7815bc5fed4186867ce800126c7"
     },
     {
-      "bytes": 1572,
-      "path": "SECURITY.md",
-      "sha256": "ab9a0031ea74aa949dd161270409cd0e18520e62a3b322ce77f76a9bef76e396"
+      "bytes": 2608,
+      "mode": "0664",
+      "path": "examples/quickstart.py",
+      "sha256": "11d780369c39742d42ae249e58e7386466a2efd0e8def82b5b9e568b101d1292"
     },
     {
-      "bytes": 3459,
-      "path": "docs/product/assets/architecture.svg",
-      "sha256": "57a3a27742284e45d01c350c23d2d24aba95b65f115bfba81546b008098da1d3"
+      "bytes": 769,
+      "mode": "0664",
+      "path": "python/src/diffusor_rt/__init__.py",
+      "sha256": "725a7c08933128c8f9f92e827c2780be5b435eae193f2346864cb36c52dd7f34"
     },
     {
-      "bytes": 63972,
-      "path": "docs/product/assets/diffusorrt-logo.png",
-      "sha256": "12a1fdc51c2e56f73e2eb329938d8484dbd725822854e7659e3d20fe73fa1c41"
+      "bytes": 60,
+      "mode": "0664",
+      "path": "python/src/diffusor_rt/__main__.py",
+      "sha256": "f7161b19bdfef44242d3a0a86b5498566bac806a5b22044752164019f1236cf9"
+    },
+    {
+      "bytes": 36769,
+      "mode": "0664",
+      "path": "python/src/edllm/engine.py",
+      "sha256": "ac74b881d81e4c21a8ad6d61f38ab7a7ef5eaa4f98872449d74a52c4adf079d2"
     }
   ],
   "receipt_version": 1,
-  "source_commit": "bff978040d32c0de2d2074ffeaeae80675b4f116",
+  "source_commit": "1de6703ae6dd1d475c5ecf09f6299d66578f3c91",
   "surface": "public",
-  "tree_sha256": "e2cc811aa55197d74dbf0e22a7125055d0d8a4dc249d3d92f1033c8027666488"
+  "tree_sha256": "8aab37bbbaa440be4d75a077b80648c971eb0cd34cac220c2f9ece91c4dd9bca"
 }
