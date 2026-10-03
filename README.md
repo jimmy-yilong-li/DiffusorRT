@@ -7,6 +7,7 @@
 <p><strong>A Python runtime for diffusion language models on local hardware.</strong></p>
 
 <p>
+<a href="#news">News</a> ·
 <a href="#install">Install</a> ·
 <a href="#python-api">Python API</a> ·
 <a href="#command-line">Command line</a> ·
@@ -25,6 +26,22 @@ the same loader and runtime; the command line and optional TUI call that library
 an installable Apache-2.0 Python wheel and a small selection of API source files,
 not the full development repository. Optimized native Apple/CUDA backends and
 model weights are separate and are not included in this wheel.
+
+## News
+
+**2026-10-02 — Development update; not yet released.** Source improvements
+strengthen sharded-weight verification and preserve model context limits.
+The Python MLX exact-K/V path also removes an intermediate read copy, reuses
+forward-local masks, avoids per-fragment heap collection and completes capture
+copies once per world. Native ownership and exact FP32 cache storage are
+unchanged. The native K/V improvements require a separate compatible private
+Apple wheel; the public BD3 example remains cache-free. The `v0.2.0` download
+is unchanged. No general generation-speed or new model/platform claim follows.
+
+**2026-09-15 — Developer Preview available.**
+[v0.2.0](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.0)
+provides an installable Apache Python wheel, quickstart and checksums. Follow
+the installation instructions below; no source build is required.
 
 ## Install
 
