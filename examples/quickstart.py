@@ -61,7 +61,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         raise SystemExit(
             "DiffusorRT is not installed. Install the wheel first: "
             "python -m pip install "
-            "'dist/diffusor_rt-0.2.0-py3-none-any.whl[compiler,mlx-local]'"
+            "'diffusor-rt[compiler,mlx-local] @ "
+            "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/"
+            "v0.2.1/diffusor_rt-0.2.1-py3-none-any.whl'"
         ) from error
 
     with Engine.from_pretrained(

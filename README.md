@@ -22,27 +22,24 @@ DiffusorRT provides model loading, generation, conversation history, context
 management, and a local HTTP service through one importable library. Models use
 the same loader and runtime; the command line and optional TUI call that library.
 
-**0.2.0 is a Developer Preview, released in stages.** This first batch provides
+**0.2.1 is a Developer Preview, released in stages.** This batch provides
 an installable Apache-2.0 Python wheel and a small selection of API source files,
 not the full development repository. Optimized native Apple/CUDA backends and
 model weights are separate and are not included in this wheel.
 
 ## News
 
-**2026-10-03 — SDK 0.2.1 maintenance work; unreleased.** Development measurement
-helpers now load the selected backend/profile without changing model
-configuration and close each comparison mode before opening the next. Cleanup
-preserves the original execution error. Model-validation tools bind environment
-and wheel identity to the installed SDK version while retaining the old preview
-contract. Lightweight installed-fixture checks passed; this is not a new model
-or performance acceptance. The downloadable SDK remains **0.2.0**: no `0.2.1`
-wheel, tag or native backend is released by this News update.
-
-**Known issues in the downloadable 0.2.0 preview:** BD3 may stop before earlier
-positions are resolved, producing incomplete or empty replies. Durable BD3
-`chat` also lacks the compiled context limit. Source fixes are prepared for
-`0.2.1`, which is not yet released. Successful installation or a ready health
-check does not guarantee a complete reply in `0.2.0`.
+**2026-10-03 — SDK 0.2.1 correctness update.**
+[Download the preview](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.1).
+BD3 now completes the current diffusion block before stopping at EOS, avoiding
+the unresolved positions that caused empty or incomplete replies in `0.2.0`.
+Newly prepared packages also retain the model context limit needed by durable
+chat. Explicit weight-hash verification includes sharded payloads. The release
+includes the Apache SDK wheel, standalone example and checksums, not a private
+native backend or the full source tree. Lightweight installed checks passed;
+this maintenance release does not renew all real-model certifications or claim
+a latency improvement. Finishing a BD3 block can require more forward passes
+than the incorrect early stop.
 
 **2026-10-02 — Development update; not yet released.** Source improvements
 strengthen sharded-weight verification and preserve model context limits.
@@ -50,8 +47,9 @@ The Python MLX exact-K/V path also removes an intermediate read copy, reuses
 forward-local masks, avoids per-fragment heap collection and completes capture
 copies once per world. Native ownership and exact FP32 cache storage are
 unchanged. The native K/V improvements require a separate compatible private
-Apple wheel; the public BD3 example remains cache-free. The `v0.2.0` download
-is unchanged. No general generation-speed or new model/platform claim follows.
+Apple wheel; the public BD3 example remains cache-free. The separate native
+binary is not delivered by the `0.2.1` SDK update. No general generation-speed
+or new model/platform claim follows.
 
 **2026-09-15 — Developer Preview available.**
 [v0.2.0](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.0)
@@ -69,31 +67,38 @@ needed to install the Python library:
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
-python -m pip install "diffusor-rt[compiler,mlx-local] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.0/diffusor_rt-0.2.0-py3-none-any.whl"
+python -m pip install "diffusor-rt[compiler,mlx-local] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.1/diffusor_rt-0.2.1-py3-none-any.whl"
 ```
 
 An existing Python 3.11 conda environment works too; skip the first two commands
 when it is already active. The `compiler` extra installs the dependencies for
 downloading and preparing models, and `mlx-local` installs the Apple backend.
 
-Alternatively, download the wheel from [Release assets](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.0)
+Alternatively, download the wheel from [Release assets](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.1)
 and install it locally:
 
 ```bash
-python -m pip install "./diffusor_rt-0.2.0-py3-none-any.whl[compiler,mlx-local]"
+python -m pip install "./diffusor_rt-0.2.1-py3-none-any.whl[compiler,mlx-local]"
 ```
 
 For only the base API, package tools, and NumPy reference runtime, omit the
 extras. This does not install an accelerated backend or model-download tools:
 
 ```bash
-python -m pip install "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.0/diffusor_rt-0.2.0-py3-none-any.whl"
+python -m pip install "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.1/diffusor_rt-0.2.1-py3-none-any.whl"
 ```
 
 The package name is `diffusor-rt`; the Python import is `diffusor_rt`.
 This preview is distributed through GitHub Releases, not PyPI. The
 `py3-none-any` tag describes the Python wheel, not GPU or model support on every
 platform.
+
+To upgrade an existing installation, use the same install command with
+`--upgrade`. Model-ID loading rebuilds stale compiled packages automatically;
+you do not need to erase model downloads or conversation history. Explicit
+package paths stay pinned to their contents, so prepare a new package with
+`pull` to obtain corrected metadata. The older `0.2.0` assets remain available,
+but that version has the BD3 early-stop and chat-metadata defects fixed here.
 
 Verify the installation without loading a model:
 
@@ -112,8 +117,8 @@ with Engine.from_pretrained(
     backend="mlx_local",
 ) as engine:
     result = engine.generate(
-        "Explain diffusion language models briefly.",
-        max_tokens=16,
+        "Hello!",
+        max_tokens=32,
     )
     print(result.text)
 ```
@@ -149,7 +154,7 @@ The same API is available as a ready-to-run script:
 
 ```bash
 # From this repository, after installing the wheel:
-python examples/quickstart.py --prompt "Explain dLLMs briefly." --max-tokens 16
+python examples/quickstart.py --prompt "Hello!" --max-tokens 32
 ```
 
 Download [quickstart.py](./examples/quickstart.py) separately if you do not want
@@ -166,8 +171,8 @@ diffusorrt doctor "$MODEL"
 # Download and prepare once; subsequent runs reuse the package.
 diffusorrt pull "$MODEL"
 
-diffusorrt run "$MODEL" --prompt "Explain dLLMs briefly." --max-tokens 16
-
+diffusorrt run "$MODEL" --prompt "Hello!" --max-tokens 32
+diffusorrt chat "$MODEL" --session local-demo
 ```
 
 `run` can prepare an uncached model itself; `pull` is optional. Use `--offline`
@@ -176,8 +181,9 @@ supported runtime parameters.
 
 Before `pull`, `doctor` exits with status 1 when the model is not prepared;
 follow its preparation instruction. This does not mean installation failed.
-Durable BD3 chat is fixed in the unreleased `0.2.1` source. Do not use
-`diffusorrt chat "$MODEL" --session local-demo` as a working `0.2.0` example.
+`chat` reuses the prepared model and resumes the named conversation on later
+invocations. A generation token limit can still truncate a long answer; it is
+not a quality guarantee.
 
 Conversation history is stored locally in **plain, unencrypted SQLite**.
 Context management keeps requests within the model's token budget. Summaries
@@ -190,7 +196,7 @@ automatic long-term memory collection or retrieval by default.
 Install the optional TUI and HTTP service dependencies:
 
 ```bash
-python -m pip install "diffusor-rt[compiler,mlx-local,serve,tui] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.0/diffusor_rt-0.2.0-py3-none-any.whl"
+python -m pip install "diffusor-rt[compiler,mlx-local,serve,tui] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.1/diffusor_rt-0.2.1-py3-none-any.whl"
 ```
 
 The TUI manages model packages and saved run profiles:
@@ -231,9 +237,11 @@ streaming or continuous batching.
 | `GSAI-ML/LLaDA-8B-Instruct` | Apple/MLX fp32 baseline. Much larger: the execution package is about 32 GB. |
 | Dream-7B and Qwen3-MDLM | Their admitted exact-D2F profiles also need a compatible private native runtime, which is not included in this release. |
 
-Real-model acceptance for the two Apache-only profiles names **Apple M4 Max /
-64 GB / MLX fp32**. Other Apple hardware is not independently certified by this
-release. NumPy remains a portable reference, not a claim of practical 8B CPU
+The retained real-model baseline for the two Apache-only profiles names
+**Apple M4 Max / 64 GB / MLX fp32**. This SDK patch does not replace that evidence
+with a new fixed-source acceptance for every model. Other Apple hardware is not
+independently certified by this release. NumPy remains a portable reference,
+not a claim of practical 8B CPU
 performance. CUDA, reduced-precision BD3, BD3 caching, and mobile acceleration
 are not provided by this public wheel.
 
@@ -258,14 +266,15 @@ runtime; a Python wheel is not an encrypted or closed-source binary. The
 remaining source tree, native implementations, tests, research, and internal
 documents are not part of this repository update.
 
-The [0.2.0 release](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.0)
+The [0.2.1 release](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.1)
 contains the wheel, standalone example, and `SHA256SUMS`. Downloaded files can be
 checked on macOS with `shasum -a 256 -c SHA256SUMS`, or on Linux with
 `sha256sum -c SHA256SUMS`, after downloading all listed assets into one directory.
 
-The wheel was checked in an isolated Python 3.11 environment on 2026-09-15:
-dependencies, imports, CPU fixture generation through API/CLI/example, durable
-chat, HTTP health/generation/shutdown, and the TUI profile dialog. These are
+The `0.2.1` wheel was checked in an isolated Python 3.11 environment on
+2026-10-03: dependency consistency, installed imports, tiny NumPy API/CLI
+generation, durable-chat restart, ready doctor and two independent portable
+deployments. Source and payload hashes were checked before upload. These are
 installation checks, not a new large-model benchmark or certification of other
 devices. No general throughput or latency improvement is claimed.
 

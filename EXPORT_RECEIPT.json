@@ -1,17 +1,23 @@
 {
-  "file_count": 5,
+  "file_count": 6,
   "files": [
     {
-      "bytes": 9642,
+      "bytes": 356,
       "mode": "0664",
-      "path": "README.md",
-      "sha256": "4db967454fc6ce3470dd7ef3805cbcf55517d7815bc5fed4186867ce800126c7"
+      "path": "CITATION.cff",
+      "sha256": "3e11556f0139def97cf68631c24fe261080559cb95dbf42127e8abf727f8f4aa"
     },
     {
-      "bytes": 2608,
+      "bytes": 12361,
+      "mode": "0664",
+      "path": "README.md",
+      "sha256": "bdda9b87cbdacbf5cac0d96ebc0039d11e48c2ae8fadb842278647084a99acc0"
+    },
+    {
+      "bytes": 2718,
       "mode": "0664",
       "path": "examples/quickstart.py",
-      "sha256": "11d780369c39742d42ae249e58e7386466a2efd0e8def82b5b9e568b101d1292"
+      "sha256": "c6afbb954b2ce513da9ee54fedd5912c4d15559d8f837c4bbfe4ab9aa9ea16aa"
     },
     {
       "bytes": 769,
@@ -33,7 +39,7 @@
     }
   ],
   "receipt_version": 1,
-  "source_commit": "1de6703ae6dd1d475c5ecf09f6299d66578f3c91",
+  "source_commit": "bc6bc252e53c0913e3c705a39c000ea5c6cee747",
   "surface": "public",
-  "tree_sha256": "8aab37bbbaa440be4d75a077b80648c971eb0cd34cac220c2f9ece91c4dd9bca"
+  "tree_sha256": "5fff12434825aba20048166bc91e9ee0706f940d3b06a763b557cbe7ec18688b"
 }
