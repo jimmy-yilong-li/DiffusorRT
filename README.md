@@ -38,6 +38,12 @@ contract. Lightweight installed-fixture checks passed; this is not a new model
 or performance acceptance. The downloadable SDK remains **0.2.0**: no `0.2.1`
 wheel, tag or native backend is released by this News update.
 
+**Known issues in the downloadable 0.2.0 preview:** BD3 may stop before earlier
+positions are resolved, producing incomplete or empty replies. Durable BD3
+`chat` also lacks the compiled context limit. Source fixes are prepared for
+`0.2.1`, which is not yet released. Successful installation or a ready health
+check does not guarantee a complete reply in `0.2.0`.
+
 **2026-10-02 — Development update; not yet released.** Source improvements
 strengthen sharded-weight verification and preserve model context limits.
 The Python MLX exact-K/V path also removes an intermediate read copy, reuses
@@ -114,7 +120,9 @@ with Engine.from_pretrained(
 
 The first run downloads about **1.5 GB** of weights and builds a roughly
 **3 GB** execution package. Allow additional room for dependencies and temporary
-build files. Later runs reuse the package. Model preparation and generation are
+build files. `doctor` reserves about **8.9 GiB** for preparation, including
+temporary-build headroom; this is not the final cache size (about **4.2 GiB**).
+Later runs reuse the package. Model preparation and generation are
 real compute workloads; importing the library and displaying help are not.
 
 Supported model IDs resolve to their pinned revisions automatically. No TOML or
@@ -160,13 +168,16 @@ diffusorrt pull "$MODEL"
 
 diffusorrt run "$MODEL" --prompt "Explain dLLMs briefly." --max-tokens 16
 
-# Start or resume a conversation with local history.
-diffusorrt chat "$MODEL" --session local-demo --max-tokens 16
 ```
 
 `run` can prepare an uncached model itself; `pull` is optional. Use `--offline`
 to forbid network access after caching. Inspect each command with `--help` for
 supported runtime parameters.
+
+Before `pull`, `doctor` exits with status 1 when the model is not prepared;
+follow its preparation instruction. This does not mean installation failed.
+Durable BD3 chat is fixed in the unreleased `0.2.1` source. Do not use
+`diffusorrt chat "$MODEL" --session local-demo` as a working `0.2.0` example.
 
 Conversation history is stored locally in **plain, unencrypted SQLite**.
 Context management keeps requests within the model's token budget. Summaries
