@@ -29,6 +29,15 @@ model weights are separate and are not included in this wheel.
 
 ## News
 
+**2026-10-03 — SDK 0.2.1 maintenance work; unreleased.** Development measurement
+helpers now load the selected backend/profile without changing model
+configuration and close each comparison mode before opening the next. Cleanup
+preserves the original execution error. Model-validation tools bind environment
+and wheel identity to the installed SDK version while retaining the old preview
+contract. Lightweight installed-fixture checks passed; this is not a new model
+or performance acceptance. The downloadable SDK remains **0.2.0**: no `0.2.1`
+wheel, tag or native backend is released by this News update.
+
 **2026-10-02 — Development update; not yet released.** Source improvements
 strengthen sharded-weight verification and preserve model context limits.
 The Python MLX exact-K/V path also removes an intermediate read copy, reuses
