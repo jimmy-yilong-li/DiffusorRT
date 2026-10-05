@@ -22,12 +22,26 @@ DiffusorRT provides model loading, generation, conversation history, context
 management, and a local HTTP service through one importable library. Models use
 the same loader and runtime; the command line and optional TUI call that library.
 
+This is the user-facing product repository: installation, downloadable releases,
+examples and the selected open-source scope. Collaborator development snapshots
+and beta features are not automatically part of a public release or support
+claim. Use the delivered version and its documented capabilities.
+
 **0.2.1 is a Developer Preview, released in stages.** This batch provides
 an installable Apache-2.0 Python wheel and a small selection of API source files,
 not the full development repository. Optimized native Apple/CUDA backends and
 model weights are separate and are not included in this wheel.
 
 ## News
+
+**2026-10-05 — Maintenance development update; not released.** Source fixes
+correct BD3 round allocation for longer requests, avoid forwarding future
+blocks, and improve checked MLX buffer release. Failed cleanup remains retryable
+and blocks new work; unsupported infill/edit now has a capability explanation.
+Evaluation tools correct answer parsing and duplicate-question sampling and
+retain actual step budgets and stage timings. These changes do not establish
+an accuracy or latency improvement. They are **not in the 0.2.1 wheel below**;
+the next maintenance wheel will have a new version and separate validation.
 
 **2026-10-03 — SDK 0.2.1 correctness update.**
 [Download the preview](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.1).
@@ -99,6 +113,19 @@ you do not need to erase model downloads or conversation history. Explicit
 package paths stay pinned to their contents, so prepare a new package with
 `pull` to obtain corrected metadata. The older `0.2.0` assets remain available,
 but that version has the BD3 early-stop and chat-metadata defects fixed here.
+
+If an older attempt left a chat session bound to the rebuilt package, published
+`0.2.1` may report an execution-identity mismatch. Keep its history by choosing
+a new `--session` name. Use `diffusorrt chat --list-sessions` to inspect saved
+sessions; delete an old session only when you intend to discard it. Automatic
+recovery of empty sessions is an unreleased source correction, not part of the
+wheel linked here.
+
+The published preview still has the older long-output step allocation and MLX
+allocator-cache release behavior. A larger output cap may change answer quality;
+do not assume `close()` empties the allocator cache in that version. The small
+default checkpoint can give incorrect facts or arithmetic. Successful generation
+is not a correctness guarantee for its answers.
 
 Verify the installation without loading a model:
 
