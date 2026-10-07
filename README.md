@@ -27,12 +27,31 @@ examples and the selected open-source scope. Collaborator development snapshots
 and beta features are not automatically part of a public release or support
 claim. Use the delivered version and its documented capabilities.
 
-**0.2.1 is a Developer Preview, released in stages.** This batch provides
+**0.2.2 is a Developer Preview, released in stages.** This batch provides
 an installable Apache-2.0 Python wheel and a small selection of API source files,
 not the full development repository. Optimized native Apple/CUDA backends and
 model weights are separate and are not included in this wheel.
 
 ## News
+
+**2026-10-07 — SDK 0.2.2 maintenance update.**
+[Download the preview](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.2).
+BD3 now uses the corrected per-block round budget and forwards only through
+the current block. Successful close waits for device work and releases MLX
+allocator-cache buffers; failed cleanup remains visible and retryable. BD3
+`infill()` and `edit()` now clearly report that its decoding policy does not
+support those operations, rather than exposing an internal strategy name.
+Empty positive-budget chat replies are not committed, and HTTP reports an
+`empty_generation` error. Empty failed sessions can recover after a package
+rebuild; intact stale packages are reported as `needs_rebuild`.
+
+Qwen3-MDLM now defaults to its bidirectional baseline instead of a block-causal
+D2F overlay. It no longer needs the private native K/V wheel on that path,
+but this changed default has not received renewed model certification.
+Optional evaluation tools also correct numeric-answer boundaries and sample
+unique question IDs. These repairs can change outputs relative to `0.2.1`;
+they do not establish better dataset accuracy or a general speedup. The
+release remains SDK-only: no private native binary or wider source export.
 
 **2026-10-05 — Maintenance development update; not released.** Source fixes
 correct BD3 round allocation for longer requests, avoid forwarding future
@@ -81,25 +100,25 @@ needed to install the Python library:
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
-python -m pip install "diffusor-rt[compiler,mlx-local] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.1/diffusor_rt-0.2.1-py3-none-any.whl"
+python -m pip install "diffusor-rt[compiler,mlx-local] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.2/diffusor_rt-0.2.2-py3-none-any.whl"
 ```
 
 An existing Python 3.11 conda environment works too; skip the first two commands
 when it is already active. The `compiler` extra installs the dependencies for
 downloading and preparing models, and `mlx-local` installs the Apple backend.
 
-Alternatively, download the wheel from [Release assets](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.1)
+Alternatively, download the wheel from [Release assets](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.2)
 and install it locally:
 
 ```bash
-python -m pip install "./diffusor_rt-0.2.1-py3-none-any.whl[compiler,mlx-local]"
+python -m pip install "./diffusor_rt-0.2.2-py3-none-any.whl[compiler,mlx-local]"
 ```
 
 For only the base API, package tools, and NumPy reference runtime, omit the
 extras. This does not install an accelerated backend or model-download tools:
 
 ```bash
-python -m pip install "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.1/diffusor_rt-0.2.1-py3-none-any.whl"
+python -m pip install "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.2/diffusor_rt-0.2.2-py3-none-any.whl"
 ```
 
 The package name is `diffusor-rt`; the Python import is `diffusor_rt`.
@@ -114,18 +133,18 @@ package paths stay pinned to their contents, so prepare a new package with
 `pull` to obtain corrected metadata. The older `0.2.0` assets remain available,
 but that version has the BD3 early-stop and chat-metadata defects fixed here.
 
-If an older attempt left a chat session bound to the rebuilt package, published
-`0.2.1` may report an execution-identity mismatch. Keep its history by choosing
-a new `--session` name. Use `diffusorrt chat --list-sessions` to inspect saved
-sessions; delete an old session only when you intend to discard it. Automatic
-recovery of empty sessions is an unreleased source correction, not part of the
-wheel linked here.
+An empty session left by a failed first chat automatically rebinds after a
+package rebuild when its system prompt is unchanged. Sessions containing
+messages preserve their history and refuse a changed execution identity.
+Choose a new `--session` name to keep the old history; inspect it with
+`diffusorrt chat --list-sessions`, and delete it only when you intend to discard
+it. In particular, MDLM's changed default can require a new session.
 
-The published preview still has the older long-output step allocation and MLX
-allocator-cache release behavior. A larger output cap may change answer quality;
-do not assume `close()` empties the allocator cache in that version. The small
-default checkpoint can give incorrect facts or arithmetic. Successful generation
-is not a correctness guarantee for its answers.
+The older `0.2.1` wheel retains the long-output scheduling and allocator-cache
+release defects corrected in `0.2.2`; its assets are unchanged. Output caps can
+still truncate an answer, and partial final blocks can legitimately change
+decoding. The small default checkpoint can give incorrect facts or arithmetic.
+Successful generation is not a correctness guarantee for its answers.
 
 Verify the installation without loading a model:
 
@@ -223,7 +242,7 @@ automatic long-term memory collection or retrieval by default.
 Install the optional TUI and HTTP service dependencies:
 
 ```bash
-python -m pip install "diffusor-rt[compiler,mlx-local,serve,tui] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.1/diffusor_rt-0.2.1-py3-none-any.whl"
+python -m pip install "diffusor-rt[compiler,mlx-local,serve,tui] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.2/diffusor_rt-0.2.2-py3-none-any.whl"
 ```
 
 The TUI manages model packages and saved run profiles:
@@ -262,7 +281,8 @@ streaming or continuous batching.
 |---|---|
 | `dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1` | Recommended first run. Apple/MLX fp32, ordinary prompt lengths, fixed-quota decoding, no K/V cache; deterministic sampling (`temperature=0`, `top_p=1`). |
 | `GSAI-ML/LLaDA-8B-Instruct` | Apple/MLX fp32 baseline. Much larger: the execution package is about 32 GB. |
-| Dream-7B and Qwen3-MDLM | Their admitted exact-D2F profiles also need a compatible private native runtime, which is not included in this release. |
+| `dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1` | Bidirectional Apple/MLX fp32 baseline, without the private native K/V wheel. Bounded user-path checks exist; renewed certification of this changed default is pending. |
+| Dream-7B | Its exact-D2F profile needs a compatible private native runtime, which is not included in this release. |
 
 The retained real-model baseline for the two Apache-only profiles names
 **Apple M4 Max / 64 GB / MLX fp32**. This SDK patch does not replace that evidence
@@ -274,7 +294,9 @@ are not provided by this public wheel.
 
 The library exposes generation, conversation, infill, and edit interfaces;
 availability depends on the selected model's decoding contract. In particular,
-BD3 does not support infill. Unsupported combinations fail explicitly.
+BD3 does not support infill or edit. Unsupported combinations fail explicitly.
+Positive-budget conversation requests that produce no visible text raise
+`EmptyGenerationError` without committing a turn or silently retrying.
 
 ## Release and verification
 
@@ -293,17 +315,18 @@ runtime; a Python wheel is not an encrypted or closed-source binary. The
 remaining source tree, native implementations, tests, research, and internal
 documents are not part of this repository update.
 
-The [0.2.1 release](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.1)
+The [0.2.2 release](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.2)
 contains the wheel, standalone example, and `SHA256SUMS`. Downloaded files can be
 checked on macOS with `shasum -a 256 -c SHA256SUMS`, or on Linux with
 `sha256sum -c SHA256SUMS`, after downloading all listed assets into one directory.
 
-The `0.2.1` wheel was checked in an isolated Python 3.11 environment on
-2026-10-03: dependency consistency, installed imports, tiny NumPy API/CLI
-generation, durable-chat restart, ready doctor and two independent portable
-deployments. Source and payload hashes were checked before upload. These are
-installation checks, not a new large-model benchmark or certification of other
-devices. No general throughput or latency improvement is claimed.
+The release is checked from the built wheel in an isolated Python 3.11
+environment: package identity, imports, CLI, bounded real BD3 generation,
+public infill/edit rejection, conversation restart, HTTP and checked close.
+Source and payload hashes are checked before upload. This is a bounded SDK
+user-path check, not a renewed Candidate/W6 certification for every model,
+a full-suite result, a large-model benchmark or another device's acceptance.
+No general throughput or latency improvement is claimed.
 
 ## License
 

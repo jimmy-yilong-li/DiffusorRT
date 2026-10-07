@@ -63,7 +63,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "python -m pip install "
             "'diffusor-rt[compiler,mlx-local] @ "
             "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/"
-            "v0.2.1/diffusor_rt-0.2.1-py3-none-any.whl'"
+            "v0.2.2/diffusor_rt-0.2.2-py3-none-any.whl'"
         ) from error
 
     with Engine.from_pretrained(
