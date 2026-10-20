@@ -27,12 +27,33 @@ examples and the selected open-source scope. Collaborator development snapshots
 and beta features are not automatically part of a public release or support
 claim. Use the delivered version and its documented capabilities.
 
-**0.2.2 is a Developer Preview, released in stages.** This batch provides
+**0.2.3 is a Developer Preview, released in stages.** This batch provides
 an installable Apache-2.0 Python wheel and a small selection of API source files,
 not the full development repository. Optimized native Apple/CUDA backends and
 model weights are separate and are not included in this wheel.
 
 ## News
+
+**2026-10-20 — SDK 0.2.3 user-path and decoder repairs.**
+[Download the preview](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.3).
+Local catalogs now use the same deployment policy in `run`, `doctor`, `deploy`
+and `serve`; saved Local profiles reopen their own catalog. Missing TUI
+dependencies produce an installation hint instead of a traceback.
+
+Qwen3-MDLM now uses shared bidirectional fixed-quota decoding instead of a
+borrowed threshold schedule. Installed arithmetic, translation and story
+examples improved; the correct schedule can require more forwards and take
+longer. This changes outputs and is **not a general speedup or accuracy claim**.
+The small checkpoints still make factual, translation and recall errors;
+MDLM's very short outputs and infill/edit quality remain limited.
+
+Positive-budget `Engine.generate()` now raises `EmptyGenerationError` when
+there is no visible text; `.result` retains the generated result and requested
+diagnostics. CLI and HTTP report the same failure without publishing an empty
+conversation turn. HTTP response waiting is configurable, but does not cancel
+already-running GPU work. Memory reporting now measures MLX requests selected
+through `backend="auto"`. This SDK-only release adds no native binary or source
+category and does not renew every model's certification.
 
 **2026-10-07 — SDK 0.2.2 maintenance update.**
 [Download the preview](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.2).
@@ -100,25 +121,25 @@ needed to install the Python library:
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
-python -m pip install "diffusor-rt[compiler,mlx-local] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.2/diffusor_rt-0.2.2-py3-none-any.whl"
+python -m pip install "diffusor-rt[compiler,mlx-local] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.3/diffusor_rt-0.2.3-py3-none-any.whl"
 ```
 
 An existing Python 3.11 conda environment works too; skip the first two commands
 when it is already active. The `compiler` extra installs the dependencies for
 downloading and preparing models, and `mlx-local` installs the Apple backend.
 
-Alternatively, download the wheel from [Release assets](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.2)
+Alternatively, download the wheel from [Release assets](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.3)
 and install it locally:
 
 ```bash
-python -m pip install "./diffusor_rt-0.2.2-py3-none-any.whl[compiler,mlx-local]"
+python -m pip install "./diffusor_rt-0.2.3-py3-none-any.whl[compiler,mlx-local]"
 ```
 
 For only the base API, package tools, and NumPy reference runtime, omit the
 extras. This does not install an accelerated backend or model-download tools:
 
 ```bash
-python -m pip install "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.2/diffusor_rt-0.2.2-py3-none-any.whl"
+python -m pip install "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.3/diffusor_rt-0.2.3-py3-none-any.whl"
 ```
 
 The package name is `diffusor-rt`; the Python import is `diffusor_rt`.
@@ -139,6 +160,11 @@ messages preserve their history and refuse a changed execution identity.
 Choose a new `--session` name to keep the old history; inspect it with
 `diffusorrt chat --list-sessions`, and delete it only when you intend to discard
 it. In particular, MDLM's changed default can require a new session.
+
+Upgrading from `0.2.2` also changes MDLM's decode schedule. Applications that
+previously accepted an empty `generate()` result should now catch
+`diffusor_rt.EmptyGenerationError`; raw `max_tokens=0` generation remains valid.
+The runtime does not silently retry or invent a response.
 
 The older `0.2.1` wheel retains the long-output scheduling and allocator-cache
 release defects corrected in `0.2.2`; its assets are unchanged. Output caps can
@@ -242,7 +268,7 @@ automatic long-term memory collection or retrieval by default.
 Install the optional TUI and HTTP service dependencies:
 
 ```bash
-python -m pip install "diffusor-rt[compiler,mlx-local,serve,tui] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.2/diffusor_rt-0.2.2-py3-none-any.whl"
+python -m pip install "diffusor-rt[compiler,mlx-local,serve,tui] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.3/diffusor_rt-0.2.3-py3-none-any.whl"
 ```
 
 The TUI manages model packages and saved run profiles:
@@ -281,7 +307,7 @@ streaming or continuous batching.
 |---|---|
 | `dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1` | Recommended first run. Apple/MLX fp32, ordinary prompt lengths, fixed-quota decoding, no K/V cache; deterministic sampling (`temperature=0`, `top_p=1`). |
 | `GSAI-ML/LLaDA-8B-Instruct` | Apple/MLX fp32 baseline. Much larger: the execution package is about 32 GB. |
-| `dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1` | Bidirectional Apple/MLX fp32 baseline, without the private native K/V wheel. Bounded user-path checks exist; renewed certification of this changed default is pending. |
+| `dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1` | Bidirectional Apple/MLX fp32, shared fixed quotas with 64-token blocks, no K/V cache. Selected user examples improve; short outputs and infill/edit quality remain limited. Renewed certification of the changed default is pending. |
 | Dream-7B | Its exact-D2F profile needs a compatible private native runtime, which is not included in this release. |
 
 The retained real-model baseline for the two Apache-only profiles names
@@ -295,8 +321,8 @@ are not provided by this public wheel.
 The library exposes generation, conversation, infill, and edit interfaces;
 availability depends on the selected model's decoding contract. In particular,
 BD3 does not support infill or edit. Unsupported combinations fail explicitly.
-Positive-budget conversation requests that produce no visible text raise
-`EmptyGenerationError` without committing a turn or silently retrying.
+Positive-budget generation or conversation requests that produce no visible
+text raise `EmptyGenerationError` without committing a turn or silently retrying.
 
 ## Release and verification
 
@@ -315,18 +341,20 @@ runtime; a Python wheel is not an encrypted or closed-source binary. The
 remaining source tree, native implementations, tests, research, and internal
 documents are not part of this repository update.
 
-The [0.2.2 release](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.2)
+The [0.2.3 release](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.3)
 contains the wheel, standalone example, and `SHA256SUMS`. Downloaded files can be
 checked on macOS with `shasum -a 256 -c SHA256SUMS`, or on Linux with
 `sha256sum -c SHA256SUMS`, after downloading all listed assets into one directory.
 
-The release is checked from the built wheel in an isolated Python 3.11
-environment: package identity, imports, CLI, bounded real BD3 generation,
-public infill/edit rejection, conversation restart, HTTP and checked close.
-Source and payload hashes are checked before upload. This is a bounded SDK
-user-path check, not a renewed Candidate/W6 certification for every model,
-a full-suite result, a large-model benchmark or another device's acceptance.
-No general throughput or latency improvement is claimed.
+Installed 0.2.3 candidates were exercised in isolated Python 3.11 environments:
+real BD3/MDLM prompts, CLI/API, Local deployment, saved profiles, TUI, HTTP,
+conversation restart and checked close. The decoder repair was checked against
+the upstream sampler on selected failures. The final rebuild changes only
+three evidence/diagnostic modules from the model-tested wheel; its execution
+payload is identical. Final artifact installation and downloaded checksums are
+checked separately. This is bounded SDK verification, not a renewed model
+certification, full-suite result, large-model benchmark or another device's
+acceptance. No general throughput or latency improvement is claimed.
 
 ## License
 

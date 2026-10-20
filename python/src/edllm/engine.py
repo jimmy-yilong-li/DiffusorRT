@@ -51,7 +51,7 @@ from .model import (
     load_runtime_for_deployment,
 )
 from .model_catalog import ModelCatalog
-from .result import GenerateResult, InfillResult
+from .result import GenerateResult, InfillResult, require_nonempty_generation
 
 
 class Engine:
@@ -398,6 +398,9 @@ class Engine:
         -------
         GenerateResult
             With ``.text``, ``.finish_reason``, and optional ``.debug``.
+            A positive token budget with no visible reply raises
+            ``EmptyGenerationError``; its ``.result`` retains the raw result
+            and requested debug metrics. A zero-token request may return empty.
         """
         with self._guarded():
             self._reject_seed(seed)
@@ -415,6 +418,8 @@ class Engine:
                         "cuda_minimum_device": self._deployment_target.minimum_device,
                     }
                 )
+            if max_tokens > 0:
+                require_nonempty_generation(result.text, result=result)
             return result
 
     def chat(
