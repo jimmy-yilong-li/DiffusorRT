@@ -19,7 +19,7 @@ For chat:
 For infill / edit:
 
     filled = engine.infill("prefix ", " suffix", max_fill_tokens=32)
-    edited = engine.edit("Fix the bug in this code", "def foo():\n    pass")
+    edited = engine.edit("The capital is London.", 15, 21, max_fill_tokens=8)
 """
 
 from __future__ import annotations
@@ -27,13 +27,15 @@ from __future__ import annotations
 # These are real imports because they appear in the public runtime signatures
 # and must resolve for introspection and generated documentation.
 from .chat import ChatSession
-from .conversation import Conversation, MemoryProvider
+from .conversation import Conversation, ConversationReply, MemoryProvider
 from .trust_identity import UNSPECIFIED
 
 import contextlib
+from collections.abc import Callable
 import hashlib
 import json
 import threading
+import time
 from pathlib import Path
 from typing import Any
 
@@ -325,6 +327,7 @@ class Engine:
         device_memory_budget_bytes: int = 0,
         catalog: ModelCatalog | None = None,
         data_root: str | Path | None = None,
+        on_stage: Callable[[str], None] | None = None,
     ) -> "Engine":
         """Compile a supported model from its Hugging Face id, then load it.
 
@@ -337,6 +340,8 @@ class Engine:
         checks the model's recorded disk budget before acquisition; the cache
         root is relocatable via ``cache_root`` or ``DIFFUSORRT_CACHE_ROOT``. A
         second call with the same (id, revision) reuses the cached package.
+        ``on_stage`` optionally receives preparation stage names, without
+        loading a second model or streaming generated text.
 
         ``offline=True`` requires the fixed revision in local cache and never
         reaches the network. ``trust_remote_code`` is required only when the
@@ -365,6 +370,7 @@ class Engine:
             precision=precision,
             device_ordinal=device_ordinal,
             device_memory_budget_bytes=device_memory_budget_bytes,
+            on_stage=on_stage,
         )
 
     # ------------------------------------------------------------------ #
@@ -402,6 +408,7 @@ class Engine:
             ``EmptyGenerationError``; its ``.result`` retains the raw result
             and requested debug metrics. A zero-token request may return empty.
         """
+        started = time.perf_counter()
         with self._guarded():
             self._reject_seed(seed)
             result = self._handle.generate(
@@ -418,6 +425,7 @@ class Engine:
                         "cuda_minimum_device": self._deployment_target.minimum_device,
                     }
                 )
+            result.elapsed_seconds = time.perf_counter() - started
             if max_tokens > 0:
                 require_nonempty_generation(result.text, result=result)
             return result
@@ -446,18 +454,35 @@ class Engine:
 
         Returns the assistant's reply text.
         """
+        return self.chat_result(
+            message, max_tokens=max_tokens, system_prompt=system_prompt, session=session,
+        ).text
+
+    def chat_result(
+        self,
+        message: str,
+        *,
+        max_tokens: int = 128,
+        system_prompt: str | None = None,
+        session: ChatSession | None = None,
+    ) -> ConversationReply:
+        """Return a structured chat reply; use conversation() for durable turns.
+
+        Like chat(), a call without a session is stateless. The result shares
+        text, finish_reason, elapsed_seconds and to_dict() with generate().
+        """
         if session is not None:
             if system_prompt is not None and system_prompt != session.system_prompt:
                 raise ValueError(
                     "system_prompt differs from the ChatSession-bound value"
                 )
-            return session._send(self, message, max_tokens=max_tokens).text
+            return session._send(self, message, max_tokens=max_tokens)
         conversation = self._new_conversation(
             system_prompt=system_prompt,
             persistent=False,
         )
         try:
-            return conversation.send(message, max_tokens=max_tokens).text
+            return conversation.send(message, max_tokens=max_tokens)
         finally:
             conversation.close()
 
@@ -657,6 +682,7 @@ class Engine:
         """Return the engine's backend capabilities and model metadata."""
         with self._guarded():
             cfg = self._handle.model_config or {}
+            from .presets import public_operation_support
             pkg_dir = str(self._handle.package_dir) if self._handle.package_dir else ""
             backend_caps: dict[str, Any] = {}
             if pkg_dir:
@@ -709,6 +735,13 @@ class Engine:
                 "hidden_size": cfg.get("hidden_size"),
                 "vocab_size": cfg.get("vocab_size"),
                 "mask_token_id": cfg.get("mask_token_id"),
+                "operations": public_operation_support(
+                    backend=backend_caps.get("auto_backend", self._backend)
+                    if self._backend == "auto" else self._backend,
+                    decode_strategy=cfg.get("mlx_diffusion_decode_strategy", "block_threshold"),
+                    policy_profile=cfg.get("mlx_diffusion_policy_profile") or "baseline",
+                    attention_mask_kind=cfg.get("attention_mask_kind", "bidirectional"),
+                ),
                 **backend_caps,
             }
 
@@ -775,8 +808,11 @@ class Engine:
     def __enter__(self) -> "Engine":
         return self
 
-    def __exit__(self, *args: Any) -> None:
-        self.close()
+    def __exit__(self, exc_type: Any, exc: BaseException | None, traceback: Any) -> None:
+        if exc is None:
+            self.close()
+        else:
+            _close_preserving_primary(self.close, exc, label="engine cleanup")
 
     def __del__(self) -> None:
         # The ONE place a bare `pass` is right. __del__ can run during

@@ -8,7 +8,7 @@ from collections.abc import Sequence
 
 
 DEFAULT_MODEL = "dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1"
-DEFAULT_PROMPT = "Explain diffusion language models in one short paragraph."
+DEFAULT_PROMPT = "Say a short greeting."
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -24,7 +24,7 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--revision", default=None, help="Optional exact revision pin.")
     parser.add_argument("--prompt", default=DEFAULT_PROMPT)
-    parser.add_argument("--max-tokens", type=int, default=16)
+    parser.add_argument("--max-tokens", type=int, default=32)
     parser.add_argument(
         "--backend",
         default="auto",
