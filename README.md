@@ -27,9 +27,10 @@ examples and the selected open-source scope. Collaborator development snapshots
 and beta features are not automatically part of a public release or support
 claim. Use the delivered version and its documented capabilities.
 
-**0.2.4 is a Developer Preview, released in stages.** This batch provides
-an installable Apache-2.0 Python wheel and a small selection of API source files,
-not the full development repository. Optimized native Apple/CUDA backends and
+**0.2.5 is a Developer Preview, released in stages.** This update distributes
+an installable Apache-2.0 Python wheel, not a new source-code export.
+Previously published examples and API excerpts remain available for reference.
+Optimized native Apple/CUDA backends and
 model weights are separate and are not included in this wheel.
 
 ## Install
@@ -43,7 +44,7 @@ needed to install the Python library:
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
-python -m pip install "diffusor-rt[compiler,mlx-local] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.4/diffusor_rt-0.2.4-py3-none-any.whl"
+python -m pip install "diffusor-rt[compiler,mlx-local] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.5/diffusor_rt-0.2.5-py3-none-any.whl"
 ```
 
 Get your first reply:
@@ -60,18 +61,18 @@ An existing Python 3.11 conda environment works too; skip the first two commands
 when it is already active. The `compiler` extra installs the dependencies for
 downloading and preparing models, and `mlx-local` installs the Apple backend.
 
-Alternatively, download the wheel from [Release assets](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.4)
+Alternatively, download the wheel from [Release assets](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.5)
 and install it locally:
 
 ```bash
-python -m pip install "./diffusor_rt-0.2.4-py3-none-any.whl[compiler,mlx-local]"
+python -m pip install "./diffusor_rt-0.2.5-py3-none-any.whl[compiler,mlx-local]"
 ```
 
 For only the base API, package tools, and NumPy reference runtime, omit the
 extras. This does not install an accelerated backend or model-download tools:
 
 ```bash
-python -m pip install "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.4/diffusor_rt-0.2.4-py3-none-any.whl"
+python -m pip install "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.5/diffusor_rt-0.2.5-py3-none-any.whl"
 ```
 
 The package name is `diffusor-rt`; the Python import is `diffusor_rt`.
@@ -103,6 +104,11 @@ The runtime does not silently retry or invent a response.
 
 Upgrading from `0.2.3` adds model descriptions, structured chat replies and
 terminal input commands. Existing `Engine.chat()` calls still return strings.
+
+Upgrading from `0.2.4` corrects `deploy` input errors. `deploy` expects a prepared
+package directory, not a model ID; invalid targets now explain which command
+to use, and `--once --json` returns a structured error. This patch does not
+change decoding, model-package identities or conversation storage.
 
 The older `0.2.1` wheel retains the long-output scheduling and allocator-cache
 release defects corrected in `0.2.2`; its assets are unchanged. Output caps can
@@ -232,7 +238,7 @@ automatic long-term memory collection or retrieval by default.
 Install the optional TUI and HTTP service dependencies:
 
 ```bash
-python -m pip install "diffusor-rt[compiler,mlx-local,serve,tui] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.4/diffusor_rt-0.2.4-py3-none-any.whl"
+python -m pip install "diffusor-rt[compiler,mlx-local,serve,tui] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.5/diffusor_rt-0.2.5-py3-none-any.whl"
 ```
 
 The TUI manages model packages and saved run profiles:
@@ -290,8 +296,8 @@ text raise `EmptyGenerationError` without committing a turn or silently retrying
 
 ## Release and verification
 
-This first source batch contains only the public import/module entry points,
-the Engine API, and the quickstart example:
+The current release adds no source files. Earlier releases provided these
+reference excerpts and example:
 
 - [Python API entry point](./python/src/diffusor_rt/__init__.py)
 - [Module command entry point](./python/src/diffusor_rt/__main__.py)
@@ -305,15 +311,19 @@ runtime; a Python wheel is not an encrypted or closed-source binary. The
 remaining source tree, native implementations, tests, research, and internal
 documents are not part of this repository update.
 
-The [0.2.4 release](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.4)
-contains the wheel, standalone example, and `SHA256SUMS`. Downloaded files can be
-checked on macOS with `shasum -a 256 -c SHA256SUMS`, or on Linux with
-`sha256sum -c SHA256SUMS`, after downloading all listed assets into one directory.
+The [0.2.5 release](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.5)
+contains one wheel asset. Its SHA-256 is
+`17cd8a9eb3aed3f21e71381c351fe6b51a456f1896f8def66e1f43517141c52e`.
+Compare it with `shasum -a 256 diffusor_rt-0.2.5-py3-none-any.whl` on macOS
+or `sha256sum diffusor_rt-0.2.5-py3-none-any.whl` on Linux.
 
 Earlier fixed candidates were exercised on BD3/MDLM 0.6B through CLI/API,
 Local deployment, saved profiles, TUI, HTTP, conversation restart and close.
-The 0.2.4 artifact has separate installation, API/CLI and download checks using
-a tiny NumPy package. No new real-model run accompanies this release. Existing
+The 0.2.5 patch is checked through a fresh base-only installation, CLI/API
+operations, the six deployment input paths and a 0.2.4-to-0.2.5 upgrade with
+two-process conversation recovery using a tiny NumPy package. These do not
+constitute the full release-quality gate. No full suite or new real-model run
+accompanies this patch. Existing
 model mistakes and the BD3 difference from upstream padded sampling remain
 open; SDK usability does not establish answer accuracy, renewed certification
 or a general throughput/latency improvement.
@@ -331,6 +341,15 @@ artifacts retain their upstream licenses. See
 [Security](./SECURITY.md).
 
 ## News
+
+**2026-11-02 — SDK 0.2.5 deployment error handling.**
+[Download the wheel](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.5).
+`deploy` now distinguishes a model ID, missing directory or ordinary file from
+a prepared execution package, explains how to use `run` or `pull`, and preserves
+structured JSON errors. SDK-versioned validation metadata now covers 0.2.3–0.2.5.
+This is a maintenance preview, not a model-quality or performance update.
+Only the wheel is newly distributed; no backend binaries, weights or new source
+modules accompany it. Existing releases remain unchanged.
 
 **2026-10-21 — SDK 0.2.4 client and runtime maintenance.**
 [Download the preview](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.4).

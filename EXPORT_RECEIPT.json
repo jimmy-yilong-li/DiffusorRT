@@ -1,45 +1,21 @@
 {
-  "file_count": 6,
+  "file_count": 2,
   "files": [
     {
       "bytes": 356,
       "mode": "0664",
       "path": "CITATION.cff",
-      "sha256": "69d7198cafca675da98f9ec3059fd93042b4636294286608035898d209bfcbea"
+      "sha256": "35220399ca642f6fc257ad78a15c2c4a86304719d6f1b6b24db5168432bec83a"
     },
     {
-      "bytes": 20272,
+      "bytes": 21386,
       "mode": "0664",
       "path": "README.md",
-      "sha256": "8f2daf47be149459d3fd989ca9bde437d8d9a74409177ef2b8486137c665ea1e"
-    },
-    {
-      "bytes": 2682,
-      "mode": "0664",
-      "path": "examples/quickstart.py",
-      "sha256": "97162263cecc007d294df3ba6256e394a05d9e6c76bac4aa98a37176eee56fe3"
-    },
-    {
-      "bytes": 769,
-      "mode": "0664",
-      "path": "python/src/diffusor_rt/__init__.py",
-      "sha256": "725a7c08933128c8f9f92e827c2780be5b435eae193f2346864cb36c52dd7f34"
-    },
-    {
-      "bytes": 60,
-      "mode": "0664",
-      "path": "python/src/diffusor_rt/__main__.py",
-      "sha256": "f7161b19bdfef44242d3a0a86b5498566bac806a5b22044752164019f1236cf9"
-    },
-    {
-      "bytes": 38826,
-      "mode": "0664",
-      "path": "python/src/edllm/engine.py",
-      "sha256": "7ccfc123f30183ee1159ca086fe7e478790bfd824f120ef87d21bd2e8c08fd21"
+      "sha256": "552b6e453f5d6ce20c49dd3aa2aa55d97ddb082be58f5d987b8d094c41c16d79"
     }
   ],
   "receipt_version": 1,
-  "source_commit": "21c535e6cf0f6b4a0748802aa8b55075f5cef509",
+  "source_commit": "88a63c48bd4d861a69f151f855b3b4a0bcb8acca",
   "surface": "public",
-  "tree_sha256": "35529c6e08a915fab0fbd99379b593bd9dad716253c7e8b04a386dd156075137"
+  "tree_sha256": "65baf342b7e04f040e2d6db1fd920dc38d48985011d82386227e0722e699b556"
 }
