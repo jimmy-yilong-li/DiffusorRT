@@ -5,9 +5,10 @@ Start with the [project homepage](./README.md) and the
 
 | I want to… | Open |
 |---|---|
-| Install the Python library | [Install](./README.md#install) |
+| Install the Python library | [Mac quickstart](./README.md#mac--from-install-to-first-reply) · [Windows base SDK](./windows/README.md#installation-experience) |
+| Understand first-run downloads, disk space or upgrades | [Installation experience](./README.md#installation-experience) |
 | Chat on Apple Silicon and see diffusion | [Mac guide and real screenshots](./mac/README.md) |
-| Understand Windows, WSL and CUDA availability | [Windows guide](./windows/README.md) |
+| Preview the Windows interface and check CUDA availability | [Windows guide and labeled preview](./windows/README.md) |
 | Avoid incompatible SDK/native combinations | [Matching installations](./docs/product/sdk-0.2.6-installation.md) |
 | Call the API from a script | [Python API](./README.md#python-api) · [Quickstart](./examples/quickstart.py) |
 | Use CLI, history, model management or HTTP | [Command line](./README.md#command-line) · [Local service](./README.md#model-manager-and-local-service) |

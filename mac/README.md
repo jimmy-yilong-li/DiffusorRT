@@ -11,6 +11,7 @@
 </p>
 
 <p><a href="#install">Install</a> · <a href="#chat-window">Chat window</a> ·
+<a href="#installation-experience">What to expect</a> ·
 <a href="#python-and-command-line">Python & CLI</a> · <a href="#models">Models</a> ·
 <a href="#news">News</a> · <a href="../windows/README.md">Windows</a> ·
 <a href="../README.md">All platforms</a></p>
@@ -47,6 +48,33 @@ models; use `run` or `pull` first.
 `compiler` supplies model preparation, `mlx-local` the Apple backend,
 `serve` the local HTTP adapter, and `gui` the WebKit window dependencies.
 This package is distributed through GitHub Releases, not PyPI.
+
+## Installation experience
+
+| First visit | What to expect |
+|---|---|
+| Install the wheel | pip installs the SDK and requested dependencies; no model is loaded yet. |
+| Run your first prompt | Source weights download, then the execution package is prepared. Progress appears before the answer. |
+| Open the window | `gui` opens the prepared model. If none is available, run `run` or `pull` first. |
+| Return later | The prepared package is reused; the model still loads into memory in a new process. Named conversations remain available. |
+
+The SDK wheel is about 0.91 MB, but preparation dependencies and model weights
+are separate downloads. For the recommended 0.6B model, the roughly 1.5 GB
+source download and 3 GB execution package explain why installation and
+first-run preparation are different steps. Allow 8.9 GiB of free space for
+model preparation, plus the Python environment. Time depends on your network
+and hardware.
+
+To check the installation without loading weights:
+
+```bash
+python -c "import diffusor_rt; print(diffusor_rt.__version__)"
+python -m diffusor_rt --help
+```
+
+Expect version `0.2.6` and help text. A `doctor` result of “not ready” before
+model preparation is an instruction to prepare the model, not a failed install.
+[First-run troubleshooting and upgrades](https://github.com/jimmy-yilong-li/DiffusorRT#installation-experience).
 
 ## Chat window
 

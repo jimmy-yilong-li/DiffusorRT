@@ -1,59 +1,47 @@
 {
-  "file_count": 8,
+  "file_count": 6,
   "files": [
     {
-      "bytes": 356,
-      "mode": "0664",
-      "path": "CITATION.cff",
-      "sha256": "9f210af93a5c6e744147f42ccf626dd066574050c688da350f8dd1a3f4092470"
-    },
-    {
-      "bytes": 1530,
+      "bytes": 1785,
       "mode": "0664",
       "path": "INDEX.md",
-      "sha256": "c689265c5aa2d1e67586f790fd7bd82c3f27ade5a3233d8be72b98bbb0cc3aed"
+      "sha256": "841835e440515e8d10c324d78c051eb71ad1e1239e770f4047a500c035dfae75"
     },
     {
-      "bytes": 28533,
+      "bytes": 13965,
       "mode": "0664",
       "path": "README.md",
-      "sha256": "36f69c344f55c844ca438ae511103ae3684cf460e4f64f553b89371745b60d2f"
+      "sha256": "f5ec25fe5e7320e878b55b37692092f9053c163736ca9532627c2f5c04b753d9"
     },
     {
-      "bytes": 3001,
-      "mode": "0664",
-      "path": "docs/product/sdk-0.2.6-installation.md",
-      "sha256": "49e3aa572fa0128646d00c12954d850b4490183cded04cf71cd363677edcaa1f"
-    },
-    {
-      "bytes": 7191,
+      "bytes": 8616,
       "mode": "0664",
       "path": "mac/README.md",
-      "sha256": "22442b2b2b2dd700c0521e9591bc69844a71b200d6d122b3bf8d843def5a2625"
+      "sha256": "66807f35c86d613a4111531637571816d3eaf7b82d93ffdd46674842da43d3b2"
     },
     {
-      "bytes": 218359,
-      "mode": "0664",
-      "path": "mac/assets/page-replay.png",
-      "sha256": "2748e436374c4b65958b69c4e7e821c098368381072880f0d37462279ddab990"
-    },
-    {
-      "bytes": 184432,
-      "mode": "0664",
-      "path": "mac/assets/page-reply.png",
-      "sha256": "40bff1a328a41ba2111c339e565168359832084702e1a5207268dd87673b7866"
-    },
-    {
-      "bytes": 5827,
+      "bytes": 8047,
       "mode": "0664",
       "path": "windows/README.md",
-      "sha256": "d12ceeea5e74e8b96175e28a552035c43c4bb71261c1641299261c96de07120d"
+      "sha256": "13c667f4ac1d22a0cf523e9884753615e621d1b246a56cb9afaf09eeee3386ad"
+    },
+    {
+      "bytes": 913,
+      "mode": "0664",
+      "path": "windows/assets/README.md",
+      "sha256": "97021b62bd40e05e42d53d71e7f267badb4cc18cb03e9465bbd8acdef623de3c"
+    },
+    {
+      "bytes": 135000,
+      "mode": "0664",
+      "path": "windows/assets/interface-preview.png",
+      "sha256": "68d8496a4d9d49c17ef0311b19ed57558b6f18fdc77a01aa817175bbefd6ea4e"
     }
   ],
   "receipt_version": 1,
-  "source_commit": "ac1cadc5608426da9587da08a3d814c4cfdce775",
+  "source_commit": "bb80ce028a3164f3f6d155034ce388e9b7f0996e",
   "surface": "public",
-  "tree_sha256": "ba97e75efc84f1260bf32aaa9ef9d51d2c7c8014442f1ccb51429cce197f6f0c",
+  "tree_sha256": "5d6257226a5d111eb2e4032503723ceec20538534787827761194b7dc1d80d6b",
   "path_mapping": {
     "INDEX.public.md": "INDEX.md",
     "README.public.md": "README.md"

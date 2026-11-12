@@ -11,6 +11,7 @@
 </p>
 
 <p><a href="#availability">Availability</a> ·
+<a href="#installation-experience">Install the SDK</a> ·
 <a href="#the-chat-interface">Chat interface</a> ·
 <a href="#windows-and-wsl-are-different-installations">Windows / WSL</a> ·
 <a href="#known-boundaries">Limits</a> ·
@@ -42,11 +43,43 @@ There is no complete public `pip install` command for Windows CUDA inference;
 installing the SDK alone will not provide it. A Windows release will name the
 exact wheels, supported GPU targets, dependencies and checksums here.
 
+## Installation experience
+
+You can install the **base Python SDK** today. In PowerShell with Python 3.11:
+
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install "https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.6/diffusor_rt-0.2.6-py3-none-any.whl"
+.\.venv\Scripts\python.exe -c "import diffusor_rt; print(diffusor_rt.__version__)"
+.\.venv\Scripts\python.exe -m diffusor_rt --help
+```
+
+Calling the environment's Python directly avoids changing PowerShell's
+activation-script policy. Expect `0.2.6` and the CLI help text. This checks
+SDK installation only; it does not load a model or exercise CUDA.
+
+| Step | Available now | What it does not supply |
+|---|---|---|
+| Install the SDK | Python API, package tools and the CLI | Model weights, CUDA runtime or a Windows native provider |
+| Import / help | No model download or GPU allocation | Evidence that a CUDA model can run |
+| Accelerated chat | Experimental implementation and interface preview below | A public matched native-wheel set; that release is pending |
+
+Do not install `mlx-local` on Windows. Do not combine the SDK with an arbitrary
+older private wheel, or use Linux binaries in Windows Python. Once CUDA
+distribution is ready, this page will supply the exact SDK/native pair and
+model preparation commands. Until then, use the [Mac guide](../mac/README.md)
+for the complete public accelerated path.
+
 ## The chat interface
 
 The development interface opens a local page in a standalone Microsoft Edge
 window. It is not a native WinUI application or a packaged Windows installer.
 Its loopback server runs on `127.0.0.1` with a per-launch access token.
+
+<p align="center">
+<img src="./assets/interface-preview.png" alt="PC chat frontend rendered with clearly labeled sample data and no GPU execution" width="1100">
+<br><sub>Windows interface preview · actual PC frontend rendered on Mac with sample events · not a Windows machine capture.</sub>
+</p>
 
 - **Watch the decode.** Decided text appears among masked positions while a
   reply forms. The intermediate canvas is a preview, not a committed answer.
@@ -63,8 +96,10 @@ Its loopback server runs on `127.0.0.1` with a per-launch access token.
 
 The collaborator reports real Windows/RTX 4070 runs of the interface. These
 are development results on one machine, not general Windows certification.
-Windows-machine screenshots are pending delivery; Mac screenshots are not
-used as a substitute.
+Windows-machine screenshots are pending delivery. The preview above renders
+the actual PC HTML/CSS/JavaScript with sample conversation and decode events;
+it does not use the Mac interface. Speed and GPU memory are deliberately
+unreported. [Image provenance](./assets/README.md).
 
 ## Windows and WSL are different installations
 
@@ -98,6 +133,11 @@ separate distribution terms; model weights retain their upstream licenses.
 This development page grants no license to unpublished native binaries.
 
 ## News
+
+**2026-11-12 — Installation walkthrough and interface preview.**
+The page now shows the PC frontend with clearly labeled sample content and a
+PowerShell base-SDK install path. This documentation update does not publish
+a CUDA provider or claim a new hardware test.
 
 **2026-11-12 — PC code integrated; native publication remains separate.**
 Reviewed fixed-quota device execution, seeded sampling and failed-load retry
