@@ -1,21 +1,39 @@
 {
-  "file_count": 2,
+  "file_count": 5,
   "files": [
     {
-      "bytes": 356,
-      "mode": "0664",
-      "path": "CITATION.cff",
-      "sha256": "35220399ca642f6fc257ad78a15c2c4a86304719d6f1b6b24db5168432bec83a"
-    },
-    {
-      "bytes": 21386,
+      "bytes": 12624,
       "mode": "0664",
       "path": "README.md",
-      "sha256": "552b6e453f5d6ce20c49dd3aa2aa55d97ddb082be58f5d987b8d094c41c16d79"
+      "sha256": "de400858e78987a51fe8d571a9ae758a0844bff4be7a701cb1fb7f6805fcf419"
+    },
+    {
+      "bytes": 4714,
+      "mode": "0664",
+      "path": "mac/README.md",
+      "sha256": "2a3b3b5b853b26b045b6f8bf4226678bf1bf77e84679ae3fa28864f46b466edd"
+    },
+    {
+      "bytes": 3231,
+      "mode": "0664",
+      "path": "windows/README.md",
+      "sha256": "f6aafcd380c2e958533b7431998f8169bf6e3689ab58af5a134fbb99e6338e80"
+    },
+    {
+      "bytes": 155625,
+      "mode": "0664",
+      "path": "mac/assets/app-decoding.png",
+      "sha256": "0c475d1bcdae759367050985151e40261afb7711b2cbc8e6749eddd37a881862"
+    },
+    {
+      "bytes": 141506,
+      "mode": "0664",
+      "path": "mac/assets/app-reply.png",
+      "sha256": "a59d99ee8773b32fe6f664b39a0cccceb787ed243ad7c7d740524321c5780d71"
     }
   ],
   "receipt_version": 1,
-  "source_commit": "88a63c48bd4d861a69f151f855b3b4a0bcb8acca",
+  "source_commit": "e7b1c3881430e7952fa4e683bf15257e1baa10b8",
   "surface": "public",
-  "tree_sha256": "65baf342b7e04f040e2d6db1fd920dc38d48985011d82386227e0722e699b556"
+  "tree_sha256": "b23983a12574f6bfa315876c2972a125f754950a5d5f11bd3fc3d17a2f163d78"
 }
