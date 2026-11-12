@@ -1,74 +1,111 @@
 <div align="center">
 
-<img src="../docs/product/assets/diffusorrt-logo.png" alt="DiffusorRT" width="110">
+<img src="../docs/product/assets/diffusorrt-logo.png" alt="DiffusorRT" width="190">
 
 <h1>DiffusorRT for Windows</h1>
-<h3>Bringing local diffusion to NVIDIA PCs.</h3>
+<p><strong>Local diffusion chat on NVIDIA hardware.</strong></p>
 
 <p>
-<img src="https://img.shields.io/badge/CUDA_PC-In_development-7c3aed?style=flat-square" alt="CUDA PC in development">
-<img src="https://img.shields.io/badge/Prototype-RTX_4070_%C2%B7_SM89-0891b2?style=flat-square" alt="RTX 4070 / SM89 prototype">
+<img src="https://img.shields.io/badge/CUDA_PC-Experimental-7c3aed?style=flat-square" alt="Experimental CUDA PC path">
+<img src="https://img.shields.io/badge/Reported_hardware-RTX_4070_%C2%B7_SM89-0891b2?style=flat-square" alt="Collaborator-reported RTX 4070 / SM89">
 </p>
 
-<p><a href="#desktop-experience">Desktop experience</a> ·
-<a href="#availability">Availability</a> · <a href="#windows-and-wsl">Windows &amp; WSL</a> ·
-<a href="../mac/README.md">Mac</a> · <a href="../README.md">All platforms</a></p>
+<p><a href="#availability">Availability</a> ·
+<a href="#the-chat-interface">Chat interface</a> ·
+<a href="#windows-and-wsl-are-different-installations">Windows / WSL</a> ·
+<a href="#known-boundaries">Limits</a> ·
+<a href="#news">News</a> ·
+<a href="../mac/README.md">Mac</a> ·
+<a href="../README.md">All platforms</a></p>
 
 </div>
 
-The CUDA PC prototype brings DiffusorRT's shared model APIs and conversations
-to a local Windows chat interface.
+DiffusorRT's CUDA PC work connects the same Python APIs and local conversation
+store to a Windows chat interface. The interface and the CUDA provider have
+their own implementation and release checks; Mac acceptance does not cover them.
 
-## Desktop experience
-
-The interface is a local page in a standalone **Microsoft Edge window**,
-not a WinUI application or Windows installer.
-
-- **Masked-text preview:** see positions being filled as a reply develops.
-- **Local conversations:** return to saved history shared with the CLI.
-- **Cooperative Stop:** supported cache-free execution stops at decode boundaries.
-- **Resource panel:** inspect model, precision and named GPU memory readings.
-
-Real Windows/RTX 4070 runs have been reported during development. A
-Windows-captured screenshot is not available in this public update; the Mac
-screenshots on the project homepage show a different application.
+> [!NOTE]
+> **Development preview — no public Windows CUDA artifact set yet.**
+> The public SDK is [0.2.6](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6).
+> Its Mac chat window does not constitute a Windows CUDA release.
+> [Matching installations: do not mix SDK/native release sets](../docs/product/sdk-0.2.6-installation.md).
 
 ## Availability
 
-**No complete public Windows CUDA artifact set is available yet.**
-The downloadable [SDK 0.2.5](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.5)
-does not include a Windows CUDA provider. Installing it alone does not enable
-NVIDIA inference.
+The Python SDK uses a `py3-none-any` wheel. That means its own payload is
+portable Python, not that it contains a GPU runtime. Accelerated Windows use
+also needs the matching Windows native provider, CUDA libraries, a supported
+driver and an admitted model/precision combination.
 
-The first Windows preview will publish its compatible SDK/native wheels,
-CUDA dependencies, supported model/precision combinations and installation
-instructions together. The Mac 0.2.6 preview is not a Windows CUDA release.
+Those native artifacts are not publicly downloadable from this project yet.
+There is no complete public `pip install` command for Windows CUDA inference;
+installing the SDK alone will not provide it. A Windows release will name the
+exact wheels, supported GPU targets, dependencies and checksums here.
 
-## Windows and WSL
+## The chat interface
 
-| Environment | Required execution artifact |
-|---|---|
-| Native Windows | Windows native wheel and DLL dependencies for the supported Python/CPU ABI. |
-| WSL2 | Linux native wheel and Linux libraries; Windows DLLs do not apply. |
-| Linux CUDA server | Separate server delivery with its advertised GPU targets and model support. |
+The development interface opens a local page in a standalone Microsoft Edge
+window. It is not a native WinUI application or a packaged Windows installer.
+Its loopback server runs on `127.0.0.1` with a per-launch access token.
 
-RTX 4070/SM89 and A100/SM80 are different hardware targets. Results on one
-machine do not establish support on another. The public SDK's `py3-none-any`
-tag describes Python packaging, not universal GPU compatibility.
+- **Watch the decode.** Decided text appears among masked positions while a
+  reply forms. The intermediate canvas is a preview, not a committed answer.
+- **Stop a reply.** Supported cache-free execution can stop at a decode
+  boundary. This is not an interruption of a CUDA kernel already running.
+- **Continue conversations.** The interface shares local history with the
+  command line; history is plain, unencrypted SQLite.
+- **Inspect resources.** The panel shows the selected model, backend,
+  precision and GPU memory. Whole-device memory is not process-only usage.
+- **Use prepared models.** The window selects prepared packages; it does not
+  download or compile a checkpoint on its own.
+- **Sample deliberately.** The reviewed CUDA fixed-quota path adds temperature
+  and seed controls. This is a development capability, not a public native download.
 
-Conversations use plain, unencrypted SQLite. The interface uses loopback access;
-the project is focused on local inference, not Internet-facing multi-user serving.
+The collaborator reports real Windows/RTX 4070 runs of the interface. These
+are development results on one machine, not general Windows certification.
+Windows-machine screenshots are pending delivery; Mac screenshots are not
+used as a substitute.
 
-## News
+## Windows and WSL are different installations
 
-**2026-11-12 — Windows CUDA PC preview in development.**
-The prototype includes a masked-text view, shared conversations and resource
-inspection. No Windows installer or CUDA wheel is released with this page.
+| Environment | Native artifact | Window and support boundary |
+|---|---|---|
+| Native Windows | Windows wheel with DLLs for the selected Python/CPU ABI | Experimental Edge-hosted chat interface; requires native Windows acceptance. |
+| WSL2 | Linux wheel with Linux shared libraries | Linux execution environment; native Windows DLLs do not apply, and Windows GUI results do not certify it. |
+| Linux / A100 server | Linux wheel with an admitted SM80 target | Separate server release, with its own CLI/API/HTTP acceptance. |
 
-Follow [project News](../README.md#news) and
-[Releases](https://github.com/jimmy-yilong-li/DiffusorRT/releases) for downloads.
+SM89 and SM80 identify GPU architectures, not operating-system wheel tags.
+One CUDA binary can cover both only when it contains compatible targets and
+both targets have passed their advertised checks.
+
+## Known boundaries
+
+- The reviewed experimental PC path is Qwen3-MDLM 0.6B in BF16 on an RTX 4070.
+  Do not infer support for every Qwen model, CUDA device or precision.
+- INT8 did not pass the model's frozen correctness gate; it is not an
+  advertised alternative for this path.
+- CUDA budgets, dependency discovery, startup, Stop, shutdown and upgrade must
+  pass the CUDA PC checks before public delivery. Mac results cannot replace them.
+- A small model can make factual and arithmetic mistakes. A readable reply
+  does not establish answer accuracy or parity with another backend.
+- SDK, native-runtime and application versions need not match. A release must
+  identify the compatible installed set rather than relying on version equality.
 
 ## License
 
-The public SDK is [Apache-2.0](../LICENSE). Native runtime distribution and model
-assets have separate terms; this page grants no license to unpublished binaries.
+The public Python SDK is [Apache-2.0](../LICENSE). Optimized native runtimes have
+separate distribution terms; model weights retain their upstream licenses.
+This development page grants no license to unpublished native binaries.
+
+## News
+
+**2026-11-12 — PC code integrated; native publication remains separate.**
+Reviewed fixed-quota device execution, seeded sampling and failed-load retry
+repairs are integrated. The SDK contains the PC interface code, but there is
+no public CUDA wheel pair yet. The known long-context shared-memory ceiling
+remains. Windows, WSL and A100 require their own installed qualification.
+
+**2026-11-12 — Windows guide prepared; CUDA PC remains a separate release.**
+The local chat interface, masked-text preview and resource panel are under
+development. Native Windows and WSL use different artifacts. No Windows
+installer, CUDA wheel or broader support claim is published with this update.

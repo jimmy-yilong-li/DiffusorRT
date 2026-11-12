@@ -1,104 +1,160 @@
 <div align="center">
 
-<img src="../docs/product/assets/diffusorrt-logo.png" alt="DiffusorRT" width="110">
+<img src="../docs/product/assets/diffusorrt-logo.png" alt="DiffusorRT" width="190">
 
 <h1>DiffusorRT for Mac</h1>
-<h3>Local conversations. Visible diffusion.</h3>
+<p><strong>Local conversations. Visible diffusion. Apple Silicon.</strong></p>
 
 <p>
-<img src="https://img.shields.io/badge/Apple_Silicon-MLX-0891b2?style=flat-square" alt="Apple Silicon with MLX">
-<img src="https://img.shields.io/badge/Desktop-0.2.6_preview-7c3aed?style=flat-square" alt="0.2.6 desktop preview, not released">
+<img src="https://img.shields.io/badge/SDK_Preview-0.2.6-7c3aed?style=flat-square" alt="SDK 0.2.6 Developer Preview">
+<img src="https://img.shields.io/badge/Backend-Apple_MLX-0891b2?style=flat-square" alt="Apple Silicon / MLX">
 </p>
 
-<p><a href="#desktop-preview">Desktop preview</a> · <a href="#install-the-sdk">Install</a> ·
-<a href="#models">Models</a> · <a href="../windows/README.md">Windows / CUDA</a> ·
+<p><a href="#install">Install</a> · <a href="#chat-window">Chat window</a> ·
+<a href="#python-and-command-line">Python & CLI</a> · <a href="#models">Models</a> ·
+<a href="#news">News</a> · <a href="../windows/README.md">Windows</a> ·
 <a href="../README.md">All platforms</a></p>
 
 </div>
 
-<p align="center">
-<img src="./assets/app-decoding.png" alt="Actual native Mac app showing a reply developing in a masked canvas" width="1100">
-<br><sub>The native Mac app candidate, running Qwen3-BD3LM locally through MLX.</sub>
-</p>
+DiffusorRT runs diffusion language models locally through one Python library.
+Its chat window shows masked positions resolving into text, while the CLI and
+Python API use the same model packages and conversations.
 
-## Desktop preview
+> **SDK 0.2.6 Developer Preview.** The download is a Python wheel, including
+> the page-backed Mac chat window. The separate Swift App bundle is not
+> published with this release; its distribution terms remain pending.
+> [Matching versions and installation boundaries](../docs/product/sdk-0.2.6-installation.md).
 
-The upcoming **0.2.6 Mac app** makes the diffusion process visible: masked
-positions become text, a reply finishes, and the retained steps can be replayed.
+## Install
 
-- **Live canvas.** Follow block progress, forward passes and remaining masks.
-- **Replay.** Inspect retained frames while the app is open.
-- **Stop.** Stop at the next decode boundary; a running GPU kernel is not preempted.
-- **Conversations.** Reopen saved chats, use multiline prompts and retain an
-  uncommitted draft after a stopped or failed reply.
-- **Inspector.** See time, visible tokens, context use and MLX memory.
-- **Keyboard.** Return sends, Shift-Return adds a line, ⌘N starts a chat and ⌘. stops.
-
-<p align="center">
-<img src="./assets/app-reply.png" alt="Completed replies in the Mac app with conversation history and resource inspector" width="1100">
-<br><sub>Final replies are saved to history. Intermediate decode frames are not.</sub>
-</p>
-
-**Availability:** these are real candidate screenshots, not a downloadable app
-release. The app targets macOS 14+ / arm64 and uses an installed Python runtime;
-it does not bundle Python or model weights. App distribution terms and
-packaging are being finalized. No app download is available yet.
-
-SDK 0.2.6 also prepares an SDK-hosted chat window and structured CLI results.
-Neither is included in the currently downloadable 0.2.5 wheel.
-
-## Install the SDK
-
-Available now: **SDK 0.2.5**, Python 3.11 on Apple Silicon.
+Use **Python 3.11 on Apple Silicon**:
 
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
-python -m pip install "diffusor-rt[compiler,mlx-local] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.5/diffusor_rt-0.2.5-py3-none-any.whl"
-diffusorrt run "dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1" --prompt "Hello!" --max-tokens 32
+python -m pip install "diffusor-rt[compiler,mlx-local,serve,gui] @ https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.6/diffusor_rt-0.2.6-py3-none-any.whl"
+
+diffusorrt run "dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1" --prompt "Hello!"
+diffusorrt gui "dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1"
 ```
 
-An existing Python 3.11 conda environment works too. First use downloads about
-1.5 GB of weights and creates a roughly 3 GB package; allow about 8.9 GiB free
-during preparation. Later runs reuse it. Downloads come from GitHub Releases,
-not PyPI.
+An existing Python 3.11 conda environment works too. The first model run
+downloads about 1.5 GB and prepares a roughly 3 GB package; allow 8.9 GiB of
+free space during preparation. Later runs reuse it. The window opens prepared
+models; use `run` or `pull` first.
 
-Continue in the terminal:
+`compiler` supplies model preparation, `mlx-local` the Apple backend,
+`serve` the local HTTP adapter, and `gui` the WebKit window dependencies.
+This package is distributed through GitHub Releases, not PyPI.
+
+## Chat window
+
+<p align="center">
+<img src="./assets/page-replay.png" alt="Actual installed SDK 0.2.6: a reply and its masked-sequence replay" width="1000">
+<br><sub>Actual installed wheel · Qwen3-BD3LM 0.6B · browser view of recorded decode frames.</sub>
+</p>
+
+- **Watch and replay.** The live view shows the current canvas. A completed
+  reply can replay its recorded frames. Preview frames are not conversation
+  messages and disappear when the conversation is reopened.
+- **Stop.** Supported cache-free plans stop at a decode boundary. A GPU
+  forward already running is not interrupted. A stopped turn is not saved.
+- **Keep the draft.** Failed or stopped messages remain available to edit,
+  resend or discard.
+- **Continue locally.** Conversations persist across processes in plain,
+  unencrypted SQLite. No cloud account is needed.
+- **Inspect the work.** Details show elapsed request time, visible tokens,
+  forward passes, context and MLX allocator readings. These are labeled
+  observations, not device-wide peak memory or a fabricated first-token time.
+- **Reply length.** MLX runs to model termination with a 1,024-token safety
+  ceiling. Reaching that ceiling is reported as a cut-short reply.
+- **System prompt.** Apply starts a new conversation; previous history stays
+  saved. No system prompt is supplied unless you write one.
+
+Return sends, Shift-Return inserts a line, and ⌘N starts a conversation.
+`diffusorrt gui` opens the page in its own WebKit window;
+`diffusorrt gui --browser` opens the default browser, and
+`diffusorrt gui --no-browser` prints the local address. It binds to
+`127.0.0.1` with a per-launch token.
+
+<p align="center">
+<img src="./assets/page-reply.png" alt="A real completed reply with timing and memory details" width="1000">
+<br><sub>Completed reply from the rebuilt wheel. The displayed timing is one observation, not a speed claim.</sub>
+</p>
+
+The native Swift App is developed separately. Earlier native-app screenshots
+are development previews, not proof of a downloadable App bundle.
+
+## Python and command line
+
+```python
+from diffusor_rt import Engine
+
+with Engine.from_pretrained(
+    "dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1", backend="mlx_local"
+) as engine:
+    print(engine.generate("Hello!").text)
+```
 
 ```bash
-diffusorrt chat "dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1" --session local-demo
+MODEL="dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1"
+diffusorrt chat "$MODEL" --session local-demo
+diffusorrt doctor "$MODEL"
+diffusorrt models "$MODEL" --json
+diffusorrt serve "$MODEL" --host 127.0.0.1 --port 8000
 ```
 
-History is plain, unencrypted SQLite. See the [Python API](../README.md#python-api)
-and [CLI guide](../README.md#command-line) for offline use, storage directories,
-context management and the local service.
+Before preparation, `doctor` returns status 1 and explains the next step.
+`doctor --offline` is metadata-only: it does not open the package and does
+not assert execution readiness, even when cached. Regular `doctor` checks
+the prepared package. Use the main [README](../README.md) for stdin, TUI,
+HTTP requests and API options.
 
 ## Models
 
-| Model ID | Current Mac path |
+| Model | Mac scope |
 |---|---|
-| `dllm-hub/Qwen3-0.6B-diffusion-bd3lm-v0.1` | Recommended first run; MLX fp32, fixed-quota block diffusion, no K/V cache. Infill/edit unsupported. |
-| `dllm-hub/Qwen3-0.6B-diffusion-mdlm-v0.1` | Bidirectional MLX fp32, fixed quotas, no K/V cache. Very short outputs and infill quality remain limited. |
-| `GSAI-ML/LLaDA-8B-Instruct` | MLX fp32 baseline; about 32 GB for the execution package. A trailing end-of-turn marker is a known limitation. |
-| Dream-7B | Exact-D2F requires a separate private native runtime, not included in this download. |
+| Qwen3-BD3LM 0.6B | Recommended first run; fp32, no K/V cache, generate and chat. No infill/edit. |
+| Qwen3-MDLM 0.6B | fp32 baseline, no K/V cache; generate and chat. Short-answer and infill quality remain limited. |
+| LLaDA-8B | Existing fp32 baseline; about 32 GB prepared weights. Earlier candidate checked run/chat; this rebuild did not repeat that large-model run. A trailing `<\|eot_id\|>` can remain visible. |
+| Dream-7B | Its exact-D2F profile needs a separate private native runtime, not supplied here. |
 
-The retained real-model baseline is an Apple M4 Max with 64 GB of memory.
-Other Apple hardware is not independently certified here. Model answers can
-contain factual or arithmetic errors; the screenshots are not an accuracy or
-speed benchmark.
+The two 0.6B models were exercised on the rebuilt installed wheel. This is
+functional evidence, not an accuracy benchmark. Small models make factual
+and arithmetic mistakes. Mac sampling remains greedy; a nonzero temperature
+is explicitly rejected rather than ignored.
 
-## News
+## Upgrade and verification
 
-**2026-11-12 — Native desktop preview.** Live masked canvas, replay, cooperative
-Stop, persistent conversations and a resource inspector are prepared for the
-next Mac release. Public downloads remain at SDK 0.2.5.
+Use the same wheel URL with `pip install --upgrade`. Keep your model cache
+and conversation data; a package rebuild is separate from deleting history.
+Use a separate environment for CUDA rather than mixing native runtimes.
 
-**2026-11-02 — SDK 0.2.5 available.**
-[Download the library](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.5)
-or read the [project News](../README.md#news).
+The new SDK was built from committed source and installed outside the checkout.
+The bounded walkthrough covers the two small models, JSON/stdin, inspection,
+cached preparation, cross-process chat and the actual page/replay above.
+Earlier candidate evidence includes reference forward checks and LLaDA;
+it is not relabeled as new evidence for this artifact. CUDA, the separate
+Swift App and interactive TUI are not certified by this walkthrough.
+
+Wheel SHA-256:
+
+```text
+86c9cee779bf65e127e3d5326caed806cf7bdada0d080ae41a5d540347116acb
+```
 
 ## License
 
-The public SDK and MLX components use [Apache-2.0](../LICENSE). The native app's
-distribution terms are separate and pending. Model weights and tokenizers keep
-their upstream licenses.
+The Python SDK and public MLX components are [Apache-2.0](../LICENSE).
+Model weights retain their upstream terms. The SDK license does not grant
+distribution rights for the separate Swift App or private native backends.
+
+## News
+
+**2026-11-12 — SDK 0.2.6: chat and visible diffusion.** Open a local window,
+inspect real decode frames, resume conversations and stop supported requests.
+This page shows the rebuilt wheel, not a mockup. Mac, Windows CUDA PC and
+Linux CUDA server remain separate release tracks.
+
+Earlier updates: [project News](../README.md#news).
