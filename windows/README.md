@@ -58,6 +58,12 @@ Calling the environment's Python directly avoids changing PowerShell's
 activation-script policy. Expect `0.2.6` and the CLI help text. This checks
 SDK installation only; it does not load a model or exercise CUDA.
 
+The [SDK source guide](../python/README.md) also explains clone-based
+installation. The Windows controller and page source are available in
+[`python/src/edllm/gui`](../python/src/edllm/gui), with the frontend under
+[`web/`](../python/src/edllm/gui/web). Publishing this UI code does not
+publish the native CUDA provider it needs for inference.
+
 | Step | Available now | What it does not supply |
 |---|---|---|
 | Install the SDK | Python API, package tools and the CLI | Model weights, CUDA runtime or a Windows native provider |

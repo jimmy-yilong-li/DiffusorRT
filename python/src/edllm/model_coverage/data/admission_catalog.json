@@ -1,0 +1,35 @@
+{
+  "entries": [
+    {
+      "evidence_digest": "cb36781ac97803c017dd4bb8eeef9f8524ba6be10132ba5781d3d611ea02a573",
+      "evidence_resource": "data/admissions/dream_coder_v0_instruct_7b.json",
+      "key": "dream_coder_v0_instruct_7b",
+      "state": "experimentally-gated"
+    },
+    {
+      "evidence_digest": "8f1cca8369bcfffcee88a2a4fe4b58d1b742ccb68ce78e2807adbc22c2dd8c34",
+      "evidence_resource": "data/admissions/dream_v0_instruct_7b.json",
+      "key": "dream_v0_instruct_7b",
+      "state": "product-supported"
+    },
+    {
+      "evidence_digest": "0953c53f95f399ac2e4b2363e05b886dc922190ea6b32b6cd3daee0514031ea8",
+      "evidence_resource": "data/admissions/llada_8b_instruct.json",
+      "key": "llada_8b_instruct",
+      "state": "product-supported"
+    },
+    {
+      "evidence_digest": "0a7918d745fb2765d69d5d16ac3e8ff53502f4b938d5e9eaa3ad5af9cb2ef629",
+      "evidence_resource": "data/admissions/qwen3_06b_bd3lm_v0_1.json",
+      "key": "qwen3_06b_bd3lm_v0_1",
+      "state": "product-supported"
+    },
+    {
+      "evidence_digest": "e8fa07e4420f5153b65b4d049e69fd808cfb5833aa2eefc18f7f3820bbba44b9",
+      "evidence_resource": "data/admissions/qwen3_06b_mdlm_v0_1.json",
+      "key": "qwen3_06b_mdlm_v0_1",
+      "state": "product-supported"
+    }
+  ],
+  "schema_version": 1
+}

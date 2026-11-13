@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "legacy-product-migration-v1",
+  "candidate_key": "dream_v0_instruct_7b",
+  "model_id": "Dream-org/Dream-v0-Instruct-7B",
+  "revision": "05334cb9faaf763692dcf9d8737c642be2b2a6ae",
+  "descriptor_digest": "0cb9c169da557bc050f90da9f3107cbecb94d9e1b5747b2e735a5a5ff4dce780",
+  "profiles": [
+    {
+      "backend": "mlx_local",
+      "precision": "fp32",
+      "minimum_device": "darwin_arm64_apple_silicon"
+    }
+  ],
+  "evidence_records": [
+    {
+      "kind": "numerical-parity",
+      "path": "results/2026-06-05-bf16-precision.md",
+      "sha256": "7dc57ccd77e0a3ebd98ce72e2619f2aa80b83fdf6cde6feeb46f710868cb42f7"
+    },
+    {
+      "kind": "installed-product-path",
+      "path": "results/data/2026-08-11-w6-evidence.md",
+      "sha256": "6b8c17dd8f87e82f362e4ede9e7fae277b80baa7b14417e0e31edc76233c8e4f"
+    },
+    {
+      "kind": "cold-network-product-path",
+      "path": "results/2026-08-13-cold-network-acquisition.md",
+      "sha256": "dd205a1cd4fea81bf478e3185d4acdbc318444a22277d891b7414f06930251e4"
+    }
+  ],
+  "limitations": [
+    "not_model_coverage_v1_four_gate_replay",
+    "evidence_spans_multiple_fixed_code_shas",
+    "numerical_record_uses_d2f_merged_dream_weights"
+  ]
+}

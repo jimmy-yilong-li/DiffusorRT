@@ -27,7 +27,9 @@ from __future__ import annotations
 # These are real imports because they appear in the public runtime signatures
 # and must resolve for introspection and generated documentation.
 from .chat import ChatSession
-from .conversation import Conversation, ConversationReply, MemoryProvider
+from .cancellation import CancellationToken, cancellation_scope
+from .backends.mask_canvas import DecodeObserver, decode_observation
+from .conversation import Conversation, ConversationReply, ConversationSummary, MemoryProvider
 from .trust_identity import UNSPECIFIED
 
 import contextlib
@@ -51,9 +53,11 @@ from .model import (
     RuntimeHandle,
     _close_preserving_primary,
     load_runtime_for_deployment,
+    refuse_unsupported_execution_budget,
 )
 from .model_catalog import ModelCatalog
 from .result import GenerateResult, InfillResult, require_nonempty_generation
+from .runtime_config import sampling_arguments
 
 
 class Engine:
@@ -125,6 +129,12 @@ class Engine:
                 raise ValueError("cuda_native requires an admitted executable plan")
             if plan.load.precision != precision:
                 raise ValueError("cuda_native precision differs from executable plan")
+            # The handle may have been loaded with another budget than this one.
+            refuse_unsupported_execution_budget(
+                backend=self._backend,
+                decode_strategy=plan.runtime_config.decode_strategy,
+                device_memory_budget_bytes=device_memory_budget_bytes,
+            )
             self._deployment_target = plan.deployment
             if self._deployment_profile is None:
                 contract = self._deployment_target.deployment
@@ -381,9 +391,12 @@ class Engine:
         self,
         prompt: str = "",
         *,
-        max_tokens: int = 128,
+        max_tokens: int | None = None,
+        temperature: float = 0.0,
         seed: int | None = None,
         return_debug: bool = False,
+        cancellation_token: CancellationToken | None = None,
+        observer: DecodeObserver | None = None,
     ) -> GenerateResult:
         """Generate text from a prompt.
 
@@ -392,13 +405,29 @@ class Engine:
         prompt:
             The input prompt string.
         max_tokens:
-            Maximum number of tokens to generate.
+            Maximum number of tokens to generate. ``None`` (the default): the
+            reply runs until the model ends it, up to 1,024 tokens, on the MLX
+            path; other backends write at most 128 tokens.
+        temperature:
+            0 (the default) decodes greedily, as the model cards' samplers do by
+            default. Above 0 the fixed-quota models (MDLM, BD3) on cuda_native
+            draw each position's token at that temperature (the cards' Gumbel
+            draw), still committing the most confident positions first. Other
+            models and backends refuse a temperature rather than ignore it.
         seed:
-            Reserved. Seeded sampling is **not implemented** — the underlying
-            runtime exposes no seed parameter, and decoding is greedy. Passing a
-            non-``None`` value raises rather than being ignored: a caller who
-            believes they suppressed non-determinism and did not is worse off
-            than one who gets an error.
+            Keys the draws, so a seed repeats a sampled reply. ``None`` draws
+            one; ``return_debug`` reports it as ``sampling_seed``. Greedy
+            decoding ignores it.
+        cancellation_token:
+            Optional request token for a cache-free execution plan. Signalling it
+            from another thread raises ``GenerationCancelled`` at the next
+            decode boundary, not inside a running device kernel. Other backends
+            and stateful cache/recovery plans currently reject this option.
+        observer:
+            Optional live view of this request's canvas: what the decode loop
+            committed, step by step. It is called on this thread between
+            forwards and cannot change the result. What it sees is a preview;
+            only the returned text is the reply.
 
         Returns
         -------
@@ -409,13 +438,14 @@ class Engine:
             and requested debug metrics. A zero-token request may return empty.
         """
         started = time.perf_counter()
-        with self._guarded():
-            self._reject_seed(seed)
+        with self._guarded(), cancellation_scope(cancellation_token), self._observed(observer):
+            self._admit_cancellation(cancellation_token)
             result = self._handle.generate(
                 prompt,
                 max_tokens=max_tokens,
                 backend=self._backend,
                 return_debug=return_debug,
+                **sampling_arguments(temperature, seed),
                 **self._runtime_device_options(),
             )
             if self._deployment_target is not None and result.debug is not None:
@@ -426,7 +456,7 @@ class Engine:
                     }
                 )
             result.elapsed_seconds = time.perf_counter() - started
-            if max_tokens > 0:
+            if max_tokens is None or max_tokens > 0:
                 require_nonempty_generation(result.text, result=result)
             return result
 
@@ -434,7 +464,9 @@ class Engine:
         self,
         message: str,
         *,
-        max_tokens: int = 128,
+        max_tokens: int | None = None,
+        temperature: float = 0.0,
+        seed: int | None = None,
         system_prompt: str | None = None,
         session: "ChatSession | None" = None,
     ) -> str:
@@ -450,19 +482,23 @@ class Engine:
         session it handed out had no way to reach the engine.
 
         ``system_prompt`` must be omitted, or match the value already bound to
-        a supplied session.
+        a supplied session. ``temperature`` and ``seed`` sample as in
+        :meth:`generate`.
 
         Returns the assistant's reply text.
         """
         return self.chat_result(
-            message, max_tokens=max_tokens, system_prompt=system_prompt, session=session,
+            message, max_tokens=max_tokens, temperature=temperature, seed=seed,
+            system_prompt=system_prompt, session=session,
         ).text
 
     def chat_result(
         self,
         message: str,
         *,
-        max_tokens: int = 128,
+        max_tokens: int | None = None,
+        temperature: float = 0.0,
+        seed: int | None = None,
         system_prompt: str | None = None,
         session: ChatSession | None = None,
     ) -> ConversationReply:
@@ -471,18 +507,19 @@ class Engine:
         Like chat(), a call without a session is stateless. The result shares
         text, finish_reason, elapsed_seconds and to_dict() with generate().
         """
+        sampling = sampling_arguments(temperature, seed)
         if session is not None:
             if system_prompt is not None and system_prompt != session.system_prompt:
                 raise ValueError(
                     "system_prompt differs from the ChatSession-bound value"
                 )
-            return session._send(self, message, max_tokens=max_tokens)
+            return session._send(self, message, max_tokens=max_tokens, **sampling)
         conversation = self._new_conversation(
             system_prompt=system_prompt,
             persistent=False,
         )
         try:
-            return conversation.send(message, max_tokens=max_tokens)
+            return conversation.send(message, max_tokens=max_tokens, **sampling)
         finally:
             conversation.close()
 
@@ -545,6 +582,31 @@ class Engine:
             except BaseException:
                 store.close()
                 raise
+
+    def recent_conversations(
+        self,
+        *,
+        system_prompt: str | None = None,
+        context_policy: str = "recent_only",
+    ) -> tuple[ConversationSummary, ...]:
+        """Stored conversations this engine can continue unchanged, newest first.
+
+        Only history bound to this package, tokenizer and graph, with the same
+        system prompt and context policy, is listed. Listing opens no session.
+        """
+        from .conversation import CONTEXT_POLICIES, _ConversationStore
+
+        if context_policy not in CONTEXT_POLICIES:
+            raise ValueError(f"unknown context policy: {context_policy!r}")
+        with self._guarded():
+            identity = self._conversation_identity_locked(require_verified_package=True)
+            store = _ConversationStore.persistent(self._data_root)
+            try:
+                return store.list_resumable(
+                    identity, system_prompt=system_prompt, context_policy=context_policy
+                )
+            finally:
+                store.close()
 
     def chat_session(
         self,
@@ -678,10 +740,22 @@ class Engine:
     # Introspection
     # ------------------------------------------------------------------ #
 
+    def resource_snapshot(self) -> dict[str, int]:
+        """Observe an already initialized backend; never load weights for a gauge.
+
+        MLX values are process-wide allocator readings, not per-Engine budgets.
+        Absent readings mean unavailable, not zero. This call performs no device
+        synchronization and shares the normal Engine ownership lock.
+        """
+        with self._guarded():
+            owner = self._handle._mlx_local_state
+            return owner.memory_snapshot() if owner is not None else {}
+
     def capabilities(self) -> dict[str, Any]:
         """Return the engine's backend capabilities and model metadata."""
         with self._guarded():
             cfg = self._handle.model_config or {}
+            plan = self._handle._resolved_model_plan
             from .presets import public_operation_support
             pkg_dir = str(self._handle.package_dir) if self._handle.package_dir else ""
             backend_caps: dict[str, Any] = {}
@@ -723,6 +797,8 @@ class Engine:
             return {
                 "backend": self._handle.runtime_impl,
                 "requested_backend": self._backend,
+                "compute_dtype": self._handle._resolved_model_plan.runtime_config.compute_dtype
+                if self._handle._resolved_model_plan is not None else None,
                 "deployment_profile": self._deployment_profile,
                 # The artifact's own redistribution terms and origin. Empty for
                 # packages built before the compiler recorded them;
@@ -738,7 +814,11 @@ class Engine:
                 "operations": public_operation_support(
                     backend=backend_caps.get("auto_backend", self._backend)
                     if self._backend == "auto" else self._backend,
-                    decode_strategy=cfg.get("mlx_diffusion_decode_strategy", "block_threshold"),
+                    decode_strategy=(
+                        plan.runtime_config.decode_strategy
+                        if plan is not None
+                        else cfg.get("mlx_diffusion_decode_strategy", "block_threshold")
+                    ),
                     policy_profile=cfg.get("mlx_diffusion_policy_profile") or "baseline",
                     attention_mask_kind=cfg.get("attention_mask_kind", "bidirectional"),
                 ),
@@ -893,10 +973,10 @@ class Engine:
             source_revision=handle.source_checkpoint_sha,
         )
 
-    def _admit_conversation_locked(self, messages, *, max_tokens: int):
+    def _admit_conversation_locked(self, messages, *, max_tokens: int | None):
         return self._handle.admit_chat_messages(messages, max_tokens=max_tokens)
 
-    def _admit_conversation_if_fits_locked(self, messages, *, max_tokens: int):
+    def _admit_conversation_if_fits_locked(self, messages, *, max_tokens: int | None):
         """Return exact admission, or ``None`` only for sequence capacity."""
 
         try:
@@ -904,12 +984,45 @@ class Engine:
         except ChatRequestCapacityError:
             return None
 
-    def _generate_conversation_locked(self, messages, *, max_tokens: int):
-        return self._handle.generate(
-            chat_messages=messages,
-            max_tokens=max_tokens,
-            backend=self._backend,
-            **self._runtime_device_options(),
+    def _generate_conversation_locked(
+        self,
+        messages,
+        *,
+        max_tokens: int | None,
+        temperature: float = 0.0,
+        seed: int | None = None,
+        cancellation_token: CancellationToken | None = None,
+        observer: DecodeObserver | None = None,
+    ):
+        with cancellation_scope(cancellation_token), self._observed(observer):
+            self._admit_cancellation(cancellation_token)
+            return self._handle.generate(
+                chat_messages=messages,
+                max_tokens=max_tokens,
+                backend=self._backend,
+                **sampling_arguments(temperature, seed),
+                **self._runtime_device_options(),
+            )
+
+    @property
+    def cancellation_supported(self) -> bool:
+        """Whether this engine's plan accepts a ``cancellation_token``."""
+        with self._guarded():
+            return self._backend in self._handle.cooperative_cancellation_backends
+
+    def _observed(self, observer: DecodeObserver | None):
+        """Scope a live observer for one request; the caller holds the engine lock."""
+        if observer is None:
+            return contextlib.nullcontext()
+        tokenizer = self._handle.tokenizer
+
+        def token_text(token_id: int) -> str:
+            # One token as the tokenizer renders it, whitespace kept. The decode
+            # thread calls this while it holds the engine lock, so take no lock.
+            return tokenizer.decode([token_id], strip=False)
+
+        return decode_observation(
+            observer, token_text=token_text if tokenizer is not None else None
         )
 
     def _count_conversation_text_locked(self, text: str) -> int:
@@ -926,6 +1039,29 @@ class Engine:
         if type(maximum) is not int or maximum <= 0:
             raise ValueError("conversation requires a positive max_position_embeddings")
         return maximum
+
+    def _reply_progress_observer(self, on_progress):
+        """A canvas observer that hands ``on_progress`` the reply as text runs."""
+        from .decode_progress import reply_progress
+
+        tokenizer = self._handle.tokenizer
+        if tokenizer is None:
+            return None
+
+        def decode(ids: list[int]) -> str:
+            return tokenizer.decode(ids, strip=False)
+
+        return lambda canvas: on_progress(reply_progress(canvas, decode))
+
+    def _admit_cancellation(self, token: CancellationToken | None) -> None:
+        """Refuse a token the loaded plan cannot honour at a decode boundary."""
+        if token is not None and (
+            self._backend not in self._handle.cooperative_cancellation_backends
+        ):
+            raise ValueError(
+                "cooperative cancellation requires a cache-free execution plan "
+                "(MLX, or cuda_native's cache-free fixed-quota plans)"
+            )
 
     @contextlib.contextmanager
     def _guarded(self):
@@ -951,12 +1087,3 @@ class Engine:
             "device_ordinal": self._device_ordinal,
             "device_memory_budget_bytes": self._device_memory_budget_bytes,
         }
-
-    @staticmethod
-    def _reject_seed(seed: int | None) -> None:
-        if seed is not None:
-            raise NotImplementedError(
-                "seed is not implemented: the runtime exposes no seed parameter and "
-                "decoding is greedy. Passing a seed silently would hand back "
-                "non-determinism you believe you had suppressed."
-            )

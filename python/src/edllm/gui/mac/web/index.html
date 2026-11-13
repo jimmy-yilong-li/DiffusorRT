@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>DiffusorRT</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="app.css">
+<script src="decode.js" defer></script>
+<script src="rich.js" defer></script>
+<script src="model.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<!-- Icons, drawn once and used by reference. -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="brand-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#29C7CC"/><stop offset=".5" stop-color="#5478FA"/><stop offset="1" stop-color="#945CF5"/>
+    </linearGradient>
+  </defs>
+  <!-- The mark: a mask grid resolving into filled cells. -->
+  <symbol id="i-brand" viewBox="0 0 28 28">
+    <rect width="28" height="28" rx="7.8" fill="url(#brand-gradient)"/>
+    <g fill="#fff">
+      <rect x="6.6" y="6.6" width="3.8" height="3.8" rx=".9" opacity=".95"/><rect x="12.1" y="6.6" width="3.8" height="3.8" rx=".9" opacity=".95"/><rect x="17.6" y="6.6" width="3.8" height="3.8" rx=".9" opacity=".32"/>
+      <rect x="6.6" y="12.1" width="3.8" height="3.8" rx=".9" opacity=".95"/><rect x="12.1" y="12.1" width="3.8" height="3.8" rx=".9" opacity=".95"/><rect x="17.6" y="12.1" width="3.8" height="3.8" rx=".9" opacity=".95"/>
+      <rect x="6.6" y="17.6" width="3.8" height="3.8" rx=".9" opacity=".32"/><rect x="12.1" y="17.6" width="3.8" height="3.8" rx=".9" opacity=".95"/><rect x="17.6" y="17.6" width="3.8" height="3.8" rx=".9" opacity=".95"/>
+    </g>
+  </symbol>
+  <!-- Line icons. Their stroke comes from the .icon rule: a referenced symbol inherits from where it is used. -->
+  <symbol id="i-compose" viewBox="0 0 16 16"><path d="M7.5 2.75H4A1.75 1.75 0 0 0 2.25 4.5V12A1.75 1.75 0 0 0 4 13.75h7.5A1.75 1.75 0 0 0 13.25 12V8.5"/><path d="M12.2 2.3a1.1 1.1 0 0 1 1.5 1.5L8.4 9.1 6.5 9.5l.4-1.9z"/></symbol>
+  <symbol id="i-sidebar" viewBox="0 0 16 16"><rect x="1.75" y="2.75" width="12.5" height="10.5" rx="2.25"/><path d="M6 2.75v10.5"/></symbol>
+  <symbol id="i-inspector" viewBox="0 0 16 16"><rect x="1.75" y="2.75" width="12.5" height="10.5" rx="2.25"/><path d="M10 2.75v10.5"/></symbol>
+  <symbol id="i-send" viewBox="0 0 16 16"><path d="M8 13V3.2M3.9 7.2 8 3l4.1 4.2"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 16 16"><rect x="4.5" y="4.5" width="7" height="7" rx="1.4" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 16 16"><rect x="5.5" y="5.5" width="8" height="8" rx="1.6"/><path d="M10.5 5.5V4A1.5 1.5 0 0 0 9 2.5H4A1.5 1.5 0 0 0 2.5 4v5A1.5 1.5 0 0 0 4 10.5h1.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="m3.2 8.4 3.1 3.1 6.5-7"/></symbol>
+  <symbol id="i-decode" viewBox="0 0 16 16"><g fill="currentColor" stroke="none"><circle cx="8" cy="8" r="1.75"/><circle cx="8" cy="3.2" r="1.45"/><circle cx="8" cy="12.8" r="1.45"/><circle cx="3.85" cy="5.6" r="1.45"/><circle cx="12.15" cy="5.6" r="1.45"/><circle cx="3.85" cy="10.4" r="1.45"/><circle cx="12.15" cy="10.4" r="1.45"/></g></symbol>
+  <symbol id="i-forwards" viewBox="0 0 16 16"><path d="M13 8a5 5 0 0 1-8.7 3.4M3 8a5 5 0 0 1 8.7-3.4"/><path d="M11.9 2.2v2.5H9.4M4.1 13.8v-2.5h2.5"/></symbol>
+  <symbol id="i-masks" viewBox="0 0 16 16"><rect x="2.75" y="2.75" width="10.5" height="10.5" rx="2" stroke-dasharray="2.6 2.2"/></symbol>
+  <symbol id="i-block" viewBox="0 0 16 16"><rect x="1.75" y="3.25" width="12.5" height="9.5" rx="2"/><path d="M8 3.25v9.5"/></symbol>
+  <symbol id="i-time" viewBox="0 0 16 16"><circle cx="8" cy="9" r="4.75"/><path d="M8 6.4V9l1.7 1.2M6.4 2.25h3.2"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 16 16"><path d="M1.75 4.5A1.5 1.5 0 0 1 3.25 3h2.6l1.5 1.75h5.4a1.5 1.5 0 0 1 1.5 1.5v5.25a1.5 1.5 0 0 1-1.5 1.5h-9.5a1.5 1.5 0 0 1-1.5-1.5z"/></symbol>
+  <symbol id="i-chevrons" viewBox="0 0 16 16"><path d="m5 6.2 3-3 3 3M5 9.8l3 3 3-3"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 16 16"><path d="m4.5 6.2 3.5 3.6 3.5-3.6"/></symbol>
+  <symbol id="i-warning" viewBox="0 0 16 16"><path d="M8 2.4 14.2 13H1.8z" fill="currentColor" stroke="currentColor"/><path d="M8 6.6v2.9M8 11.3v.1" stroke="#fff"/></symbol>
+  <symbol id="i-stopped" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.75"/><rect x="5.9" y="5.9" width="4.2" height="4.2" rx=".8" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-play" viewBox="0 0 16 16"><path d="M5 3.4v9.2L12.6 8z" fill="currentColor" stroke="currentColor"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 16 16"><path d="M5.4 3.5v9M10.6 3.5v9" stroke-width="2.4"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 16 16"><path d="M13 8a5 5 0 1 1-1.6-3.7"/><path d="M13.1 2.4v2.9h-2.9"/></symbol>
+  <symbol id="i-idea" viewBox="0 0 16 16"><path d="M5.6 10.4a4 4 0 1 1 4.8 0c-.5.4-.7.9-.7 1.5H6.3c0-.6-.2-1.1-.7-1.5zM6.5 14h3"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 16 16"><path d="m2.75 13.25.6-2.9 7.4-7.4a1.3 1.3 0 0 1 1.85 0l.45.45a1.3 1.3 0 0 1 0 1.85l-7.4 7.4zM8 13.25h5.25"/></symbol>
+  <symbol id="i-question" viewBox="0 0 16 16"><path d="M2.5 4.75A2.25 2.25 0 0 1 4.75 2.5h6.5a2.25 2.25 0 0 1 2.25 2.25v4a2.25 2.25 0 0 1-2.25 2.25H7.6L4.5 13.6V11A2.25 2.25 0 0 1 2.5 8.75z"/><path d="M6.7 5.6a1.4 1.4 0 1 1 2 1.3c-.4.2-.7.5-.7.9M8 9.3v.1"/></symbol>
+  <symbol id="i-code" viewBox="0 0 16 16"><path d="m5.4 4.6-3.3 3.4 3.3 3.4M10.6 4.6l3.3 3.4-3.3 3.4M9 3.2 7 12.8"/></symbol>
+</svg>
+
+<div class="app" id="app">
+  <aside class="sidebar" id="sidebar" aria-label="Conversations" tabindex="-1">
+    <div class="side-head">
+      <svg class="brand"><use href="#i-brand"/></svg>
+      <span class="wordmark">DiffusorRT</span>
+      <button class="icon-button" id="new-chat" type="button" aria-label="New chat"><svg class="icon"><use href="#i-compose"/></svg></button>
+    </div>
+    <div class="side-label">Conversations</div>
+    <nav class="recent" id="recent"></nav>
+    <button class="model-chip" id="model-chip" type="button" title="Choose another model">
+      <svg class="brand"><use href="#i-brand"/></svg>
+      <span class="chip-text"><span class="chip-name" id="chip-name">No model</span><span class="chip-sub" id="chip-sub">Choose a model</span></span>
+      <svg class="icon faint"><use href="#i-chevrons"/></svg>
+    </button>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-button" id="toggle-sidebar" type="button" aria-label="Show or hide the conversation list"><svg class="icon"><use href="#i-sidebar"/></svg></button>
+      <div class="titles">
+        <div class="chat-title" id="chat-title">DiffusorRT</div>
+        <div class="chat-sub" id="chat-sub">Starting…</div>
+      </div>
+      <button class="icon-button" id="toggle-inspector" type="button" aria-label="Show or hide the details panel"><svg class="icon"><use href="#i-inspector"/></svg></button>
+    </header>
+
+    <div class="banner hidden" id="banner" role="alert">
+      <span class="banner-text" id="banner-text"></span>
+      <button class="text-button hidden" id="banner-action" type="button"></button>
+    </div>
+
+    <section class="stage" id="stage" aria-live="polite">
+      <div class="phase" id="phase"></div>
+      <div class="transcript hidden" id="transcript">
+        <div class="messages" id="messages"></div>
+        <div id="turn"></div>
+        <div id="unsent"></div>
+      </div>
+    </section>
+
+    <footer class="composer-wrap" id="composer-wrap">
+      <form class="composer" id="composer">
+        <textarea id="input" rows="1" placeholder="Message" aria-label="Message" autocomplete="off"></textarea>
+        <div class="composer-row">
+          <button class="chip toggle" id="live-toggle" type="button" aria-pressed="true">
+            <svg class="icon"><use href="#i-decode"/></svg><span>Live decode</span>
+          </button>
+          <span class="spacer"></span>
+          <button class="round stop hidden" id="stop" type="button" aria-label="Stop the reply"><svg class="icon"><use href="#i-stop"/></svg></button>
+          <button class="round send" id="send" type="submit" aria-label="Send" disabled><svg class="icon"><use href="#i-send"/></svg></button>
+        </div>
+      </form>
+      <div class="hint" id="hint"></div>
+    </footer>
+  </main>
+
+  <aside class="inspector" id="inspector" aria-label="Details" tabindex="-1">
+    <section>
+      <h2>Last reply</h2>
+      <dl>
+        <div><dt>Time</dt><dd id="reply-time">—</dd></div>
+        <div><dt>Visible tokens</dt><dd id="reply-tokens">—</dd></div>
+        <div><dt>Throughput</dt><dd id="reply-rate">—</dd></div>
+        <div><dt>Context</dt><dd id="reply-context">—</dd></div>
+        <div class="hidden" id="row-turns"><dt>Earlier turns</dt><dd id="reply-turns">—</dd></div>
+      </dl>
+      <p class="note">Time is the whole request. Throughput is visible tokens over that time, not decode speed alone. Replies arrive whole, so there is no time to first token.</p>
+    </section>
+    <section>
+      <h2>Decode</h2>
+      <dl>
+        <div><dt>Strategy</dt><dd id="decode-strategy">—</dd></div>
+        <div><dt>Canvas</dt><dd id="decode-canvas">—</dd></div>
+        <div><dt>Blocks</dt><dd id="decode-blocks">—</dd></div>
+        <div><dt>Forward passes</dt><dd id="decode-forwards">—</dd></div>
+        <div><dt>Step limit</dt><dd id="decode-limit">—</dd></div>
+      </dl>
+      <label class="switch-row"><span>Live decode view</span>
+        <input type="checkbox" class="switch" id="live-switch" checked></label>
+      <p class="note" id="live-note"></p>
+    </section>
+    <section>
+      <h2>Model</h2>
+      <dl>
+        <div><dt>Name</dt><dd id="model-name">—</dd></div>
+        <div><dt>Backend</dt><dd id="model-backend">—</dd></div>
+        <div><dt>Precision</dt><dd id="model-precision">—</dd></div>
+        <div class="hidden" id="precision-row"><dt>Change precision</dt><dd><select id="precision" aria-label="Precision"></select></dd></div>
+        <div><dt>Device</dt><dd id="model-device">—</dd></div>
+        <div><dt>Stop a reply</dt><dd id="model-stop">—</dd></div>
+      </dl>
+      <p class="note hidden" id="precision-note">Changing the precision reloads the model.</p>
+      <button class="text-button" id="change-model" type="button"><svg class="icon"><use href="#i-folder"/></svg><span>Choose Another Model…</span></button>
+    </section>
+    <section>
+      <h2>Memory</h2>
+      <dl>
+        <div class="hidden" id="row-mlx-active"><dt>MLX active</dt><dd id="mlx-active">—</dd></div>
+        <div class="hidden" id="row-mlx-cache"><dt>MLX cache</dt><dd id="mlx-cache">—</dd></div>
+        <div class="hidden" id="row-gpu"><dt>GPU memory</dt><dd id="gpu-memory">—</dd></div>
+        <div><dt>Process peak</dt><dd id="peak-rss">—</dd></div>
+      </dl>
+      <div class="meter hidden" id="gpu-meter-row"><span id="gpu-meter"></span></div>
+      <p class="note" id="memory-note"></p>
+    </section>
+    <section>
+      <h2>System prompt</h2>
+      <textarea id="system-prompt" rows="3" placeholder="Optional instructions for every reply" aria-label="System prompt"></textarea>
+      <div class="apply-row"><p class="note" id="prompt-note">None is sent unless you write one.</p>
+        <button class="small-button" id="apply-prompt" type="button" disabled>Apply</button></div>
+    </section>
+    <section>
+      <h2>Storage</h2>
+      <p class="note">Conversations are kept on this device, unencrypted. These folders are set when the window is started.</p>
+      <div class="roots" id="storage-roots"></div>
+    </section>
+  </aside>
+</div>
+
+<div class="toast hidden" id="toast" role="status"></div>
+
+<div class="scrim hidden" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+  <div class="sheet" id="sheet-box">
+    <h2 id="sheet-title"></h2>
+    <div id="sheet-body"></div>
+    <div class="sheet-actions" id="sheet-actions"></div>
+  </div>
+</div>
+
+<div class="scrim hidden" id="ended">
+  <div class="sheet center">
+    <svg class="brand large"><use href="#i-brand"/></svg>
+    <h2 id="ended-title">The chat has ended</h2>
+    <p id="ended-text">You can close this window.</p>
+  </div>
+</div>
+</body>
+</html>

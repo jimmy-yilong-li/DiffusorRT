@@ -1,0 +1,89 @@
+[build-system]
+requires = ["hatchling==1.32.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "diffusor-rt"
+version = "0.2.6"
+description = "DiffusorRT: cross-platform edge runtime for diffusion language models"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+dependencies = [
+  "numpy>=1.26",
+  "jsonschema>=4.23",
+  "tokenizers>=0.20,<0.21",
+]
+
+[project.urls]
+Source = "https://github.com/jimmy-yilong-li/DiffusorRT"
+Documentation = "https://github.com/jimmy-yilong-li/DiffusorRT#readme"
+Issues = "https://github.com/jimmy-yilong-li/DiffusorRT/issues"
+
+[project.scripts]
+diffusorrt = "diffusor_rt.cli:main"
+edllm = "edllm.cli:main"
+
+[project.gui-scripts]
+diffusorrt-gui = "diffusor_rt.gui:main"
+
+[project.optional-dependencies]
+gui = [
+  "pywebview>=6.2.1,<7; sys_platform == 'darwin'",
+]
+test = [
+  "pytest>=8",
+]
+# Static analysis. The version floor is not cosmetic: two ruff versions on the
+# same machine disagreed about the same tree (0.15.12 reported a B008 that
+# 0.16.2 did not), so a gate that runs whatever is on PATH gives a verdict that
+# depends on which environment ran it. tests/packaging/test_static_analysis.py
+# asserts the floor and skips when ruff is absent.
+dev = [
+  "pytest>=8",
+  "ruff>=0.15",
+]
+converter = [
+  "safetensors>=0.4",
+  "torch>=2.6,<2.7",
+]
+# Everything `Engine.from_pretrained()` needs, traced through the call chain:
+# huggingface_hub (snapshot acquisition), safetensors + torch (dtype-preserving
+# shard reads and the compatibility NPZ writer), transformers (the real Dream tokenizer,
+# tokenizer.py:102), and Jinja2 (the tokenizer's chat-template renderer). The
+# transformers pin mirrors hf-dream-reference: 4.46.x is
+# required and newer releases break the Dream tokenizer, so widening it here
+# could resolve to a version that cannot load the tokenizer it just downloaded.
+compiler = [
+  "huggingface_hub>=0.26,<1.0",
+  "safetensors>=0.4",
+  "torch>=2.6,<2.7",
+  "transformers>=4.46.2,<4.47",
+  "jinja2>=3.1,<4",
+  "tokenizers>=0.20,<0.21",
+]
+# The local service adapter (`diffusorrt serve`). BOTH imports in
+# service_asgi.py raise the same "install diffusor-rt[serve]" hint:
+# create_service_app imports starlette, run_service_app imports uvicorn.
+# Listing only one of them makes the hint tell the truth for `serve` and
+# lie for `create_service_app` -- keep both here.
+serve = [
+  "starlette>=0.37",
+  "uvicorn>=0.30",
+]
+tui = [
+  "textual>=8.0,<9",
+]
+hf-dream-reference = [
+  "transformers>=4.46.2,<4.47",
+  "jinja2>=3.1,<4",
+  "tokenizers>=0.20,<0.21",
+  "peft>=0.19,<0.20",
+  "torch>=2.6,<2.7",
+]
+mlx-local = [
+  "mlx>=0.31,<0.32",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/edllm", "src/diffusor_rt"]

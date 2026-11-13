@@ -1,49 +1,1179 @@
 {
-  "file_count": 6,
+  "file_count": 195,
   "files": [
     {
-      "bytes": 1785,
+      "bytes": 11357,
       "mode": "0664",
-      "path": "INDEX.md",
-      "sha256": "841835e440515e8d10c324d78c051eb71ad1e1239e770f4047a500c035dfae75"
+      "path": "LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
     },
     {
-      "bytes": 13965,
+      "bytes": 11357,
       "mode": "0664",
-      "path": "README.md",
-      "sha256": "f5ec25fe5e7320e878b55b37692092f9053c163736ca9532627c2f5c04b753d9"
+      "path": "python/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
     },
     {
-      "bytes": 8616,
+      "bytes": 2797,
       "mode": "0664",
-      "path": "mac/README.md",
-      "sha256": "66807f35c86d613a4111531637571816d3eaf7b82d93ffdd46674842da43d3b2"
+      "path": "python/build-backend.lock.json",
+      "sha256": "afd456f890afd473b0c8c2de00f1142a243d57f0c64a366059160c0f97a56189"
     },
     {
-      "bytes": 8047,
+      "bytes": 2702,
       "mode": "0664",
-      "path": "windows/README.md",
-      "sha256": "13c667f4ac1d22a0cf523e9884753615e621d1b246a56cb9afaf09eeee3386ad"
+      "path": "python/pyproject.toml",
+      "sha256": "adf00ae105247c3fe78abede6c860bf9473b9dbf87d4c30a7d3db08c0705f6ed"
     },
     {
-      "bytes": 913,
+      "bytes": 769,
       "mode": "0664",
-      "path": "windows/assets/README.md",
-      "sha256": "97021b62bd40e05e42d53d71e7f267badb4cc18cb03e9465bbd8acdef623de3c"
+      "path": "python/src/diffusor_rt/__init__.py",
+      "sha256": "725a7c08933128c8f9f92e827c2780be5b435eae193f2346864cb36c52dd7f34"
     },
     {
-      "bytes": 135000,
+      "bytes": 60,
       "mode": "0664",
-      "path": "windows/assets/interface-preview.png",
-      "sha256": "68d8496a4d9d49c17ef0311b19ed57558b6f18fdc77a01aa817175bbefd6ea4e"
+      "path": "python/src/diffusor_rt/__main__.py",
+      "sha256": "f7161b19bdfef44242d3a0a86b5498566bac806a5b22044752164019f1236cf9"
+    },
+    {
+      "bytes": 123,
+      "mode": "0664",
+      "path": "python/src/diffusor_rt/cli.py",
+      "sha256": "131d5008fe8491aa8027c046396cc9d749109ec29bdace799bd9923be544bca1"
+    },
+    {
+      "bytes": 253,
+      "mode": "0664",
+      "path": "python/src/diffusor_rt/conformance.py",
+      "sha256": "9e355cee5fc2c8e7a5970a54a92029a2be095a39f211ea48040a47de11071f8e"
+    },
+    {
+      "bytes": 568,
+      "mode": "0664",
+      "path": "python/src/diffusor_rt/evaluation.py",
+      "sha256": "a57e6124df8f428858e9cb525266668874e60d28da63a38ffdb91509eeaf717c"
+    },
+    {
+      "bytes": 367,
+      "mode": "0664",
+      "path": "python/src/diffusor_rt/gui.py",
+      "sha256": "bd0e3279b47536c4c5763656107a66f9184e695490ade47d955f45cb602122e1"
+    },
+    {
+      "bytes": 71,
+      "mode": "0664",
+      "path": "python/src/diffusor_rt/py.typed",
+      "sha256": "da3222d1fcc93d92ae5dd578a523e3b9822890eb9adfa61ec09bf5c38dde4c9f"
+    },
+    {
+      "bytes": 5386,
+      "mode": "0664",
+      "path": "python/src/edllm/__init__.py",
+      "sha256": "253da03abf5da070aa366caafb0805dc737f6d7bff76e139c57aa4d940bc0470"
+    },
+    {
+      "bytes": 84,
+      "mode": "0664",
+      "path": "python/src/edllm/__main__.py",
+      "sha256": "129f375f70507afae6aa15324b07026bc05831d599637f4d35b329ae2dcff89f"
+    },
+    {
+      "bytes": 28569,
+      "mode": "0664",
+      "path": "python/src/edllm/_conversation_store.py",
+      "sha256": "c1dbb37b2d373eea9f63cf6f5cfb7e961f3d2197af4e8c6fa3e917d3d9b0eedc"
+    },
+    {
+      "bytes": 3273,
+      "mode": "0664",
+      "path": "python/src/edllm/_log.py",
+      "sha256": "48d46f6ff6e753b10a35b8b53d06b545539b71473e4e87d3993b583ad3410b3e"
+    },
+    {
+      "bytes": 12977,
+      "mode": "0664",
+      "path": "python/src/edllm/_windows_files.py",
+      "sha256": "06d7497263df86986be1c7c91e55498c441ff1fe4134ee1fe9bc81445b37927a"
+    },
+    {
+      "bytes": 964,
+      "mode": "0664",
+      "path": "python/src/edllm/abi/__init__.py",
+      "sha256": "96915fe3fc8623fa60a1f6adff2e18d1589326dd2fafaf47a5aa294d98cde6ed"
+    },
+    {
+      "bytes": 3561,
+      "mode": "0664",
+      "path": "python/src/edllm/abi/buffers.py",
+      "sha256": "8e1027f7cb66c117f0fc529089749fda0ab6bc4f02df9df99c2dfde3f16b5366"
+    },
+    {
+      "bytes": 3468,
+      "mode": "0664",
+      "path": "python/src/edllm/abi/enums.py",
+      "sha256": "1232a4024e69643c04e910582473f7dd2ec63c5cd730f280fdc7ffa0c3da7f32"
+    },
+    {
+      "bytes": 5578,
+      "mode": "0664",
+      "path": "python/src/edllm/abi/forward.py",
+      "sha256": "5c91f0879bcddd87b41ca4fdab70fa0e65ebf2e1fdbfaf585cb3d90d851ae729"
+    },
+    {
+      "bytes": 4915,
+      "mode": "0664",
+      "path": "python/src/edllm/abi/golden.py",
+      "sha256": "c8cc94da5242cb858847dbb6cb636042cb3f989d9e68975d71d8dbe967c0b964"
+    },
+    {
+      "bytes": 1997,
+      "mode": "0664",
+      "path": "python/src/edllm/abi/handles.py",
+      "sha256": "42e39cbf5664aa93d311acf22226e71257edd64356d38560e2ec1c764435b67e"
+    },
+    {
+      "bytes": 4163,
+      "mode": "0664",
+      "path": "python/src/edllm/abi/lifetimes.py",
+      "sha256": "c90dc5ea483eda17a86a31e09ebdb93fa8416126f6527fe631e5a29195509bc3"
+    },
+    {
+      "bytes": 3409,
+      "mode": "0664",
+      "path": "python/src/edllm/abi/parity.py",
+      "sha256": "0c49a7425a421849a70bd0fd666ac8b610ac25bde109e110d54e97c118ec6e94"
+    },
+    {
+      "bytes": 14288,
+      "mode": "0664",
+      "path": "python/src/edllm/abi/plan_codec.py",
+      "sha256": "adee350f162808dcfa9557d5d14326c25b2ab52372e41fccfa013f8f246da266"
+    },
+    {
+      "bytes": 4794,
+      "mode": "0664",
+      "path": "python/src/edllm/abi/runner.py",
+      "sha256": "713aa0a93c569640175d3e8d77085a87f82e5b0a581d7773633adb797ec32817"
+    },
+    {
+      "bytes": 19428,
+      "mode": "0664",
+      "path": "python/src/edllm/application_state.py",
+      "sha256": "26950197a785e124f21414327d06a1e637307486984bcf6d5087dc0b19f1098c"
+    },
+    {
+      "bytes": 2598,
+      "mode": "0664",
+      "path": "python/src/edllm/backend_ids.py",
+      "sha256": "8ae1e1eb492239d38d7587f7ac747d0ff2e8f8c98043a6323990c9c5498adbe0"
+    },
+    {
+      "bytes": 33,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/__init__.py",
+      "sha256": "fa36d851a6925bdc5f05ee548c64b72b46dfe83207813152807c233c570e27a4"
+    },
+    {
+      "bytes": 26692,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/backend_runner.py",
+      "sha256": "7093d17055183c4a265c26b4b732b6cb90f5c09d777089d8362a3acfdb03e88b"
+    },
+    {
+      "bytes": 1073,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/cache_identity.py",
+      "sha256": "b93def28d36def6501d84d2a2f799e4c3e9cc563319e1c2dd1be19515ecf36f8"
+    },
+    {
+      "bytes": 9088,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/cache_registry.py",
+      "sha256": "a9aa003f4650ffd9fbbe9b6901ccfb5a634d774c205bfc6edeffd77aa0977578"
+    },
+    {
+      "bytes": 7795,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/correction_policy.py",
+      "sha256": "19dfe7f8d6f6a3ae6674a4ce852ac50319f245339ef8517042325c32e0d57185"
+    },
+    {
+      "bytes": 10222,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/cuda_profile.py",
+      "sha256": "e42f7c2bfa79af1d90c904538f46aeed997c4e8eb02ab14407806984db93602c"
+    },
+    {
+      "bytes": 12269,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/decode_session.py",
+      "sha256": "0f7b66fbac5b2bd5c5f92549b788b2b463c8f5b2f98fdb3fbe3406ccdd860702"
+    },
+    {
+      "bytes": 45785,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/delayed_kv.py",
+      "sha256": "2a1d9e5d584cc1c319b10733cbd0606347b81a8f11636018294e3475b070627b"
+    },
+    {
+      "bytes": 16793,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/device_runtime.py",
+      "sha256": "566c16ae9cbcb0af25bb02548fed68f11f3397fe42919d270eb038a10dab52f5"
+    },
+    {
+      "bytes": 148121,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/diffusion_runtime.py",
+      "sha256": "4c7f84be4806a69feb445b628601446d4ad00dff5a78f594a3a55dd6447367c3"
+    },
+    {
+      "bytes": 5630,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/dkv_decode.py",
+      "sha256": "392f1f4015c8cc8dbb8d4df25f9c73478b62350d5b01d77db3af738d9fe95db8"
+    },
+    {
+      "bytes": 9794,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/hf_dream.py",
+      "sha256": "6ab5ed83f82d91f3cce37138d8cf8b1ce873f6f0a1da3440fc8feb76bcc6e68d"
+    },
+    {
+      "bytes": 8336,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/kernel_table.py",
+      "sha256": "72537677636fb9016ae17895f560feb9a3a51376643da9cbc7bcf54152feba06"
+    },
+    {
+      "bytes": 20465,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/kv_backend.py",
+      "sha256": "51912c1c8b000374d12ffc73f7a13b39dba8ef2c1620b7794af8c77c72fc24aa"
+    },
+    {
+      "bytes": 4841,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/kv_capacity.py",
+      "sha256": "b96d16a50e570431711ca0f557974ac27c96d8041ddff0284f90752b9d0427e2"
+    },
+    {
+      "bytes": 41403,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/kv_manager.py",
+      "sha256": "a60277c842fbe4123538fb0d25d05a0bdbb1e0018e1e07008e4428778cffa0ad"
+    },
+    {
+      "bytes": 58661,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/kv_reference.py",
+      "sha256": "5a8aa69408a9ce54c948d4099ab5d6cace818fb262f231481282367cd7ea3fea"
+    },
+    {
+      "bytes": 45897,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/kv_runtime.py",
+      "sha256": "b0b8f073742d99a390f06a2905abd801ab8d877f21267d875335ab4de8d9d83f"
+    },
+    {
+      "bytes": 4081,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/kv_slices.py",
+      "sha256": "54319266230aa98316912ab11b3edfbf3487b0bc3e95dabf762b33a8b19f8ed2"
+    },
+    {
+      "bytes": 23116,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/kv_trace.py",
+      "sha256": "b947dde9cd10cfdb2f5bc412d53c0e4bbf691600f7af08c4d23a37c360456d11"
+    },
+    {
+      "bytes": 23452,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/mask_canvas.py",
+      "sha256": "a62cc848e8a769aff6e38969f28497908aea656768dc6676c1ce5212f780582b"
+    },
+    {
+      "bytes": 2191,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/metal_ops.py",
+      "sha256": "06dc5cdd5e15a679de480448c7a0185a2563601ed194eef30b4c97c5aca55504"
+    },
+    {
+      "bytes": 7891,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/mlx_cache.py",
+      "sha256": "9cf783f0975c1bff38d0e61149de1d19e977854497605a5ff804492218e9c900"
+    },
+    {
+      "bytes": 22285,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/mlx_d2f_forward.py",
+      "sha256": "6949302c38cafd27db0b9da861ee3f5edab7d2bc3f4ad61f52523796aed0effb"
+    },
+    {
+      "bytes": 94317,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/mlx_dream.py",
+      "sha256": "ff9be86f2a049d6886f0d92df22a4a40a0f6016677b6352d5813c15eb30774a8"
+    },
+    {
+      "bytes": 62157,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/mlx_forward.py",
+      "sha256": "dfad9fd5b034b0fb7bda4bb444f64b1cdb03835495dfe86d6ae23862bdef1796"
+    },
+    {
+      "bytes": 18549,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/mlx_ops.py",
+      "sha256": "7fbca1e089a3d3fc1493864c2c579ee463bd699e2b0ca7d0b7676767a5772548"
+    },
+    {
+      "bytes": 31363,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/mlx_state_cache.py",
+      "sha256": "6dd791564eb3358be2bdaaae53e9195822e50d4e256a7ca54a98b4ec38fca04c"
+    },
+    {
+      "bytes": 4063,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/model_adapter.py",
+      "sha256": "79c14c6ea9c9d79126b08449a7605072bb42193c9815f6a33033c7ec31d64fd9"
+    },
+    {
+      "bytes": 30558,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/native_d2f_cache.py",
+      "sha256": "e9b49e87ab2d64b4682c735ff327d86fcccf6dbd25b5093d734af5de954fc5b6"
+    },
+    {
+      "bytes": 12799,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/snapshot_store.py",
+      "sha256": "0adc890fce4fef1ec46af2963c2ff783fa61f6521cb515ad7328f1b90e52956d"
+    },
+    {
+      "bytes": 16404,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/token_state.py",
+      "sha256": "c55173ffbc6fde4c7325b8528118f6dcd28e48fabf957fac1dcfb3bcb9f47b1b"
+    },
+    {
+      "bytes": 25503,
+      "mode": "0664",
+      "path": "python/src/edllm/backends/window_plan.py",
+      "sha256": "f606af2dcea2cc112117c6354eb9e6a3d0968e09b2af4e61ec67ec9608fb8911"
+    },
+    {
+      "bytes": 36779,
+      "mode": "0664",
+      "path": "python/src/edllm/benchmark.py",
+      "sha256": "0d5b922232732c10d9d13c3e83ab0b56ffea5f676029988a2bffcf827b9b3aba"
+    },
+    {
+      "bytes": 2673,
+      "mode": "0664",
+      "path": "python/src/edllm/cache.py",
+      "sha256": "a76e39cca7b62e917814aed3838ef1ccaf0f4a4eb3b1b88a674a624a23f93dda"
+    },
+    {
+      "bytes": 1351,
+      "mode": "0664",
+      "path": "python/src/edllm/cancellation.py",
+      "sha256": "585aa37cc03c3f9e59f92199e7a6fb2fb9070072bd04defc747610f2b6dd4dd9"
+    },
+    {
+      "bytes": 31852,
+      "mode": "0664",
+      "path": "python/src/edllm/capabilities.py",
+      "sha256": "267b51dbfcfb006133d06bef13fcfdb02f4dec3cf4526fefdac32617fe501e74"
+    },
+    {
+      "bytes": 1877,
+      "mode": "0664",
+      "path": "python/src/edllm/chat.py",
+      "sha256": "3e9ca68c38363f06b3ca90260ac5507992408d97569d286ff0f966f50f756e08"
+    },
+    {
+      "bytes": 93166,
+      "mode": "0664",
+      "path": "python/src/edllm/cli.py",
+      "sha256": "784ca691c3976a0d002318b43419b4d2117d363625f26a253d4e735f38be5bd9"
+    },
+    {
+      "bytes": 2733,
+      "mode": "0664",
+      "path": "python/src/edllm/compiler/__init__.py",
+      "sha256": "64b006ec5eb482dcc92c990fd778d265d7f0c1188117dbf777abff464a47ae51"
+    },
+    {
+      "bytes": 61701,
+      "mode": "0664",
+      "path": "python/src/edllm/compiler/build.py",
+      "sha256": "8e94c63a0414499586209bc6eb5cc1de29cd36989acff8a3bb685fb4e42ae227"
+    },
+    {
+      "bytes": 1690,
+      "mode": "0664",
+      "path": "python/src/edllm/compiler/errors.py",
+      "sha256": "380a6e10f7ae007399a1fae5d8928210f75e08ae120391db41da370b24775972"
+    },
+    {
+      "bytes": 10353,
+      "mode": "0664",
+      "path": "python/src/edllm/compiler/planner.py",
+      "sha256": "07c75a7f0e7a4f88aaf7775044b70ffe4ff9ecba64a66f09bcc318aa5bb8e0fb"
+    },
+    {
+      "bytes": 2298,
+      "mode": "0664",
+      "path": "python/src/edllm/compiler/registry.py",
+      "sha256": "e2e90501f923727d5f4f76fbda59c76e3eddaff7ca2c063dd12518728d2305eb"
+    },
+    {
+      "bytes": 3887,
+      "mode": "0664",
+      "path": "python/src/edllm/compiler/types.py",
+      "sha256": "c50bc9fa33d4bddb2710103419b53f743c3a01baf232ef891639345aa3d0c7c4"
+    },
+    {
+      "bytes": 29083,
+      "mode": "0664",
+      "path": "python/src/edllm/conformance.py",
+      "sha256": "b00c70278b4d15ffab189c3d0ba8389f3b541af552d07780e9c3054bf3956094"
+    },
+    {
+      "bytes": 4651,
+      "mode": "0664",
+      "path": "python/src/edllm/control_tokens.py",
+      "sha256": "31d1da80d8b8898df97403dd36a23376e886feccaa65e43efcfdf886c499a82a"
+    },
+    {
+      "bytes": 30524,
+      "mode": "0664",
+      "path": "python/src/edllm/conversation.py",
+      "sha256": "6f807bfbb3ef0a2adfae30fbf1756b5b55da0be24bf6753651645b2e6e8f300b"
+    },
+    {
+      "bytes": 3326,
+      "mode": "0664",
+      "path": "python/src/edllm/converter/__init__.py",
+      "sha256": "aec34625751b5d1893bd6ec7afb666f0fb8566e474bb00e6f728a6df8659f1b8"
+    },
+    {
+      "bytes": 37207,
+      "mode": "0664",
+      "path": "python/src/edllm/converter/convert_hf_masked_diffusion.py",
+      "sha256": "6b2a52ed7bb3e20f55d46d6ce433debd158714b47a0862cebbcf3ec107b83688"
+    },
+    {
+      "bytes": 472,
+      "mode": "0664",
+      "path": "python/src/edllm/converter/hf_import.py",
+      "sha256": "26622a28a2387a63521b3089a385441214d9d1f01efef3deb39ee7de9d31d167"
+    },
+    {
+      "bytes": 18595,
+      "mode": "0664",
+      "path": "python/src/edllm/converter/merge.py",
+      "sha256": "3e5df3a631b5723db9227e808cbf26b95b6cd1aa3cbbcdcd7c87bb556489f10c"
+    },
+    {
+      "bytes": 2483,
+      "mode": "0664",
+      "path": "python/src/edllm/converter/package_writer.py",
+      "sha256": "c729a6ec819a98473ffbd69458c24c14d260ccdc270dac391edc36e02e6e774c"
+    },
+    {
+      "bytes": 4168,
+      "mode": "0664",
+      "path": "python/src/edllm/converter/qwen3_chat_template.jinja",
+      "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8"
+    },
+    {
+      "bytes": 13391,
+      "mode": "0664",
+      "path": "python/src/edllm/decode.py",
+      "sha256": "413e236e02aea61934e8251221c20034479b0a61839c1c4f96d39bed3d2e9430"
+    },
+    {
+      "bytes": 1601,
+      "mode": "0664",
+      "path": "python/src/edllm/decode_observation.py",
+      "sha256": "ba1a4353f9b2493c3f8986298226f6bcc37e93240cebdcfe84330f95fe1353bb"
+    },
+    {
+      "bytes": 4438,
+      "mode": "0664",
+      "path": "python/src/edllm/decode_progress.py",
+      "sha256": "36c8b118b8c47994435409c0389df02517d2b2b2ed125fdc6f80f0fd3dc348c7"
+    },
+    {
+      "bytes": 15960,
+      "mode": "0664",
+      "path": "python/src/edllm/deployment.py",
+      "sha256": "9e7ac7626e5064b9a8c83eb22c4b2de8dcc03ef4d24cfdeac2518e95d0131a66"
+    },
+    {
+      "bytes": 11947,
+      "mode": "0664",
+      "path": "python/src/edllm/dflash_drafter.py",
+      "sha256": "2a05e9f1866e3c2cab64f06c67680fbadb76f5b7de09a29088ff1aba41186e04"
+    },
+    {
+      "bytes": 61,
+      "mode": "0664",
+      "path": "python/src/edllm/diagnostics/__init__.py",
+      "sha256": "6141671637f331240a8b7cc2db8a12750b21a68b7d36ed961de6570aa146c550"
+    },
+    {
+      "bytes": 26352,
+      "mode": "0664",
+      "path": "python/src/edllm/diagnostics/commit_calibration.py",
+      "sha256": "7776c4ff6b0843d769993561b1fd452c8fe757156ef79c680df2edfe091b8750"
+    },
+    {
+      "bytes": 32150,
+      "mode": "0664",
+      "path": "python/src/edllm/diagnostics/dflash_mlx_reference.py",
+      "sha256": "35efd1f6e26b69ab9edf127fece1cb0ea19ca9de008c06a7fcd7c941bdad1b5d"
+    },
+    {
+      "bytes": 34459,
+      "mode": "0664",
+      "path": "python/src/edllm/diagnostics/dream_origin_parity.py",
+      "sha256": "8980fe1058aaa75b583dd9634eb7d4a29c30c0f803ebd2616e5a1427779a0891"
+    },
+    {
+      "bytes": 12617,
+      "mode": "0664",
+      "path": "python/src/edllm/diagnostics/kv_concat_probe.py",
+      "sha256": "e9777f477f781971a3d8fef11217e10bd0aef12ad79ccdeda55486c93575bd83"
+    },
+    {
+      "bytes": 12319,
+      "mode": "0664",
+      "path": "python/src/edllm/diagnostics/metal_target_handoff.py",
+      "sha256": "0ff2e571ec9a507c957513f1251d88e100cf2acccb0260a6947a48f1b8abe6e4"
+    },
+    {
+      "bytes": 23296,
+      "mode": "0664",
+      "path": "python/src/edllm/diagnostics/metal_target_handoff_a0.py",
+      "sha256": "4c51267b7838d058a8453bef6f99cec805d52027246dc5eef62a65f5dc2c75ba"
+    },
+    {
+      "bytes": 83793,
+      "mode": "0664",
+      "path": "python/src/edllm/diagnostics/quality_report.py",
+      "sha256": "99a3ced91e2df9f7ab4f68f4d9e89d1dfa0216b333c32c231072886c8ee19d9e"
+    },
+    {
+      "bytes": 28969,
+      "mode": "0664",
+      "path": "python/src/edllm/diagnostics/speculative_token_contract.py",
+      "sha256": "ef1cf15a7e01887cf96bf2977da3c781c09568556e2bd64ab1f2d79025b7777d"
+    },
+    {
+      "bytes": 2640,
+      "mode": "0664",
+      "path": "python/src/edllm/dilated_schedule.py",
+      "sha256": "98c7cf7050f92220ac0cb5ca847cae1c8d3d805cf9fa1d7de74bba1f8d0730a1"
+    },
+    {
+      "bytes": 44973,
+      "mode": "0664",
+      "path": "python/src/edllm/engine.py",
+      "sha256": "5f2b4222ac10e8c9ce8cf37e606e84ae2986084cac44408fe3ac9a9541bf6fb3"
+    },
+    {
+      "bytes": 23272,
+      "mode": "0664",
+      "path": "python/src/edllm/evaluation.py",
+      "sha256": "28fb9ebed0e5c08315f8e79365ba3835856fdff040f89a5395ad967ef166416b"
+    },
+    {
+      "bytes": 22143,
+      "mode": "0664",
+      "path": "python/src/edllm/executor.py",
+      "sha256": "1faa31c3db33012f6599953c3865e7b83a9b6a77edfe89ed6ebd7fcfd8f36f72"
+    },
+    {
+      "bytes": 1103,
+      "mode": "0664",
+      "path": "python/src/edllm/graph/__init__.py",
+      "sha256": "d7fdd57d1f6be0f2ee2e59a9ed5215117beb7a4174f6acb8cb61a4d2258c5fb8"
+    },
+    {
+      "bytes": 16445,
+      "mode": "0664",
+      "path": "python/src/edllm/graph/backend_plan.py",
+      "sha256": "b05d975c3115d614b76475ac8b8783eb8b607596d2a1857d54af79aa00a34278"
+    },
+    {
+      "bytes": 10270,
+      "mode": "0664",
+      "path": "python/src/edllm/graph/emitter.py",
+      "sha256": "6b5586b2f9446beb07a5b99ace4118954e9eb542add1a3cc7cffbb7c2159caaa"
+    },
+    {
+      "bytes": 13822,
+      "mode": "0664",
+      "path": "python/src/edllm/graph/ir.py",
+      "sha256": "6765839e44f3ed54dbcf75217c68f8e4214f96e7fac971adf7afccb983a6e8a2"
+    },
+    {
+      "bytes": 26726,
+      "mode": "0664",
+      "path": "python/src/edllm/graph/numpyref.py",
+      "sha256": "a94c5a145d60aca6bc0b48364e1482a2428f60a60b796f1f6dfdd2f64d4d7b0f"
+    },
+    {
+      "bytes": 1074,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/__init__.py",
+      "sha256": "987c8a5e02cb1b693769f38cb16c00bf79a36d92d6e32fc21106ff3f6de634a1"
+    },
+    {
+      "bytes": 12867,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/app.py",
+      "sha256": "a03fbe0bb65a9d302a6d321a90b2ffc8a4923e9a41c60d0e0d23f587d3df7cde"
+    },
+    {
+      "bytes": 2065,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/browser.py",
+      "sha256": "63d0303a4d210cbbad8cf5228e121d0800a634a2c6299fa8674e894edd891ef6"
+    },
+    {
+      "bytes": 28358,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/controller.py",
+      "sha256": "915e4c9bf7bc5badd526a42fc46831eb07d5231b47885af567d11f2aa3a55219"
+    },
+    {
+      "bytes": 4304,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/events.py",
+      "sha256": "89a5360b0e2d996e4120501911ece41b2b51db854f5cab5dc8f4425f9dda0720"
+    },
+    {
+      "bytes": 2008,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/gpu_memory.py",
+      "sha256": "54883db86a6e180983c3debb02cdcc09df036d4af69446a02f3494cbf3f166e2"
+    },
+    {
+      "bytes": 3759,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/launch.py",
+      "sha256": "9d017c5d87393c20dcb5923ed1bec85105678fd101a8c29b5b0ce29b8853523b"
+    },
+    {
+      "bytes": 568,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/__init__.py",
+      "sha256": "d07173b4a6ea58c5c7ad381edfcb09b52a873d96cd25f51f6e2e7b83e950817f"
+    },
+    {
+      "bytes": 6225,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/actions.py",
+      "sha256": "aa8e9a0467adfb25aa219dd19e2c9081097a65d65260c9d7a71fe5af8c62a90a"
+    },
+    {
+      "bytes": 22146,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/controller.py",
+      "sha256": "a74d5bbae1af648e05629e4b7872c4204f119663b6d934ab2412e1d97a98593d"
+    },
+    {
+      "bytes": 6928,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/decode_frames.py",
+      "sha256": "db71839511842c1a6e9dd20be04ef6e3d61739747bec0b4a93710f561a91dc6f"
+    },
+    {
+      "bytes": 3097,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/events.py",
+      "sha256": "323815609a0ffabd8437ae9b3a01d60fb028aa3c1e9f4aa6df32cd9ae7572bf5"
+    },
+    {
+      "bytes": 3612,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/launch.py",
+      "sha256": "af7313478a3938e4aff073ba06fa5fc44d70b634da75cb96ea0a9399d72af215"
+    },
+    {
+      "bytes": 16855,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/native_host.py",
+      "sha256": "7ad3f8693aef1965b61948011177f08662cdf289e351d9448fa693152806967f"
+    },
+    {
+      "bytes": 6862,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/page_app.py",
+      "sha256": "3da5a386d72b973ce82875435fb0e035f830845c2b5bb46dc3c9e4b55d667f36"
+    },
+    {
+      "bytes": 2934,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/preferences.py",
+      "sha256": "977eafd01ec14fbf2c9f2b5281f50cf36d4a81e10e4ede6c640a69d5203928eb"
+    },
+    {
+      "bytes": 844,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/resources.py",
+      "sha256": "4ae75e736cd97eaaa341daef2fcf14e9cb6d6609d57923ebba145fdca06a34bc"
+    },
+    {
+      "bytes": 18180,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/server.py",
+      "sha256": "ea89770cb86ff59c47b9c064bf114f8d9a95cbfc55b5905ebab703aca59f8f97"
+    },
+    {
+      "bytes": 24706,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/web/app.css",
+      "sha256": "06d0305e0f3b8f90efb4fec9313f98a60af6353ef81f1767e46e9d0affa305dc"
+    },
+    {
+      "bytes": 53036,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/web/app.js",
+      "sha256": "11e1cd185b39dfb99d335bd163c9d6d919169c98aa8cac14df3d141ff73d9dda"
+    },
+    {
+      "bytes": 9785,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/web/decode.js",
+      "sha256": "b6f46ac6d781259be45c64c3569c1120319f187f99b2fa99017b0b03f066c336"
+    },
+    {
+      "bytes": 1029,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/web/icon.svg",
+      "sha256": "7d8dc5d5316e5cb73f80b8ae33748718fba64f8501238e762e144086ae27a551"
+    },
+    {
+      "bytes": 12260,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/web/index.html",
+      "sha256": "192adc58678591d27276f90d21b85851f5e0cc6679e90426adc84de86de60fa4"
+    },
+    {
+      "bytes": 24396,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/web/model.js",
+      "sha256": "efbc7821453b19018858b5603a7d590ecf9e5297bf53ae0a1a8464e8b0ec0216"
+    },
+    {
+      "bytes": 6513,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/web/rich.js",
+      "sha256": "c2ee319168d8add736e602e6544bc9f3c801b8289e0d22f5a62f69ae16b77865"
+    },
+    {
+      "bytes": 2414,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/window.py",
+      "sha256": "0c0fee8a066a96f25ccb2c578369ba46ce4802488a75311ce31815ae12e00d83"
+    },
+    {
+      "bytes": 1659,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/mac/wire.py",
+      "sha256": "382f9eb333a8f77c66b150f9099925c5b2c46346c8b541f1587d5ecc6f9055ce"
+    },
+    {
+      "bytes": 3992,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/preferences.py",
+      "sha256": "d36d842754ff86f94a66c4cc0aa0d32d36d0ed74b911a665b16ce01c297ad638"
+    },
+    {
+      "bytes": 17094,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/server.py",
+      "sha256": "eb732aae1dc0adb18a3aadc3a2e4e3b337699020ab9839d8d74aac5f1fecad48"
+    },
+    {
+      "bytes": 17565,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/web/app.css",
+      "sha256": "53ac108e3534b413633849cf39a981afe3ef217a90f4e9c6577c3d0404d47eed"
+    },
+    {
+      "bytes": 45361,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/web/app.js",
+      "sha256": "ab3bfcc02ccfd0e1bd5cc28ac0b6110d964c999ca21c0821712b10cb94bac182"
+    },
+    {
+      "bytes": 6732,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/web/index.html",
+      "sha256": "78777007c56a1f8d0886ada1238638bb4c65dbd3b8aa3d07a67e5fb490af7343"
+    },
+    {
+      "bytes": 63972,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/web/logo.png",
+      "sha256": "12a1fdc51c2e56f73e2eb329938d8484dbd725822854e7659e3d20fe73fa1c41"
+    },
+    {
+      "bytes": 1613,
+      "mode": "0664",
+      "path": "python/src/edllm/gui/wire.py",
+      "sha256": "3d0be3b25cdacd60776d37ea07805eb1b2c80e0c30d6b53f24d41e8f83576892"
+    },
+    {
+      "bytes": 92759,
+      "mode": "0664",
+      "path": "python/src/edllm/local_models.py",
+      "sha256": "876f78bc4282cb01e4eefda1df37451b7641f349d7174cd136cb50983bee7b06"
+    },
+    {
+      "bytes": 2580,
+      "mode": "0664",
+      "path": "python/src/edllm/mask_fixing.py",
+      "sha256": "cf0d769b7c0f3656cf53fee3d858b7e1d662d12d301d230a0be719c27bc64b79"
+    },
+    {
+      "bytes": 149558,
+      "mode": "0664",
+      "path": "python/src/edllm/model.py",
+      "sha256": "711bde8124fcee114bef2ff645e83bf9b81595078476b74145a2a0fab514812f"
+    },
+    {
+      "bytes": 17405,
+      "mode": "0664",
+      "path": "python/src/edllm/model_catalog.py",
+      "sha256": "c97809d97d67d6728f00188276dd4355d0edc0205d1d351d4587930cc21e8ca5"
+    },
+    {
+      "bytes": 2721,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/__init__.py",
+      "sha256": "50a45dfe7b7da7ca716f1c75d76bcf27544427ee9c079cb3bc6c7d9247891928"
+    },
+    {
+      "bytes": 71962,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/admission.py",
+      "sha256": "d87ff8c2398a0f23267a2a7d30209d85244cbb4a5cb0fcdc32b637f28b4b0d5a"
+    },
+    {
+      "bytes": 2862,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/admission_catalog.py",
+      "sha256": "6ea7ab4eb99468e8f486406d9f6f9393843bdb5c02346fd4acd865f30853c4aa"
+    },
+    {
+      "bytes": 16189,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/admission_finalize.py",
+      "sha256": "0f1999cc9b9bd966594195b6e9f7f05a24cb506ca579b81d8d8c86ce62082148"
+    },
+    {
+      "bytes": 1286,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/admission_types.py",
+      "sha256": "b2b4d8d7002ab4bb5c6245a0b4c502ce158b51f61e28eefab9f664570bb9ba80"
+    },
+    {
+      "bytes": 57594,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/candidate_evidence.py",
+      "sha256": "121e5df54be7fab583c904da5afaf2753d466dc531cc88c9ba6c8a8a0e5c6556"
+    },
+    {
+      "bytes": 42435,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/candidate_gate_worker.py",
+      "sha256": "5755e6aaf53c6cb978056e4d03d70307d09f974e6a0989cf6bcac5f68c7eb565"
+    },
+    {
+      "bytes": 1302,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/admission_catalog.json",
+      "sha256": "59a8ff043c208ddbfddec49cf884e6c4842e6563bceb8d9ec768a8448fb8ba4c"
+    },
+    {
+      "bytes": 1204,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/admissions/dream_coder_v0_instruct_7b.json",
+      "sha256": "cb36781ac97803c017dd4bb8eeef9f8524ba6be10132ba5781d3d611ea02a573"
+    },
+    {
+      "bytes": 1236,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/admissions/dream_v0_instruct_7b.json",
+      "sha256": "8f1cca8369bcfffcee88a2a4fe4b58d1b742ccb68ce78e2807adbc22c2dd8c34"
+    },
+    {
+      "bytes": 1935,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/admissions/llada_8b_instruct.json",
+      "sha256": "0953c53f95f399ac2e4b2363e05b886dc922190ea6b32b6cd3daee0514031ea8"
+    },
+    {
+      "bytes": 1988,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/admissions/qwen3_06b_bd3lm_v0_1.json",
+      "sha256": "0a7918d745fb2765d69d5d16ac3e8ff53502f4b938d5e9eaa3ad5af9cb2ef629"
+    },
+    {
+      "bytes": 1962,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/admissions/qwen3_06b_mdlm_v0_1.json",
+      "sha256": "e8fa07e4420f5153b65b4d049e69fd808cfb5833aa2eefc18f7f3820bbba44b9"
+    },
+    {
+      "bytes": 748,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/cases/dream_coder_v0_instruct_7b.json",
+      "sha256": "b4f547f90e0f0f464e1e6ad6bc19521e28e4b035d8b002a928f90b6144af19c0"
+    },
+    {
+      "bytes": 740,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/cases/dream_v0_instruct_7b.json",
+      "sha256": "924b4b0e7ca42bec000b267ecd1a0952eecf6e02e11f06b840ebcd0573e4735a"
+    },
+    {
+      "bytes": 957,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/cases/llada_8b_instruct.json",
+      "sha256": "218963e7f32583d784fc4f8ec117afb3177fafcd0dc015ef7f2ce413850a6fd5"
+    },
+    {
+      "bytes": 1366,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/cases/qwen3_06b_bd3lm_v0_1.json",
+      "sha256": "73a342e8999f99c8644ccbd847760c1f4d6e68d57c4b6ab6c800f4707474d21b"
+    },
+    {
+      "bytes": 1020,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/cases/qwen3_06b_mdlm_v0_1.json",
+      "sha256": "f12c50fc3c048e4469d80faf0c0837930936daddda105ae30d793d920f180585"
+    },
+    {
+      "bytes": 948,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/locks/dream_hf_446.json",
+      "sha256": "7b9e34545659f27eecdc67d72932eef6a32da5d8106c9fdfdf744edb6eb4fb6a"
+    },
+    {
+      "bytes": 875,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/locks/qwen3_hf_457.json",
+      "sha256": "efac7bec12f20dccafa288cccd40bdeee946f03b760a1c61fe9a13f01ee7fcf3"
+    },
+    {
+      "bytes": 1233,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/locks/qwen3_product_311_mlx031.json",
+      "sha256": "a3648a16a5e6b7ea47b79392b5a44e30432f1145629ca86cd923d858566ae5d7"
+    },
+    {
+      "bytes": 1240,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/locks/qwen3_product_311_mlx031_sdk021.json",
+      "sha256": "3cf667e5dc75d684933df4e1001fab68c3370215a43db5c46dace6110437ffe6"
+    },
+    {
+      "bytes": 1216,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/locks/qwen3_product_311_mlx031_sdk022.json",
+      "sha256": "4abd9c98beecc12ac57af1c5609962f9021095e2563973193535ac3d3f883c60"
+    },
+    {
+      "bytes": 1216,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/locks/qwen3_product_311_mlx031_sdk023.json",
+      "sha256": "3f6cd5f878c31ee9383afc07f6522ab76b8d4ab625beba05ba685550399a0463"
+    },
+    {
+      "bytes": 1216,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/locks/qwen3_product_311_mlx031_sdk024.json",
+      "sha256": "807598eec6b63f877bb3e2a30966d7f13722f7572e5f7208a80dba6092e74a7d"
+    },
+    {
+      "bytes": 1216,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/locks/qwen3_product_311_mlx031_sdk025.json",
+      "sha256": "430032ffaed991c378d88aa94147330819997ccdca46a3665eba0a1940e1002e"
+    },
+    {
+      "bytes": 1216,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/locks/qwen3_product_311_mlx031_sdk026.json",
+      "sha256": "c619e7b89df484f33e9e72766d645e9808769f034d03df3d734289b12dcfc27f"
+    },
+    {
+      "bytes": 1220,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/data/locks/qwen3_product_311_mlx031_sdk026a3.json",
+      "sha256": "09482d401b5822093fd0eb046b7d29336809751bfb23c99529fefd2658e79eab"
+    },
+    {
+      "bytes": 4419,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/descriptors.py",
+      "sha256": "75cb8a913c2f332f879a0f595a76095d66e61dc4fb8195d16961c891f93e6e54"
+    },
+    {
+      "bytes": 30086,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/parity.py",
+      "sha256": "e66baf702a09dc604fc23d97741c9d283a557e3cfb001fa7ab544e6f36894e72"
+    },
+    {
+      "bytes": 45678,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/producer_descriptors.py",
+      "sha256": "3852f492e090e350dc83092c8f28321665d6efe148ac95b7a36831acfd3cf090"
+    },
+    {
+      "bytes": 26041,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/producer_pathsets.py",
+      "sha256": "0b7c72ad469808dbe218f0bcf696f870e3b78f80bc0d92e8caad467838b543cb"
+    },
+    {
+      "bytes": 13564,
+      "mode": "0664",
+      "path": "python/src/edllm/model_coverage/reference.py",
+      "sha256": "415a71c93e32c03081f19f9afefeff5dbf989d623f67f0fc4a197ef6c32511cf"
+    },
+    {
+      "bytes": 65834,
+      "mode": "0664",
+      "path": "python/src/edllm/model_definitions.py",
+      "sha256": "39f3b3ee941a903ac5fbc1f8667de312132921f62d660ce2c0cafbb176efd50b"
+    },
+    {
+      "bytes": 7285,
+      "mode": "0664",
+      "path": "python/src/edllm/model_opening.py",
+      "sha256": "efcd74d0fb47babe419b80a8054d8db90b789a7c37b1e9f5b988a49a8c012f0e"
+    },
+    {
+      "bytes": 23462,
+      "mode": "0664",
+      "path": "python/src/edllm/models_tui.py",
+      "sha256": "a562c12a1568daf462375d14483248d39d323373e7a82227a7af9f2e66c20465"
+    },
+    {
+      "bytes": 13401,
+      "mode": "0664",
+      "path": "python/src/edllm/package_artifacts.py",
+      "sha256": "96e58e34f3f2ecbb13fc07f6a3624b44650e1f58c77a7230da6177de30afc972"
+    },
+    {
+      "bytes": 7511,
+      "mode": "0664",
+      "path": "python/src/edllm/package_lifecycle.py",
+      "sha256": "73c2f6c41e484b4bce95f3516493eb1f8df6018ab1b871925f5c973f7a780f93"
+    },
+    {
+      "bytes": 2567,
+      "mode": "0664",
+      "path": "python/src/edllm/policy.py",
+      "sha256": "b08e5c9115c416f474fd0362622a09c614ba15666b622b2b2cd9c043ba215f3f"
+    },
+    {
+      "bytes": 8651,
+      "mode": "0664",
+      "path": "python/src/edllm/presets.py",
+      "sha256": "a714cea27806d33455ff16da95614d0dd503b3cb2bb4ad02a3397eb91a395709"
+    },
+    {
+      "bytes": 71,
+      "mode": "0664",
+      "path": "python/src/edllm/py.typed",
+      "sha256": "da3222d1fcc93d92ae5dd578a523e3b9822890eb9adfa61ec09bf5c38dde4c9f"
+    },
+    {
+      "bytes": 1916,
+      "mode": "0664",
+      "path": "python/src/edllm/result.py",
+      "sha256": "e38a2078f01896a0f104fedc2fd28285a25cbb9b2eeeaf279171e9e9b5321ef6"
+    },
+    {
+      "bytes": 37011,
+      "mode": "0664",
+      "path": "python/src/edllm/runtime_config.py",
+      "sha256": "0e139f98adb5fc67b1a25c6b3021fcd93436ae979f3c163d8a8f37590e53a1de"
+    },
+    {
+      "bytes": 32,
+      "mode": "0664",
+      "path": "python/src/edllm/schemas/__init__.py",
+      "sha256": "b0f497c99efdb36b113b21b2266839ca7a70eff929e2995c326051da494aff2d"
+    },
+    {
+      "bytes": 14209,
+      "mode": "0664",
+      "path": "python/src/edllm/schemas/execution_package.schema.json",
+      "sha256": "b112c29de7eb7508705f1e9cb6dfefaf5e8a4d1990708abfc4a1cc583d4b7346"
+    },
+    {
+      "bytes": 12329,
+      "mode": "0664",
+      "path": "python/src/edllm/service_asgi.py",
+      "sha256": "8e385f62635240c96b4838854954a8a41d65b116fc19e14ed59c3a717f5b237e"
+    },
+    {
+      "bytes": 11633,
+      "mode": "0664",
+      "path": "python/src/edllm/service_contracts.py",
+      "sha256": "7b278eef4ca4156a34dc5b462e4d70408cef30f090cf6523655ea818e8776040"
+    },
+    {
+      "bytes": 22087,
+      "mode": "0664",
+      "path": "python/src/edllm/service_runtime.py",
+      "sha256": "c16c6c6309e4e6c4ae851a1e01c812354a192dae25fd9a09193abe8376ab2f4c"
+    },
+    {
+      "bytes": 20010,
+      "mode": "0664",
+      "path": "python/src/edllm/tokenizer.py",
+      "sha256": "50b10e654b413cfc42b00bc25774ac0c61602826ca46d92ec07205dc580628f7"
+    },
+    {
+      "bytes": 2051,
+      "mode": "0664",
+      "path": "python/src/edllm/trust_identity.py",
+      "sha256": "4ca2388dd49312742577198bc16729baa5baa521997addbea225c0105a6c1eb0"
+    },
+    {
+      "bytes": 5667,
+      "mode": "0664",
+      "path": "python/src/edllm/validation.py",
+      "sha256": "b37d494f57931aee93b565737a0c54c6d1b0c7b9a43689d8153d76ea87ab8c11"
+    },
+    {
+      "bytes": 19523,
+      "mode": "0664",
+      "path": "python/src/edllm/weight_store.py",
+      "sha256": "fb9efac95b8569dfe44d646eb6be2220087d41725d6af289853a03575009d476"
     }
   ],
   "receipt_version": 1,
   "source_commit": "bb80ce028a3164f3f6d155034ce388e9b7f0996e",
   "surface": "public",
-  "tree_sha256": "5d6257226a5d111eb2e4032503723ceec20538534787827761194b7dc1d80d6b",
-  "path_mapping": {
-    "INDEX.public.md": "INDEX.md",
-    "README.public.md": "README.md"
-  }
+  "tree_sha256": "e1f96a9195ae1ecb34e67947da7ab998c5cf14f9a5f4676bd6e9b4953ecb4601"
 }

@@ -19,6 +19,7 @@ An edge-first framework for local, single-request language generation.</p>
 <a href="#news">News</a> ·
 <a href="#install">Install</a> ·
 <a href="#installation-experience">What to expect</a> ·
+<a href="#install-from-source">Source</a> ·
 <a href="#python-api">Python API</a> ·
 <a href="#command-line">CLI</a> ·
 <a href="./INDEX.md">User guide</a>
@@ -68,6 +69,7 @@ The interfaces share the same model repository and conversation store.
 
 | Date | Update |
 |---|---|
+| **2026-11-13** | **SDK source is now available.** Clone and install the Apache-2.0 SDK, including the Mac and Windows chat interfaces. Runtime files match the published 0.2.6 wheel. [Source guide](./python/README.md). |
 | **2026-11-12** | **0.2.6: local chat and visible diffusion.** Chat window, recorded replay, cooperative Stop, automatic MLX reply sizing and structured CLI timing. [Download](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6). |
 | **2026-11-12** | **Mac + Windows showcase.** Separate platform guides, interface images and installation walkthroughs. Windows CUDA remains experimental; this SDK includes no CUDA provider. |
 | **2026-11-02** | **0.2.5: clearer deployment and upgrades.** Improved invalid-input messages and installed upgrade checks. [Release history](https://github.com/jimmy-yilong-li/DiffusorRT/releases). |
@@ -209,6 +211,25 @@ package path also works.
 Try the standalone [quickstart script](./examples/quickstart.py) after installing
 the wheel. [User index](./INDEX.md) · [Mac API examples](./mac/README.md#python-and-command-line).
 
+## Install from source
+
+Prefer to inspect or modify the SDK? The repository now contains the complete
+Python package and both desktop-page implementations, matching SDK 0.2.6.
+In your Python 3.11 environment on Apple Silicon:
+
+```bash
+git clone https://github.com/jimmy-yilong-li/DiffusorRT.git
+cd DiffusorRT
+python -m pip install -e "./python[compiler,mlx-local,gui]"
+diffusorrt --help
+```
+
+On Windows, install the base SDK with `python -m pip install -e ./python`.
+That does not supply a CUDA provider. The [source guide](./python/README.md)
+maps the Mac and Windows UI code and explains what is included.
+An explicit [SDK source archive](https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.6/diffusor-rt-sdk-0.2.6-source.tar.gz)
+is also available; no Git clone is needed to inspect it.
+
 ## Command line
 
 ```bash
@@ -278,10 +299,10 @@ The public download is `diffusor_rt-0.2.6-py3-none-any.whl`:
 SHA-256 86c9cee779bf65e127e3d5326caed806cf7bdada0d080ae41a5d540347116acb
 ```
 
-The wheel contains the Python modules and resources needed to run the SDK.
-The repository's selected API excerpts are reading examples, not a complete
-editable installation. No native Mac App bundle, CUDA provider or model weights
-are included. Earlier 0.2.0–0.2.4 downloads are retired; 0.2.5 remains the
+The wheel and the published SDK source contain the Python modules and resources
+needed to run the SDK, including both desktop-page interfaces. No native Mac
+App bundle, CUDA provider or model weights are included. Earlier 0.2.0–0.2.4
+downloads are retired; 0.2.5 remains the
 previous SDK-only rollback reference.
 
 ## Citation and license

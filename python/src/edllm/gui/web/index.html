@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DiffusorRT</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="stylesheet" href="app.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="sidebar" id="sidebar" aria-label="Conversations">
+    <div class="brand">
+      <img class="logo" src="logo.png" alt="" aria-hidden="true">DiffusorRT
+      <button class="icon-button sidebar-close" id="sidebar-close" type="button" aria-label="Close" title="Close">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <button class="new-chat" id="new-chat" type="button" title="New chat (Ctrl+Shift+O)">
+      <span aria-hidden="true">＋</span> New chat
+    </button>
+    <div class="section-label">Recent</div>
+    <nav class="recent" id="recent"></nav>
+  </aside>
+  <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+  <main class="chat">
+    <header class="topbar">
+      <button class="icon-button menu" id="menu" type="button" aria-label="Conversations" title="Conversations">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14"/></svg>
+      </button>
+      <div class="chat-title" id="chat-title">New chat</div>
+      <button class="status-line" id="status-line" type="button" aria-controls="panel" title="Model and resources">
+        <span class="dot" id="status-dot"></span>
+        <span id="status">Starting…</span>
+        <span class="status-model" id="status-model"></span>
+      </button>
+      <button class="icon-button" id="panel-toggle" type="button" aria-controls="panel" aria-expanded="false"
+              aria-label="Model and resources" title="Model and resources">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h7M15 6h1M4 14h1M9 14h7"/><circle cx="13" cy="6" r="2"/><circle cx="7" cy="14" r="2"/></svg>
+      </button>
+    </header>
+
+    <div class="scroller" id="scroller">
+      <div class="column">
+        <div class="state-card hidden" id="state-card" role="status"></div>
+        <div class="messages" id="messages" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="dock">
+      <form class="composer" id="composer">
+        <textarea id="input" rows="1" placeholder="Message DiffusorRT…" aria-label="Message"></textarea>
+        <button class="send" id="send" type="submit" disabled aria-label="Send" title="Send (Enter)">
+          <svg class="icon-send" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15V5M5.5 9.5 10 5l4.5 4.5"/></svg>
+          <svg class="icon-stop" viewBox="0 0 20 20" aria-hidden="true"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5"/></svg>
+        </button>
+      </form>
+      <div class="hint" id="hint">Enter to send · Shift+Enter for a new line</div>
+    </div>
+  </main>
+
+  <aside class="panel" id="panel" aria-label="Model and resources">
+    <div class="panel-head">
+      <span class="panel-title">Model and resources</span>
+      <button class="icon-button" id="collapse" type="button" aria-label="Close" title="Close">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+      </button>
+    </div>
+    <section class="group">
+      <div class="label">Model</div>
+      <div class="value strong" id="model">—</div>
+      <div class="note mono" id="model-id"></div>
+      <button class="link" id="change-model" type="button">Change model…</button>
+    </section>
+    <section class="group pair">
+      <div><div class="label">Speed</div><div class="value" id="throughput">—</div></div>
+      <div><div class="label">Last reply</div><div class="value" id="last-reply">—</div></div>
+      <div class="note span">Words come in tokens; speed counts the reply's visible tokens per second.</div>
+    </section>
+    <section class="group">
+      <div class="label">Precision</div>
+      <div class="value" id="precision-value">—</div>
+      <select id="precision" class="hidden" aria-label="Precision"></select>
+      <div class="note" id="precision-note"></div>
+    </section>
+    <section class="group">
+      <div class="label">Temperature</div>
+      <div class="slider-row">
+        <input id="temperature" type="range" min="0" max="2" step="0.1" value="0" aria-label="Temperature" disabled>
+        <span class="value" id="temperature-value">0.0</span>
+      </div>
+      <div class="note" id="temperature-note"></div>
+    </section>
+    <section class="group">
+      <div class="label">Runs on</div>
+      <div class="value" id="gpu">—</div>
+      <div class="note" id="backend"></div>
+    </section>
+    <section class="group">
+      <div class="label">GPU memory</div>
+      <div class="meter"><span id="gpu-meter"></span></div>
+      <div class="note" id="gpu-memory">—</div>
+    </section>
+  </aside>
+</div>
+
+<div class="modal hidden" id="trust-modal" role="dialog" aria-modal="true" aria-labelledby="trust-title">
+  <div class="modal-box">
+    <h2 id="trust-title">Allow code from this model?</h2>
+    <p id="trust-text"></p>
+    <div class="modal-actions">
+      <button type="button" id="trust-allow">Allow</button>
+      <button type="button" class="primary" id="trust-deny">Don't allow</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="picker-modal" role="dialog" aria-modal="true" aria-labelledby="picker-title">
+  <div class="modal-box">
+    <h2 id="picker-title">Choose a model</h2>
+    <p id="picker-text"></p>
+    <div class="choices" id="picker-choices"></div>
+    <label class="path-label" for="picker-path">Or paste the folder of a model package (the folder that holds model.json)</label>
+    <input id="picker-path" type="text" placeholder="C:\path\to\package" spellcheck="false">
+    <p class="picker-after" id="picker-after"></p>
+    <div class="modal-actions">
+      <button type="button" id="picker-cancel">Cancel</button>
+      <button type="button" class="primary" id="picker-open" disabled>Open</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-title">
+  <div class="modal-box">
+    <h2 id="delete-title">Delete this conversation?</h2>
+    <p id="delete-text"></p>
+    <div class="modal-actions">
+      <button type="button" id="delete-cancel">Cancel</button>
+      <button type="button" class="danger" id="delete-confirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="disconnected">
+  <div class="overlay-box">DiffusorRT has stopped. You can close this window.</div>
+</div>
+</body>
+</html>

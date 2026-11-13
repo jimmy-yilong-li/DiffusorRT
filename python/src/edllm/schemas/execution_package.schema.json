@@ -1,0 +1,593 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExecutionPackage",
+  "type": "object",
+  "required": [
+    "version",
+    "fixture_mode",
+    "merged_weights_ref",
+    "model_config",
+    "source_checkpoint_sha",
+    "source_base_model_sha",
+    "merge_script_version",
+    "output_hash"
+  ],
+  "dependentRequired": {
+    "package_format": ["weight_storage_dtype"],
+    "weight_storage_dtype": ["package_format"]
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "version": {
+            "properties": {
+              "major": {
+                "const": 2
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "graph_ref",
+          "ir_version"
+        ],
+        "properties": {
+          "model_config": {
+            "properties": {
+              "attention_mask_kind": {
+                "enum": [
+                  "bidirectional",
+                  "full",
+                  "d2f_hybrid"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "model_descriptor_key"
+        ]
+      },
+      "then": {
+        "required": [
+          "model_descriptor_digest",
+          "graph_ir_family",
+          "model_precision",
+          "admitted_backend",
+          "source_checkpoint_reference",
+          "source_base_model_reference",
+          "source_license"
+        ],
+        "not": {
+          "anyOf": [
+            { "required": ["model_definition_key"] },
+            { "required": ["model_definition_digest"] },
+            { "required": ["model_build_digest"] },
+            { "required": ["model_definition"] },
+            { "required": ["package_format"] },
+            { "required": ["weight_storage_dtype"] }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          { "required": ["model_definition_key"] },
+          { "required": ["model_definition_digest"] },
+          { "required": ["model_build_digest"] },
+          { "required": ["model_definition"] }
+        ]
+      },
+      "then": {
+        "required": [
+          "model_definition_key",
+          "model_build_digest",
+          "model_definition",
+          "graph_ir_family",
+          "package_format",
+          "weight_storage_dtype",
+          "source_checkpoint_reference",
+          "source_base_model_reference",
+          "source_license"
+        ],
+        "not": {
+          "anyOf": [
+            { "required": ["model_descriptor_key"] },
+            { "required": ["model_descriptor_digest"] },
+            { "required": ["model_precision"] },
+            { "required": ["admitted_backend"] }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["package_format"],
+        "properties": {
+          "package_format": { "const": "npz_v1" }
+        }
+      },
+      "then": {
+        "properties": {
+          "weight_storage_dtype": { "const": "fp32" }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["package_format"],
+        "properties": {
+          "package_format": { "const": "safetensors_sharded_v1" }
+        }
+      },
+      "then": {
+        "properties": {
+          "weight_storage_dtype": { "const": "preserved" }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "version": {
+      "type": "object",
+      "required": [
+        "major",
+        "minor",
+        "patch"
+      ],
+      "properties": {
+        "major": {
+          "type": "integer",
+          "enum": [
+            1,
+            2
+          ]
+        },
+        "minor": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "patch": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "fixture_mode": {
+      "type": "boolean"
+    },
+    "merged_weights_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_checkpoint_sha": {
+      "type": "string",
+      "minLength": 7
+    },
+    "source_base_model_sha": {
+      "type": "string",
+      "minLength": 7
+    },
+    "source_license": {
+      "type": "string"
+    },
+    "model_descriptor_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_descriptor_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "model_definition_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_definition_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "model_build_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "model_definition": {
+      "type": "object"
+    },
+    "graph_ir_family": {
+      "type": "string",
+      "minLength": 1
+    },
+    "package_format": {
+      "type": "string",
+      "enum": [
+        "npz_v1",
+        "safetensors_sharded_v1"
+      ]
+    },
+    "weight_storage_dtype": {
+      "type": "string",
+      "enum": [
+        "fp32",
+        "preserved"
+      ]
+    },
+    "model_precision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "admitted_backend": {
+      "type": "string",
+      "minLength": 1
+    },
+    "merge_script_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "output_hash": {
+      "type": "string",
+      "minLength": 16
+    },
+    "graph_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ir_version": {
+      "type": "object",
+      "required": [
+        "major",
+        "minor"
+      ],
+      "properties": {
+        "major": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "minor": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "model_config": {
+      "type": "object",
+      "required": [
+        "architecture",
+        "layer_count",
+        "hidden_size",
+        "attention_heads",
+        "vocab_size"
+      ],
+      "properties": {
+        "architecture": {
+          "type": "string",
+          "minLength": 1
+        },
+        "architecture_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layer_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "hidden_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "attention_heads": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "vocab_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "head_dim": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "num_kv_heads": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rope_theta": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "rope_scaling": {
+          "type": "object"
+        },
+        "intermediate_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rms_norm_eps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "block_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "step_budget": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "diffusion_steps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "diffusion_cache_refresh_interval": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "diffusion_eps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "uses_qk_norm": {
+          "type": "boolean"
+        },
+        "uses_shifted_logits": {
+          "type": "boolean"
+        },
+        "bias_present": {
+          "type": "boolean"
+        },
+        "tie_word_embeddings": {
+          "type": "boolean"
+        },
+        "mask_token_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bos_token_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "eos_token_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pad_token_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "attention_mask_kind": {
+          "type": "string",
+          "enum": [
+            "bidirectional",
+            "full",
+            "d2f_hybrid",
+            "causal"
+          ]
+        },
+        "block_schedule": {
+          "type": "object"
+        },
+        "bd3_requires_prompt_block_alignment": {
+          "type": "boolean"
+        },
+        "mlx_layer0_kv_cache_enabled": {
+          "type": "boolean"
+        },
+        "mlx_diffusion_prefix_kv_cache": {
+          "type": "boolean"
+        },
+        "mlx_diffusion_block_kv_cache": {
+          "type": "boolean"
+        },
+        "mlx_diffusion_d2f_exact_kv_cache": {
+          "type": "boolean"
+        },
+        "mlx_diffusion_d2f_skip_committed_rows": {
+          "description": "This setting is no longer supported in DiffusorRT 0.2; only false is accepted.",
+          "const": false
+        },
+        "mlx_diffusion_error_fixing": {
+          "type": "boolean"
+        },
+        "mlx_diffusion_trace_canvas": {
+          "type": "boolean"
+        },
+        "mlx_diffusion_canvas_cache": {
+          "description": "This setting is no longer supported in DiffusorRT 0.2; only false is accepted.",
+          "const": false
+        },
+        "mlx_diffusion_cross_request_cache": {
+          "description": "This setting is no longer supported in DiffusorRT 0.2; only false is accepted.",
+          "const": false
+        },
+        "mlx_diffusion_steps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mlx_diffusion_block_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mlx_diffusion_prefix_kv_refresh_interval": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mlx_diffusion_block_kv_refresh_interval": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mlx_diffusion_d2f_skip_refresh_interval": {
+          "description": "This setting is no longer supported in DiffusorRT 0.2; only the historical neutral value 4 is accepted.",
+          "const": 4
+        },
+        "mlx_diffusion_recovery_max_rounds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mlx_diffusion_recovery_repetition_max_ngram": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mlx_diffusion_canvas_cache_budget_bytes": {
+          "description": "This setting is no longer supported in DiffusorRT 0.2; only null is accepted.",
+          "type": "null"
+        },
+        "mlx_linear_quant_bits": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "enum": [
+                4,
+                8
+              ]
+            }
+          ]
+        },
+        "mlx_linear_quant_group_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mlx_diffusion_eps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "mlx_diffusion_temperature": {
+          "type": "number",
+          "minimum": 0
+        },
+        "mlx_diffusion_top_p": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "mlx_diffusion_remasking": {
+          "type": "string",
+          "const": "low_confidence"
+        },
+        "mlx_diffusion_alg_temp": {
+          "type": "number",
+          "const": 0
+        },
+        "mlx_diffusion_confidence_threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "mlx_diffusion_d2f_add_threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "mlx_diffusion_d2f_activate_threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "mlx_diffusion_recovery_confidence_floor": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "mlx_diffusion_gamma": {
+          "type": "number",
+          "minimum": 0
+        },
+        "mlx_diffusion_recovery_kl_threshold": {
+          "type": "number",
+          "minimum": 0
+        },
+        "mlx_compute_dtype": {
+          "type": "string",
+          "enum": [
+            "fp32",
+            "float32",
+            "bf16",
+            "bfloat16"
+          ]
+        },
+        "mlx_diffusion_decode_strategy": {
+          "type": "string",
+          "enum": [
+            "entropy_count",
+            "confidence_threshold",
+            "block_threshold",
+            "entropy_budget",
+            "d2f_block_pipeline",
+            "dilated_unmask",
+            "bd3_fixed_quota",
+            "fixed_quota"
+          ]
+        },
+        "mlx_diffusion_d2f_commit_policy": {
+          "type": "string",
+          "enum": [
+            "threshold",
+            "entropy_budget",
+            "dilated"
+          ]
+        },
+        "mlx_diffusion_window_exec": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "auto",
+                "primary",
+                "oracle"
+              ]
+            }
+          ]
+        },
+        "mlx_diffusion_policy_profile": {
+          "type": "string",
+          "enum": [
+            "baseline",
+            "active_window_exact",
+            "robust_entropy_budget",
+            "correction_diagnostics"
+          ]
+        },
+        "mlx_diffusion_recovery_detectors": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "low_confidence",
+                  "repetition",
+                  "kl_drift"
+                ]
+              }
+            }
+          ]
+        },
+        "mlx_diffusion_snapshot_save_path": false,
+        "mlx_diffusion_cross_session_cache": false,
+        "mlx_diffusion_cross_session_cache_root": false,
+        "decode_defaults": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

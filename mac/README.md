@@ -49,6 +49,11 @@ models; use `run` or `pull` first.
 `serve` the local HTTP adapter, and `gui` the WebKit window dependencies.
 This package is distributed through GitHub Releases, not PyPI.
 
+Prefer a source installation? Follow the [SDK source guide](../python/README.md).
+The Mac page, controller and WebKit launcher are in
+[`python/src/edllm/gui/mac`](../python/src/edllm/gui/mac).
+This does not include the separate Swift App.
+
 ## Installation experience
 
 | First visit | What to expect |
