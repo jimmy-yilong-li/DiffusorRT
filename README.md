@@ -15,8 +15,8 @@ An edge-first framework for local, single-request language generation.</p>
 </p>
 
 <p>
-<a href="#desktop-experience">Desktop experience</a> ·
 <a href="#news">News</a> ·
+<a href="#desktop-experience">Desktop experience</a> ·
 <a href="#install">Install</a> ·
 <a href="#installation-experience">What to expect</a> ·
 <a href="#install-from-source">Source</a> ·
@@ -31,9 +31,31 @@ An edge-first framework for local, single-request language generation.</p>
 call it from Python, chat in a window or expose a local HTTP endpoint.
 The interfaces share the same model repository and conversation store.
 
-> **SDK 0.2.6 Developer Preview is available.** Mac / MLX has a complete public
-> install path. Windows has a portable base SDK and an experimental CUDA
-> interface; its native CUDA package is not publicly released yet.
+**Install today:** [SDK 0.2.6 Developer Preview](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6) · [Mac: first reply and chat window](#mac--from-install-to-first-reply) · [Windows: base SDK](#windows--install-the-base-sdk).
+The Windows CUDA provider and the newer Mac Metal preview are not public downloads.
+
+## News
+
+**2026-11-20 · One Nemotron checkpoint, three ways to decode on Mac.**
+In the collaborator preview, open Nemotron-Labs-Diffusion-3B in the Mac chat
+window and choose **diffusion**, **linear self-speculation**, or **autoregressive**
+decoding for each message. On an M4 Max, we switched from Qwen3-BD3LM to
+Nemotron, generated a self-speculative reply, and switched back to Qwen in the
+same window. The mode picker and native Metal backend are **not in the public
+0.2.6 wheel or source tree**.
+
+**2026-11-19 · Self-speculation on Apple Silicon.** The BF16 model drafts four
+tokens at a time, then verifies them itself; no second model is loaded. On a
+64 GB M4 Max, generating 1,024 tokens took **14.63 s with self-speculation
+vs. 19.22 s autoregressively** (median of two runs per mode). This is time to
+complete one fixed-length workload, not time to first token. The two modes
+produced different continuations on this prompt.
+
+| Date | Public releases |
+|---|---|
+| **2026-11-13** | **SDK source published.** The Apache-2.0 SDK includes the Mac and Windows chat interfaces and matches the 0.2.6 wheel. [Install from source](#install-from-source). |
+| **2026-11-12** | **[SDK 0.2.6: local chat and visible diffusion](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6).** Open the Mac chat window, stop a supported reply, or replay its masked-token canvas. [Mac guide](./mac/README.md) · [Windows interface preview](./windows/README.md). |
+| **2026-11-02** | **[SDK 0.2.5](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.5).** Clearer deployment errors and upgrade checks. |
 
 ## Desktop experience
 
@@ -64,15 +86,6 @@ The interfaces share the same model repository and conversation store.
   maintaining a separate model-loading pipeline.
 - **Choose the platform deliberately:** one Python SDK, platform-specific
   acceleration. [Do not mix SDK/native release sets](./docs/product/sdk-0.2.6-installation.md).
-
-## News
-
-| Date | Update |
-|---|---|
-| **2026-11-13** | **SDK source is now available.** Clone and install the Apache-2.0 SDK, including the Mac and Windows chat interfaces. Runtime files match the published 0.2.6 wheel. [Source guide](./python/README.md). |
-| **2026-11-12** | **0.2.6: local chat and visible diffusion.** Chat window, recorded replay, cooperative Stop, automatic MLX reply sizing and structured CLI timing. [Download](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6). |
-| **2026-11-12** | **Mac + Windows showcase.** Separate platform guides, interface images and installation walkthroughs. Windows CUDA remains experimental; this SDK includes no CUDA provider. |
-| **2026-11-02** | **0.2.5: clearer deployment and upgrades.** Improved invalid-input messages and installed upgrade checks. [Release history](https://github.com/jimmy-yilong-li/DiffusorRT/releases). |
 
 ## Install
 
