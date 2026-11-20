@@ -32,15 +32,17 @@ call it from Python, chat in a window or expose a local HTTP endpoint.
 The interfaces share the same model repository and conversation store.
 
 **Install today:** [SDK 0.2.6 Developer Preview](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6) · [Mac: first reply and chat window](#mac--from-install-to-first-reply) · [Windows: base SDK](#windows--install-the-base-sdk).
-The Windows CUDA provider and the newer Mac Metal preview are not public downloads.
+The Windows CUDA provider and the newer Metal and ROCm backends are not public downloads.
 
 ## News
 
-> **🚨 BREAKING — DiffusorRT now supports self-speculative decoding on Apple Silicon (Mac preview).**
+> **🚨 BREAKING — Nemotron-3B self-speculative decoding now runs on Apple Silicon and AMD Radeon.**
 >
 > **Nemotron-3B: one model, three decoding modes.** In the same Mac chat, **choose a mode for each message**: **Diffusion**, **Linear Self-Speculation**, or **Autoregressive**. Compare replies without switching models or starting a new conversation.
 >
-> **November 20, 2026 · Collaborator preview.** Verified with Nemotron-Labs-Diffusion-3B on an M4 Max. The Metal backend and mode picker are not included in the public SDK 0.2.6 wheel or source tree.
+> **AMD Radeon · Release soon.** Nemotron-Labs-Diffusion-3B has also run end to end on the Radeon 8060S using ROCm.
+>
+> **November 20, 2026 · Preview status.** The Mac chat was verified on an M4 Max. Neither native backend is included in the public SDK 0.2.6 download.
 
 **2026-11-19 · Self-speculation on Apple Silicon.** The BF16 model drafts four
 tokens at a time, then verifies them itself; no second model is loaded. On a
