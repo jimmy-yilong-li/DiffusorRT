@@ -36,13 +36,11 @@ The Windows CUDA provider and the newer Mac Metal preview are not public downloa
 
 ## News
 
-**2026-11-20 · One Nemotron checkpoint, three ways to decode on Mac.**
-In the collaborator preview, open Nemotron-Labs-Diffusion-3B in the Mac chat
-window and choose **diffusion**, **linear self-speculation**, or **autoregressive**
-decoding for each message. On an M4 Max, we switched from Qwen3-BD3LM to
-Nemotron, generated a self-speculative reply, and switched back to Qwen in the
-same window. The mode picker and native Metal backend are **not in the public
-0.2.6 wheel or source tree**.
+> **🚨 BREAKING — DiffusorRT now supports self-speculative decoding on Apple Silicon (Mac preview).**
+>
+> **Nemotron-3B: one model, three decoding modes.** In the same Mac chat, **choose a mode for each message**: **Diffusion**, **Linear Self-Speculation**, or **Autoregressive**. Compare replies without switching models or starting a new conversation.
+>
+> **November 20, 2026 · Collaborator preview.** Verified with Nemotron-Labs-Diffusion-3B on an M4 Max. The Metal backend and mode picker are not included in the public SDK 0.2.6 wheel or source tree.
 
 **2026-11-19 · Self-speculation on Apple Silicon.** The BF16 model drafts four
 tokens at a time, then verifies them itself; no second model is loaded. On a
