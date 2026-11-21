@@ -15,14 +15,17 @@ On Mac, watch a reply take shape. On iPhone, let the words change inside your dr
 <p>
 <a href="https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6"><img src="https://img.shields.io/badge/SDK-0.2.6-6366f1?style=for-the-badge" alt="SDK 0.2.6"></a>
 <a href="./mac/README.md"><img src="https://img.shields.io/badge/macOS-Apple_Silicon-0891b2?style=for-the-badge" alt="macOS / Apple Silicon"></a>
-<a href="#news"><img src="https://img.shields.io/badge/iPhone-1.1_beta-087f73?style=for-the-badge" alt="iPhone app 1.1: collaborator beta"></a>
+<a href="#iphone-app"><img src="https://img.shields.io/badge/iPhone-1.1_beta-087f73?style=for-the-badge" alt="iPhone app 1.1: collaborator beta"></a>
 <a href="./windows/README.md"><img src="https://img.shields.io/badge/Windows-CUDA_Preview-334155?style=for-the-badge" alt="Windows CUDA development preview"></a>
 <a href="./LICENSE"><img src="https://img.shields.io/badge/SDK-Apache_2.0-64748b?style=for-the-badge" alt="Apache-2.0 SDK"></a>
 </p>
 
 <p>
 <a href="#news"><strong>Milestone &amp; News</strong></a> ·
-<a href="#desktop-experience">Desktop experience</a> ·
+<a href="#mac-runtime">Mac runtime</a> ·
+<a href="#mac-gui">Mac GUI</a> ·
+<a href="#iphone-app">iPhone app</a> ·
+<a href="#desktop-experience">Desktop gallery</a> ·
 <a href="#install">Install</a> ·
 <a href="#installation-experience">What to expect</a> ·
 <a href="#install-from-source">Source</a> ·
@@ -36,15 +39,43 @@ On Mac, watch a reply take shape. On iPhone, let the words change inside your dr
 ## News
 
 > [!IMPORTANT]
-> **◆ MILESTONE · November 21, 2026 — A new native Mac runtime and our first iPhone app beta.**
-> Mac and iPhone now share a C++ decoding core and Metal kernels, with separate tuning for desktop and phone. The new runtime is in source preview; the **iPhone 1.1 beta 1** is in collaborator testing on iPhone 15 Pro. Neither ships in the public [SDK 0.2.6 download](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6). The app is not on TestFlight or the App Store.
+> **◆ MILESTONE · November 21, 2026 — A new Mac runtime, a model picker in Mac chat, and DiffusorRT on iPhone.**
+> The [Mac runtime](#mac-runtime) and [iPhone app](#iphone-app) share a native decoding core. The [Mac GUI](#mac-gui) now lets you get a model and choose how it writes each reply. **These are collaborator previews, not a public release.** The current [public SDK download is still 0.2.6](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6).
 
-**⌘ Mac runtime · One model, three ways to decode.** Open Nemotron-3B on Metal and choose **Diffusion**, **Linear Self-Speculation** or **Autoregressive** for each message. In self-speculation, Nemotron drafts several tokens and checks them itself. No second model is needed. The new engine also reads prepacked 4-bit weights.
+**2026-11-20 · AMD Radeon — release soon.** Nemotron-3B self-speculative decoding also ran end to end on the Radeon 8060S using ROCm. The ROCm and Windows CUDA providers are not public downloads.
 
-**◇ iPhone app · Chat and edit offline.** Download a **581 MB, 4-bit** Qwen3 MDLM model once. Chat on device, or select a phrase in an email and watch the gap fill in. **Polish** leaves the surrounding draft intact; accept the edit or keep your original. Here is an illustration, not a recorded reply:
+| Date | Public releases |
+|---|---|
+| **2026-11-13** | **SDK source published.** The Apache-2.0 SDK includes the Mac and Windows chat interfaces and matches the 0.2.6 wheel. [Install from source](#install-from-source). |
+| **2026-11-12** | **[SDK 0.2.6: local chat and visible diffusion](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6).** Open the Mac chat window, stop a supported reply, or replay its masked-token canvas. [Mac guide](./mac/README.md) · [Windows interface preview](./windows/README.md). |
+| **2026-11-02** | **[SDK 0.2.5](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.5).** Clearer deployment errors and upgrade checks. |
+
+## Apple preview
+
+### Mac runtime
+
+**One Nemotron-3B checkpoint, three decoding modes.** The C++ engine runs diffusion, autoregressive decoding and linear self-speculation on Metal. In the last mode, Nemotron drafts several tokens, then verifies them itself; it does not load a second model. Mac and iPhone share that decoding code and Metal kernels, but tune the kernels separately.
+
+The Mac engine can also open **prepacked 4-bit weights** without quantizing them at launch. On an M4 Max, the same Qwen3.5-4B target opened in **0.35 s** prepacked versus **1.28 s** when quantized from FP32 at load time. That measures model opening, not time to the first reply.
+
+### Mac GUI
+
+**Get a Model → Open → Chat.** In the preview window, see the download size, disk footprint and license before choosing a model. Stop a download and resume it later; if a prepared model is out of date, choose **Update** from the catalog.
+
+In the **WebKit chat window**, open Nemotron-3B with Metal and pick **Diffusion**, **Self-Speculation** or **Autoregressive** for the next message without leaving the conversation. The live canvas shows which positions are still masked. Qwen3.5 DFlash is **not** a mode in this Mac window; the [desktop screenshots below](#desktop-experience) show the public 0.2.6 interface, not this preview.
+
+### iPhone app
+
+**Chat and Polish · 1.1 beta 1, build 2.** The app on iPhone 15 Pro ships without weights. In **Chat → Model & mode**, download the **581 MB, 4-bit Qwen3 MDLM** once; chat and writing then work offline. A diffusion reply fills in across the canvas. Press **Stop** and the already confirmed, visible text stays in the chat.
+
+In **Polish** on iOS 18+, select a phrase inside an email draft. MDLM reads the words on both sides and fills only that gap. Accept the edit, undo it or keep your original. This is inside the app, not a system Mail extension. An illustration:
 
 > Hi Maya, **`▧ ▧ ▧ ▧`**. Could we meet on Friday?<br>
 > Hi Maya, **I won’t be able to make it today**. Could we meet on Friday?
+
+For chat, Nemotron-3B offers the same three decoding modes on the phone. Qwen3.5-4B runs autoregressively on its own; add the optional **303 MB DFlash drafter** to try paired draft-and-verify decoding. The iPhone app is not on TestFlight or the App Store.
+
+### Measured on hardware
 
 | On hardware · time to finish | Draft + verify | Autoregressive |
 |:---|---:|---:|
@@ -55,14 +86,6 @@ On Mac, watch a reply take shape. On iPhone, let the words change inside your dr
 <sub>Mac: linear self-speculation, median of two runs per mode; the continuations differed. iPhone: DFlash with a separate drafter, one warm run per mode and prompt, 64-token limit, identical tokens within each pair. DFlash finished both replies sooner, but first readable text was later on one prompt and tied on the other. Compare within rows, not across devices.</sub>
 
 **Try the public SDK today →** [First reply on Mac](#mac--from-install-to-first-reply) · [Windows base SDK](#windows--install-the-base-sdk) · [All public downloads](https://github.com/jimmy-yilong-li/DiffusorRT/releases)
-
-**2026-11-20 · AMD Radeon — release soon.** Nemotron-3B self-speculative decoding also ran end to end on the Radeon 8060S using ROCm. The ROCm and Windows CUDA providers are not public downloads.
-
-| Date | Public releases |
-|---|---|
-| **2026-11-13** | **SDK source published.** The Apache-2.0 SDK includes the Mac and Windows chat interfaces and matches the 0.2.6 wheel. [Install from source](#install-from-source). |
-| **2026-11-12** | **[SDK 0.2.6: local chat and visible diffusion](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6).** Open the Mac chat window, stop a supported reply, or replay its masked-token canvas. [Mac guide](./mac/README.md) · [Windows interface preview](./windows/README.md). |
-| **2026-11-02** | **[SDK 0.2.5](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.5).** Clearer deployment errors and upgrade checks. |
 
 ## Desktop experience
 
