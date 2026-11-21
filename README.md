@@ -1,3 +1,8 @@
+<p align="right">
+  <a href="https://jimmy-yilong-li.github.io/NoBlackBoxes/"><img src="https://jimmy-yilong-li.github.io/NoBlackBoxes/assets/open-cube.svg" width="140" height="40" alt="NoBlackBoxes"></a><br>
+  <sub><strong><samp>A NoBlackBoxes Project</samp></strong></sub>
+</p>
+
 <div align="center">
 
 <img src="./docs/product/assets/diffusorrt-logo.png" alt="DiffusorRT" width="155">
