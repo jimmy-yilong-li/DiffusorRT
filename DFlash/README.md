@@ -8,6 +8,17 @@
 
 </div>
 
+<table>
+<tr><th>1 · Choose DFlash</th><th>2 · Watch it draft</th><th>3 · Read the reply</th></tr>
+<tr>
+<td width="33%"><a href="./assets/iphone15pro-dflash-picker.png"><img src="./assets/iphone15pro-dflash-picker.png" width="320" alt="On iPhone, Qwen3.5 · DFlash is selected in Model &amp; mode."></a></td>
+<td width="33%"><a href="./assets/iphone15pro-dflash-live.png"><img src="./assets/iphone15pro-dflash-live.png" width="320" alt="During the reply, Here is verified while a lighter line shows the drafter’s unverified proposal."></a></td>
+<td width="33%"><a href="./assets/iphone15pro-dflash-reply.png"><img src="./assets/iphone15pro-dflash-reply.png" width="320" alt="The completed Qwen3.5 DFlash reply offers polite ways to request the report by Friday."></a></td>
+</tr>
+</table>
+
+*Captured in the DiffusorRT app on an iPhone 15 Pro, running the Metal DFlash preview. Tap a screenshot to see it full size.*
+
 The hard part of speculative decoding on a phone is making the second model earn its place: drafting is extra work, and the user only benefits if the verified reply arrives sooner. DiffusorRT integrates [DFlash](https://github.com/z-lab/dflash) into its iPhone chat app. Add a **303 MB drafter** to the same **4-bit Qwen3.5-4B** target and switch between autoregressive chat and DFlash without downloading a second copy of the target. Both models run on the phone.
 
 ## On-device results
