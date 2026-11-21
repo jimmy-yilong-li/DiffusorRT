@@ -25,6 +25,7 @@ On Mac, watch a reply take shape. On iPhone, let the words change inside your dr
 <a href="#mac-runtime">Mac runtime</a> ·
 <a href="#mac-gui">Mac GUI</a> ·
 <a href="#iphone-app">iPhone app</a> ·
+<a href="./DFlash/">DFlash research</a> ·
 <a href="#desktop-experience">Desktop gallery</a> ·
 <a href="#install">Install</a> ·
 <a href="#installation-experience">What to expect</a> ·
@@ -41,6 +42,8 @@ On Mac, watch a reply take shape. On iPhone, let the words change inside your dr
 > [!IMPORTANT]
 > **◆ MILESTONE · November 21, 2026 — A new Mac runtime, a model picker in Mac chat, and DiffusorRT on iPhone.**
 > The [Mac runtime](#mac-runtime) and [iPhone app](#iphone-app) share a native decoding core. The [Mac GUI](#mac-gui) now lets you get a model and choose how it writes each reply. **These are collaborator previews, not a public release.** The current [public SDK download is still 0.2.6](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6).
+
+**2026-11-21 · [DFlash on iPhone →](./DFlash/)** A 4-bit Qwen3.5-4B target and its diffusion drafter completed two replies **1.67× and 2.05× faster** than autoregressive decoding on iPhone 15 Pro. Our next research milestone is **Cross-Accelerator Inference**: draft on the Neural Engine and verify on the Metal GPU.
 
 **2026-11-20 · AMD Radeon — release soon.** Nemotron-3B self-speculative decoding also ran end to end on the Radeon 8060S using ROCm. The ROCm and Windows CUDA providers are not public downloads.
 
