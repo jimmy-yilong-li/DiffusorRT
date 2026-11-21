@@ -21,6 +21,8 @@ On Mac, watch a reply take shape. On iPhone, let the words change inside your dr
 </p>
 
 <p>
+<a href="#downloads"><strong>Downloads</strong></a> ·
+<a href="#iphone-model-packs">Model packs</a> ·
 <a href="#news"><strong>Milestone &amp; News</strong></a> ·
 <a href="#mac-runtime">Mac runtime</a> ·
 <a href="#mac-gui">Mac GUI</a> ·
@@ -52,6 +54,37 @@ On Mac, watch a reply take shape. On iPhone, let the words change inside your dr
 | **2026-11-13** | **SDK source published.** The Apache-2.0 SDK includes the Mac and Windows chat interfaces and matches the 0.2.6 wheel. [Install from source](#install-from-source). |
 | **2026-11-12** | **[SDK 0.2.6: local chat and visible diffusion](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6).** Open the Mac chat window, stop a supported reply, or replay its masked-token canvas. [Mac guide](./mac/README.md) · [Windows interface preview](./windows/README.md). |
 | **2026-11-02** | **[SDK 0.2.5](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.5).** Clearer deployment errors and upgrade checks. |
+
+## Downloads
+
+GitHub hosts the [software releases](https://github.com/jimmy-yilong-li/DiffusorRT/releases); our [Hugging Face repositories](https://huggingface.co/jimmylearnML) host the ready-to-load model packs. Download only the models you want.
+
+| What you want | Where to get it |
+|---|---|
+| **Run local inference on Mac** | [Download the public SDK wheel (0.2.6)](https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.6/diffusor_rt-0.2.6-py3-none-any.whl) · [Checksums](https://github.com/jimmy-yilong-li/DiffusorRT/releases/download/v0.2.6/SHA256SUMS-sdk-0.2.6.txt). Follow the [Apple Silicon install steps](#install) for MLX. This is a portable Python wheel, not a compiled Metal or CUDA provider. |
+| **Open the desktop GUI** | The [Mac chat window](./mac/README.md) ships in the SDK: install the GUI extra, then launch it with `diffusorrt gui`. The [Windows GUI](./windows/README.md) is a preview; there is no public CUDA bundle or standalone installer. |
+| **Try the new native runtime or iPhone app** | [Mac runtime preview](#mac-runtime) · [iPhone app gallery](#iphone-app). The native runtime binaries and standalone apps are not public downloads yet. The iPhone model packs below **are public now**. |
+
+### iPhone model packs
+
+These are the **same pinned files the iPhone model picker downloads**, already prepared for DiffusorRT. No account or model conversion is needed. Start with 4-bit; choose FP16 if you want the unquantized 0.6B weights.
+
+| Model | What it does | Download files |
+|---|---|---|
+| **Qwen3 MDLM · 0.6B** | Diffusion chat and in-place editing | [4-bit · 581 MB](https://huggingface.co/jimmylearnML/DiffusorRT-iPhone-Qwen3-MDLM-0.6B-Q4/tree/cf81b92b97162d9ae4a3bb5c6248030d24cfbbe5) · [FP16 · 1.21 GB](https://huggingface.co/jimmylearnML/DiffusorRT-iPhone-Qwen3-MDLM-0.6B/tree/a93203090ac497fe8392197c5c2d6b5790120a90) |
+| **Qwen3 BD3LM · 0.6B** | Block diffusion chat | [4-bit · 581 MB](https://huggingface.co/jimmylearnML/DiffusorRT-iPhone-Qwen3-BD3LM-0.6B-Q4/tree/46b8da273e7effefd1f4c951077eb88ae0a5808a) · [FP16 · 1.21 GB](https://huggingface.co/jimmylearnML/DiffusorRT-iPhone-Qwen3-BD3LM-0.6B/tree/4176d8e2f120a886dfdc522f1db3feed762ed395) |
+| **Nemotron-Labs-Diffusion · 3B** | One model for diffusion, self-speculation and autoregressive chat | [4-bit · 2.76 GB](https://huggingface.co/jimmylearnML/DiffusorRT-iPhone-Nemotron-Labs-Diffusion-3B-Q4/tree/0343d805c686cc0fb714bc64cc0e58d5ed2737df) |
+| **Qwen3.5 · 4B target** | Run autoregressively on its own, or verify DFlash proposals | [4-bit · 2.40 GB](https://huggingface.co/jimmylearnML/DiffusorRT-iPhone-Qwen3.5-4B-Q4/tree/30e5b29b98ece19fe5490e00e7fe94b8113a6358) |
+| **DFlash drafter for Qwen3.5** | Optional Metal drafter. Install the Qwen3.5 target above first. | [4-bit · 303 MB](https://huggingface.co/jimmylearnML/DiffusorRT-iPhone-Qwen3.5-4B-DFlash-Q4/tree/062263e612c4e322656d51be45e912f9e611b441) |
+
+In the iPhone preview, choose **Chat → Model & mode → Download**. To download a complete pack on your computer, use the Hugging Face CLI. For example:
+
+```bash
+hf download jimmylearnML/DiffusorRT-iPhone-Qwen3-MDLM-0.6B-Q4 \
+  --revision cf81b92b97162d9ae4a3bb5c6248030d24cfbbe5 --local-dir ./mdlm-0.6b-q4
+```
+
+Keep the pack directory intact: the weights alone are not an installation. For the public Mac SDK, follow the [Mac model setup](#install) instead.
 
 ## Apple preview
 
@@ -347,6 +380,7 @@ collection is not enabled by default.
 
 ## Downloads and guides
 
+- [Runtime, GUI and model pack downloads](#downloads)
 - [SDK 0.2.6 release](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6)
 - [Mac installation and screenshots](./mac/README.md)
 - [Windows / WSL installation and interface preview](./windows/README.md)
