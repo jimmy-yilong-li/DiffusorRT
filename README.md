@@ -4,18 +4,19 @@
 
 <h1>DiffusorRT</h1>
 <h3>Watch language take shape.</h3>
-<p>Diffusion-native inference, from Python to your desktop.<br>
-An edge-first framework for local, single-request language generation.</p>
+<p>Diffusion language models that run where you write.<br>
+On Mac, watch a reply take shape. On iPhone, let the words change inside your draft.</p>
 
 <p>
 <a href="https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6"><img src="https://img.shields.io/badge/SDK-0.2.6-6366f1?style=for-the-badge" alt="SDK 0.2.6"></a>
 <a href="./mac/README.md"><img src="https://img.shields.io/badge/macOS-Apple_Silicon-0891b2?style=for-the-badge" alt="macOS / Apple Silicon"></a>
+<a href="#news"><img src="https://img.shields.io/badge/iPhone-1.1_beta-087f73?style=for-the-badge" alt="iPhone app 1.1: collaborator beta"></a>
 <a href="./windows/README.md"><img src="https://img.shields.io/badge/Windows-CUDA_Preview-334155?style=for-the-badge" alt="Windows CUDA development preview"></a>
 <a href="./LICENSE"><img src="https://img.shields.io/badge/SDK-Apache_2.0-64748b?style=for-the-badge" alt="Apache-2.0 SDK"></a>
 </p>
 
 <p>
-<a href="#news">News</a> ·
+<a href="#news"><strong>Milestone &amp; News</strong></a> ·
 <a href="#desktop-experience">Desktop experience</a> ·
 <a href="#install">Install</a> ·
 <a href="#installation-experience">What to expect</a> ·
@@ -27,29 +28,30 @@ An edge-first framework for local, single-request language generation.</p>
 
 </div>
 
-**One library. Local conversations. Visible diffusion.** Prepare a model,
-call it from Python, chat in a window or expose a local HTTP endpoint.
-The interfaces share the same model repository and conversation store.
-
-**Install today:** [SDK 0.2.6 Developer Preview](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6) · [Mac: first reply and chat window](#mac--from-install-to-first-reply) · [Windows: base SDK](#windows--install-the-base-sdk).
-The Windows CUDA provider and the newer Metal and ROCm backends are not public downloads.
-
 ## News
 
-> **🚨 BREAKING — Nemotron-3B self-speculative decoding now runs on Apple Silicon and AMD Radeon.**
->
-> **Nemotron-3B: one model, three decoding modes.** In the same Mac chat, **choose a mode for each message**: **Diffusion**, **Linear Self-Speculation**, or **Autoregressive**. Compare replies without switching models or starting a new conversation.
->
-> **AMD Radeon · Release soon.** Nemotron-Labs-Diffusion-3B has also run end to end on the Radeon 8060S using ROCm.
->
-> **November 20, 2026 · Preview status.** The Mac chat was verified on an M4 Max. Neither native backend is included in the public SDK 0.2.6 download.
+> [!IMPORTANT]
+> **◆ MILESTONE · November 21, 2026 — A new native Mac runtime and our first iPhone app beta.**
+> Mac and iPhone now share a C++ decoding core and Metal kernels, with separate tuning for desktop and phone. The new runtime is in source preview; the **iPhone 1.1 beta 1** is in collaborator testing on iPhone 15 Pro. Neither ships in the public [SDK 0.2.6 download](https://github.com/jimmy-yilong-li/DiffusorRT/releases/tag/v0.2.6). The app is not on TestFlight or the App Store.
 
-**2026-11-19 · Self-speculation on Apple Silicon.** The BF16 model drafts four
-tokens at a time, then verifies them itself; no second model is loaded. On a
-64 GB M4 Max, generating 1,024 tokens took **14.63 s with self-speculation
-vs. 19.22 s autoregressively** (median of two runs per mode). This is time to
-complete one fixed-length workload, not time to first token. The two modes
-produced different continuations on this prompt.
+**⌘ Mac runtime · One model, three ways to decode.** Open Nemotron-3B on Metal and choose **Diffusion**, **Linear Self-Speculation** or **Autoregressive** for each message. In self-speculation, Nemotron drafts several tokens and checks them itself. No second model is needed. The new engine also reads prepacked 4-bit weights.
+
+**◇ iPhone app · Chat and edit offline.** Download a **581 MB, 4-bit** Qwen3 MDLM model once. Chat on device, or select a phrase in an email and watch the gap fill in. **Polish** leaves the surrounding draft intact; accept the edit or keep your original. Here is an illustration, not a recorded reply:
+
+> Hi Maya, **`▧ ▧ ▧ ▧`**. Could we meet on Friday?<br>
+> Hi Maya, **I won’t be able to make it today**. Could we meet on Friday?
+
+| On hardware · time to finish | Draft + verify | Autoregressive |
+|:---|---:|---:|
+| **M4 Max** · Nemotron-3B BF16 · 1,024 tokens | **14.63 s** | 19.22 s |
+| **iPhone 15 Pro** · Qwen3.5-4B 4-bit · deadline prompt | **2.73 s** | 4.55 s |
+| **iPhone 15 Pro** · same model · train-speed prompt | **2.26 s** | 4.64 s |
+
+<sub>Mac: linear self-speculation, median of two runs per mode; the continuations differed. iPhone: DFlash with a separate drafter, one warm run per mode and prompt, 64-token limit, identical tokens within each pair. DFlash finished both replies sooner, but first readable text was later on one prompt and tied on the other. Compare within rows, not across devices.</sub>
+
+**Try the public SDK today →** [First reply on Mac](#mac--from-install-to-first-reply) · [Windows base SDK](#windows--install-the-base-sdk) · [All public downloads](https://github.com/jimmy-yilong-li/DiffusorRT/releases)
+
+**2026-11-20 · AMD Radeon — release soon.** Nemotron-3B self-speculative decoding also ran end to end on the Radeon 8060S using ROCm. The ROCm and Windows CUDA providers are not public downloads.
 
 | Date | Public releases |
 |---|---|
