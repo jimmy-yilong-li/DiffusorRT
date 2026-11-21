@@ -69,6 +69,20 @@ In the **WebKit chat window**, open Nemotron-3B with Metal and pick **Diffusion*
 
 ### iPhone app
 
+**Watch the draft before it becomes the reply.** In these iPhone 15 Pro captures, the lighter text is a proposal. Only verified tokens join the answer.
+
+<table>
+<tr><th width="50%">Self-speculative decoding · Nemotron-3B</th><th width="50%">DFlash · Qwen3.5-4B</th></tr>
+<tr>
+<td align="center"><a href="./docs/product/assets/iphone15pro-nemotron-self-speculation.png"><img src="./docs/product/assets/iphone15pro-nemotron-self-speculation.png" width="300" alt="Nemotron has counted through 19 in iPhone chat; 20 is still on the separate Draft line."></a></td>
+<td align="center"><a href="./DFlash/assets/iphone15pro-dflash-live.png"><img src="./DFlash/assets/iphone15pro-dflash-live.png" width="300" alt="Qwen3.5 has verified the word Here; the DFlash drafter’s next words appear below as an unverified draft."></a></td>
+</tr>
+<tr>
+<td><strong>One model.</strong> Nemotron drafts several tokens, then checks them itself.</td>
+<td><strong>Two models.</strong> A diffusion drafter proposes a block; Qwen3.5 verifies it. Both run on Metal in this capture. <a href="./DFlash/">More on DFlash →</a></td>
+</tr>
+</table>
+
 **Chat and Polish · 1.1 beta 1, build 2.** The app on iPhone 15 Pro ships without weights. In **Chat → Model & mode**, download the **581 MB, 4-bit Qwen3 MDLM** once; chat and writing then work offline. A diffusion reply fills in across the canvas. Press **Stop** and the already confirmed, visible text stays in the chat.
 
 In **Polish** on iOS 18+, select a phrase inside an email draft. MDLM reads the words on both sides and fills only that gap. Accept the edit, undo it or keep your original. This is inside the app, not a system Mail extension. An illustration:
